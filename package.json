@@ -18,8 +18,12 @@
     "url": "https://github.com/pini86/rslang/issues"
   },
   "homepage": "https://github.com/pini86/rslang#readme",
-  "devDependencies": {
+  "dependencies": {
     "@materializecss/materialize": "^1.1.0",
+    "axios": "^0.27.2"
+  },
+  "devDependencies": {
+    "@types/materializecss__materialize": "^1.1.0",
     "@types/node": "^18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
