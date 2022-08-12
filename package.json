@@ -20,7 +20,8 @@
   "homepage": "https://github.com/pini86/rslang#readme",
   "dependencies": {
     "@materializecss/materialize": "^1.1.0",
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "normalize.css": "^8.0.1"
   },
   "devDependencies": {
     "@types/materializecss__materialize": "^1.1.0",
