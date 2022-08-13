@@ -55,22 +55,89 @@ nav ul li.active {
   }
 }
 
-.main__about {
-  display: flex;
-  flex-direction: column;
+.main__about,
+.main__team {
+  @include flex-column;
   gap: 5%;
   text-align: center;
-  .about__cards {
-    display: flex;
-    padding: 1.5rem 0;
-    gap: 5%;
-    .about__card {
-      width: 50%;
-      text-align: center;
-      .about__icon {
-        font-size: 60px;
-        color: black;
-      }
+}
+
+.about__cards {
+  display: flex;
+  padding: 1.5rem 0;
+  gap: 5%;
+  .about__card {
+    width: 50%;
+    text-align: center;
+    .about__icon {
+      font-size: 60px;
+      color: black;
     }
   }
+}
+
+.team__cards {
+  @include flex-column;
+  gap: 5rem;
+  align-items: center;
+  padding: 5rem 0;
+}
+
+.team__card {
+  @include flex-column;
+  padding: 5%;
+  text-align: center;
+  gap: 1.5rem;
+  width: 60%;
+  .team__name {
+    color: $font-color;
+  }
+}
+
+.card-yellow {
+  @include card($accent-yellow-color);
+}
+
+.card-blue {
+  @include card($accent-blue-color);
+}
+
+.card-pink {
+  @include card($accent-pink-color);
+}
+
+.team__tasks {
+  display: flex;
+  justify-content: space-around;
+  .team__task {
+    display: block;
+    padding: 2%;
+  }
+}
+
+.footer__info {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  justify-content: center;
+  gap: 5%
+}
+
+.footer__github {
+  height: 25px;
+  width: 25px;
+  transition: 0.3s;
+  @include bg-svg-white('./assets/icons/git.svg');
+}
+
+.footer__rs {
+  height: 25px;
+  width: 60px;
+  @include bg-svg-white('./assets/icons/rs_school_js.svg');
+  transition: 0.3s;
+}
+
+.footer__rs:hover,
+.footer__github:hover {
+  filter: invert(96%) sepia(1%) saturate(4882%) hue-rotate(276deg) brightness(106%) contrast(86%);
 }
