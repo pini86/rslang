@@ -1,4 +1,7 @@
 @use "variables" as *;
+
+/* ---------- HEADER, NAV ---------- */
+
 .nav {
   background-color: $bg-color;
   color: $font-color;
@@ -19,6 +22,9 @@ nav ul a {
 nav ul li.active {
   background-color: rgba($color: $accent-blue-color, $alpha: 0.5);
 }
+
+
+/* ---------- MAIN-INFO ---------- */
 
 .info__main-image {
   width: 90%;
@@ -61,6 +67,9 @@ nav ul li.active {
   gap: 5%;
   text-align: center;
 }
+
+
+/* ---------- TEAM ---------- */
 
 .about__cards {
   display: flex;
@@ -114,6 +123,9 @@ nav ul li.active {
     padding: 2%;
   }
 }
+
+
+/* ---------- FOOTER ---------- */
 
 .footer__info {
   display: flex;
