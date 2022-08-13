@@ -66,7 +66,7 @@ module.exports = ({ development }) => ({
     ...esLintPlugin(development),
     new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
     new HtmlWebpackPlugin({
-      title: 'Async Race',
+      title: 'RSLANG',
       template: path.resolve(__dirname, './src/index.html'),
     }),
     new CopyPlugin({
