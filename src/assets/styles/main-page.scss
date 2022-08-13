@@ -1,0 +1,76 @@
+@use "variables" as *;
+.nav {
+  background-color: $bg-color;
+  color: $font-color;
+  .nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  .nav-list {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+nav ul a {
+  color: $font-color;
+}
+
+nav ul li.active {
+  background-color: rgba($color: $accent-blue-color, $alpha: 0.5);
+}
+
+.info__main-image {
+  width: 90%;
+  height: auto;
+}
+
+.main__info {
+  display: flex;
+  padding: 50px 0;
+  .info__left,
+  .info__right {
+    width: 50%;
+  }
+}
+
+.info__left {
+  padding-top: 10%;
+  .info__text {
+    width: auto;
+    max-width: 16rem;
+  }
+  .info__logo {
+    width: 70%;
+    height: auto;
+  }
+}
+
+.authorization {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  .authorization__icon {
+    width: 60px;
+  }
+}
+
+.main__about {
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+  text-align: center;
+  .about__cards {
+    display: flex;
+    padding: 1.5rem 0;
+    gap: 5%;
+    .about__card {
+      width: 50%;
+      text-align: center;
+      .about__icon {
+        font-size: 60px;
+        color: black;
+      }
+    }
+  }
+}

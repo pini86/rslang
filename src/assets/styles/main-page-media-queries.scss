@@ -1,0 +1,7 @@
+  @use "variables" as *;
+  @media(max-width: 768px) {
+    .about__cards {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
