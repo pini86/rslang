@@ -15,12 +15,20 @@
   }
 }
 
-nav ul a {
+nav ul a,
+.sidenav li>a {
   color: $font-color;
 }
 
 nav ul li.active {
   background-color: rgba($color: $accent-blue-color, $alpha: 0.5);
+}
+
+.sidenav {
+  background-color: lighten($bg-color, 10%);
+  li.active {
+    background-color: rgba(0, 172, 193, 0.5);
+  }
 }
 
 
@@ -98,8 +106,10 @@ nav ul li.active {
   text-align: center;
   gap: 1.5rem;
   width: 60%;
-  .team__name {
-    color: $font-color;
+  .team__img {
+    width: 20%;
+    text-align: center;
+    border-radius: 50%;
   }
 }
 
@@ -121,7 +131,16 @@ nav ul li.active {
   .team__task {
     display: block;
     padding: 2%;
+    margin: 2%;
   }
+}
+
+.team__name {
+  color: $font-color;
+}
+
+.team__name:hover {
+  color: $accent-blue-color;
 }
 
 
@@ -135,13 +154,6 @@ nav ul li.active {
   gap: 5%
 }
 
-.footer__github {
-  height: 25px;
-  width: 25px;
-  transition: 0.3s;
-  @include bg-svg-white('./assets/icons/git.svg');
-}
-
 .footer__rs {
   height: 25px;
   width: 60px;
@@ -149,7 +161,10 @@ nav ul li.active {
   transition: 0.3s;
 }
 
-.footer__rs:hover,
-.footer__github:hover {
-  filter: invert(96%) sepia(1%) saturate(4882%) hue-rotate(276deg) brightness(106%) contrast(86%);
+.footer__year:hover {
+  color: $accent-pink-color;
+}
+
+.footer__rs:hover {
+  filter: invert(65%) sepia(38%) saturate(350%) hue-rotate(126deg) brightness(90%) contrast(90%);
 }
