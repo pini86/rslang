@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +8,65 @@
   <link rel="icon" href="./assets/icons/favicon.ico" type="image/x-icon" />
   <title>RS Lang</title>
 </head>
+
 <body>
-  
+  <!-- Modal Triggers -->
+  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+  <button data-target="modal1" class="btn modal-trigger">Modal</button>
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal auth-modal">
+    <div class="modal-content">
+      <button class="modal-close waves-effect waves-green btn-flat right"><i class="material-icons">close</i></button>
+      <div class="auth-headers">
+        <label for="register"><h5 class="auth-header active">Регистрация</h5></label>
+        <label for="signin"><h5 class="auth-header">Вход</h5></label>
+      </div>
+
+      <input type="radio" id="register" name="view" checked class="input-view">
+      <input type="radio" id="signin" name="view" class="input-view">
+
+      <div id="views">
+
+        <div class="register-view">
+          <form action="#" class="register-form">
+            <div class="input-group">
+              <label for="name-reg"><p>Имя пользователя</p></label>
+              <input type="text" id="name-reg">
+            </div>
+            <div class="input-group">
+              <label for="email-reg"><p>Адрес электронной почты</p></label>
+              <input type="email" id="email-reg">
+            </div>
+            <div class="input-group">
+              <label for="password-reg"><p>Пароль</p></label>
+              <input type="password" minlength="8" id="password-reg">
+              <span class="error-message"></span>
+            </div>
+            <div class="modal-footer">
+              <button class="waves-effect waves-green btn-flat" type="submit">Войти</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="signin-view">
+          <form action="#" class="login-form">
+            <div class="input-group">
+              <label for="email-log"><p>Адрес электронной почты</p></label>
+              <input type="email" id="email-log">
+            </div>
+            <div class="input-group">
+              <label for="password-log"><p>Пароль</p></label>
+              <input type="password" minlength="8" id="password-log">
+              <span class="error-message"></span>
+            </div>
+            <div class="modal-footer">
+              <button class="waves-effect waves-green btn-flat" type="submit">Войти</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 </body>
+
 </html>

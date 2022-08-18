@@ -1,0 +1,34 @@
+.auth-headers {
+  display: flex;
+  justify-content: space-around;
+}
+
+.auth-header.active {
+  border-bottom: 1px solid #00acc1;
+}
+
+.signin-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+#register:checked~#views .signin-view {
+  display: none;
+}
+
+#register:checked~#views .signin-view {
+  display: none;
+}
+
+#signin:checked~#views .register-view {
+  display: none;
+}
+
+#signin:checked~#views .signin-view {
+  display: flex;
+}
+
+.input-view {
+  display: none;
+}
