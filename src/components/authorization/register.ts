@@ -1,5 +1,6 @@
 import signIn from "../../api/signin";
 import { createUser } from "../../api/users";
+import { authModalOff } from "../contentLoaded/materialize";
 import { User } from "../interfaces/interfaces";
 
 class Register {
@@ -29,7 +30,9 @@ class Register {
     const {email, password} = user;
 
     await createUser(user).then(()=>{
-      signIn({email,password});
+      signIn({email,password}).then(() => {
+      authModalOff();
+      });
     }); 
 })}
 }
