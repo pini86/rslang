@@ -7,6 +7,5 @@ export function modalsOn(): void {
 }
 export function authModalOff(): void {
   const modal = Materialize.Modal.getInstance(authModal);
-modal.close();
+  modal.close();
 }
-
