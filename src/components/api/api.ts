@@ -5,11 +5,11 @@ import {
   Statistics,
   User,
   UserWord,
-  Word
-} from "../interfaces/interfaces";
+  Word,
+} from '../interfaces/interfaces';
 
 class API {
-  baseUrl = "https://rs-lang-rsschool-task.herokuapp.com";
+  baseUrl = 'https://rs-lang-rsschool-task.herokuapp.com';
 
   token!: string;
 
@@ -22,10 +22,7 @@ class API {
   private words = `${this.baseUrl}/words`;
 
   // Get a chunck of words
-  getWords = async (
-    group = 0,
-    page = 0
-  ): Promise<[Word]> | never => {
+  getWords = async (group = 0, page = 0): Promise<[Word]> | never => {
     const url = `${this.words}?page=${page}&group=${group}`;
     return axios
       .get(url)
@@ -33,12 +30,10 @@ class API {
       .catch((err) => {
         throw err;
       });
-  }
+  };
 
   // Get a word with assets by id
-  getWord = async (
-    id: string
-  ): Promise<Word> | never => {
+  getWord = async (id: string): Promise<Word> | never => {
     const url = `${this.words}/${id}`;
     return axios
       .get(url)
@@ -46,18 +41,13 @@ class API {
       .catch((err) => {
         throw err;
       });
-  }
+  };
 
   // Create a new user
-  createNewUser = async (
-    userNew: User
-  ): Promise<User> | never => {
+  createNewUser = async (userNew: User): Promise<User> | never => {
     const url = this.users;
     return axios
-      .post(
-        url,
-        userNew
-      )
+      .post(url, userNew)
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 422) {
@@ -70,17 +60,12 @@ class API {
   };
 
   // Get user by id
-  getUser = async (
-    id = this.userId
-  ): Promise<User> | never => {
+  getUser = async (id = this.userId): Promise<User> | never => {
     const url = `${this.users}/${id}`;
     return axios
-      .get(
-        url,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        }
-      )
+      .get(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 401) {
@@ -90,7 +75,7 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Update a user
   updateUser = async (
@@ -103,10 +88,13 @@ class API {
       .put(
         url,
         {
-          headers: { 'Authorization': `Bearer ${this.token}` },
           email,
-          password
-        })
+          password,
+        },
+        {
+          headers: { Authorization: `Bearer ${this.token}` },
+        },
+      )
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 400) {
@@ -116,12 +104,10 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Delete a user
-  deleteUser = async (
-    id = this.userId
-  ): Promise<null> | never => {
+  deleteUser = async (id = this.userId): Promise<null> | never => {
     const url = `${this.users}/${id}`;
     return axios
       .delete(url)
@@ -134,19 +120,15 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Get new user tokens
-  getNewUserTokens = async (
-    id = this.userId
-  ): Promise<Auth> | never => {
+  getNewUserTokens = async (id = this.userId): Promise<Auth> | never => {
     const url = `${this.users}/${id}/tokens`;
     return axios
-      .get(
-        url,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        })
+      .get(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 403) {
@@ -154,19 +136,15 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Get all user words
-  getAllUserWords = async (
-    id = this.userId
-  ): Promise<[UserWord]> | never => {
+  getAllUserWords = async (id = this.userId): Promise<[UserWord]> | never => {
     const url = `${this.users}/${id}/words`;
     return axios
-      .get(
-        url,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        })
+      .get(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 402) {
@@ -174,22 +152,19 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Create a user word by id
   createUserWord = async (
     wordId: string,
     word: UserWord,
-    id = this.userId
+    id = this.userId,
   ): Promise<UserWord> | never => {
     const url = `${this.users}/${id}/words/${wordId}`;
     return axios
-      .post(
-        url,
-        word,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        })
+      .post(url, word, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 400) {
@@ -199,20 +174,18 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Get a user word by id
   getUserWord = async (
     wordId: string,
-    id = this.userId
+    id = this.userId,
   ): Promise<UserWord> | never => {
     const url = `${this.users}/${id}/words/${wordId}`;
     return axios
-      .get(
-        url,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        })
+      .get(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 401) {
@@ -222,22 +195,19 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Update a user word by id
   updateUserWord = async (
     wordId: string,
     word: UserWord,
-    id = this.userId
+    id = this.userId,
   ): Promise<UserWord> | never => {
     const url = `${this.users}/${id}/words/${wordId}`;
     return axios
-      .put(
-        url,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` },
-          word
-        })
+      .put(url, word, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 400) {
@@ -247,20 +217,18 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Delete a user word by id
   deleteUserWord = async (
-   wordId: string,
-   id = this.userId
+    wordId: string,
+    id = this.userId,
   ): Promise<null> | never => {
     const url = `${this.users}/${id}/words/${wordId}`;
     return axios
-      .delete(
-        url,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        })
+      .delete(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 204) {
@@ -270,7 +238,7 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Gets all user aggregated words
   getAllAggregatedUserWords = async (
@@ -278,15 +246,13 @@ class API {
     group = '0',
     page = '0',
     wordsPerPage = '20',
-    filter = ''
+    filter = '',
   ): Promise<[Word]> | never => {
     const url = `${this.users}/${id}/aggregatedWords?&group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
     return axios
-      .get(
-        url,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        })
+      .get(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 200) {
@@ -296,20 +262,18 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Gets user aggregated word by id
   getAggregatedUserWord = async (
     wordId: string,
-    id = this.userId
+    id = this.userId,
   ): Promise<UserWord> | never => {
     const url = `${this.users}/${id}/aggregatedWords/${wordId}`;
     return axios
-      .get(
-        url,
-        {
-          headers: { 'Authorization': `Bearer ${this.token}` }
-        })
+      .get(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 200) {
@@ -321,12 +285,10 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Gets statistics
-  getStatistics = async (
-    id = this.userId
-  ): Promise<Statistics> | never => {
+  getStatistics = async (id = this.userId): Promise<Statistics> | never => {
     const url = `${this.users}/users/${id}/statistics`;
     return axios
       .get(url, {
@@ -343,20 +305,18 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Upsert new statistics
   upsertStatistics = async (
     statistic: Statistics,
-    id = this.userId
+    id = this.userId,
   ): Promise<Statistics> | never => {
     const url = `${this.users}/users/${id}/statistics`;
     return axios
-      .put(url,
-        statistic,
-        {
-          headers: { Authorization: `Bearer ${this.token}` },
-        })
+      .put(url, statistic, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 200) {
@@ -368,18 +328,15 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Gets settings
-  getSettings = async (
-    id = this.userId
-  ): Promise<Settings> | never => {
+  getSettings = async (id = this.userId): Promise<Settings> | never => {
     const url = `${this.users}/users/${id}/settings`;
     return axios
-      .get(url,
-        {
-          headers: { Authorization: `Bearer ${this.token}` },
-        })
+      .get(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 200) {
@@ -391,20 +348,18 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Upsert new settings
   upsertSettings = async (
     setting: Settings,
-    id = this.userId
+    id = this.userId,
   ): Promise<Settings> | never => {
     const url = `${this.users}/users/${id}/settings`;
     return axios
-      .put(url,
-        setting,
-        {
-          headers: { Authorization: `Bearer ${this.token}` },
-        })
+      .put(url, setting, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
       .then((response) => response.data)
       .catch((err) => {
         if (err.response?.status === 200) {
@@ -416,26 +371,20 @@ class API {
         }
         throw err;
       });
-  }
+  };
 
   // Sign in
-  signIn = async (
-    email: string,
-    password: string
-  ): Promise<Auth> | never => {
+  signIn = async (email: string, password: string): Promise<Auth> | never => {
     const url = this.signin;
     return axios
-      .post(
-        url,
-        {
-          email,
-          password,
-        }
-      )
+      .post(url, {
+        email,
+        password,
+      })
       .then((response) => {
         this.token = response.data.token;
         this.userId = response.data.userId;
-        return response.data
+        return response.data;
       })
       .catch((err) => {
         if (err.response?.status === 403) {

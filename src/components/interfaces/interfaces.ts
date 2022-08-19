@@ -29,11 +29,11 @@ export interface Auth {
   name: string;
 }
 
-export interface UserWord{
+export interface UserWord {
   difficulty: string;
   optional: {
-    difficulty: string,
-    optional: object
+    difficulty: string;
+    optional: object;
   };
 }
 
