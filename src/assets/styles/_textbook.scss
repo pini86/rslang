@@ -5,7 +5,7 @@ body {
 
 main {
   position: relative;
-  padding: 20px;
+  padding-top: 20px;
 }
 
 .col.card-wrapper {
@@ -101,6 +101,20 @@ main {
   transform:scale(1.2);
 }
 
+.pagination {
+  margin: 30px auto;
+  width: fit-content;
+
+  li a {
+    color: $font-color;
+  }
+
+  li.active a {
+    background-color: $font-color;
+    color: $bg-color;
+  }
+}
+
 @media (min-width: 1024px) {
   .card {
     &,
@@ -108,6 +122,10 @@ main {
       max-width: 400px;
       width: calc(30vw - 90px);
     }
+  }
+
+  .pagination li a {
+    font-size: 22px;
   }
 }
 
@@ -174,6 +192,19 @@ main {
     margin: 20px auto;
     width: fit-content;
     position: static;
+  }
+
+  .pagination {
+    margin: auto;
+
+    li a {
+      padding: 0 6px;
+    }
+
+    .arrow-right,
+    .arrow-left {
+      padding: 0;
+    }
   }
 }
 
