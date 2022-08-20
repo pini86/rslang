@@ -1,4 +1,4 @@
-export interface Word {
+export interface IWord {
   id: string;
   group: number;
   page: number;
@@ -15,13 +15,13 @@ export interface Word {
   textExampleTranslate: string;
 }
 
-export interface User {
+export interface IUser {
   name: string;
   email: string;
   password: string;
 }
 
-export interface Auth {
+export interface IUserTokens {
   message: string;
   token: string;
   refreshToken: string;
@@ -29,7 +29,7 @@ export interface Auth {
   name: string;
 }
 
-export interface UserWord {
+export interface IUserWord {
   difficulty: string;
   optional: {
     difficulty: string;
@@ -37,12 +37,12 @@ export interface UserWord {
   };
 }
 
-export interface Statistics {
+export interface IUserStatistics {
   learnedWords: number;
   optional: object;
 }
 
-export interface Settings {
+export interface ISettings {
   wordsPerDay: number;
   optional: object;
 }
