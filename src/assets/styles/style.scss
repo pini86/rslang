@@ -1,9 +1,8 @@
-@use "assets/styles/variables" as *;
+@use 'variables' as *;
 @import '~normalize.css/normalize.css';
 @import '~@materializecss/materialize/dist/css/materialize.css';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
-@import "assets/styles/main-page.scss";
-@import "assets/styles/main-page-media-queries.scss";
+@import './main-page.scss';
 body {
   font-family: $main-font;
   background-color: $bg-color;
@@ -21,7 +20,7 @@ a {
   color: $font-color;
 }
 
-@media(max-width: 646px) {
+@media (max-width: 646px) {
   body {
     font-size: 0.8rem;
   }

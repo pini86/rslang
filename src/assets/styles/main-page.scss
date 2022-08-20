@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'mixins' as *;
 
 /* ---------- HEADER, NAV ---------- */
 
@@ -76,6 +77,12 @@ nav ul li.active {
   text-align: center;
 }
 
+.main__subtitle {
+  @include resolution(big-mobile) {
+    font-size: 1.5rem;
+  }
+}
+
 
 /* ---------- TEAM ---------- */
 
@@ -83,6 +90,10 @@ nav ul li.active {
   display: flex;
   padding: 1.5rem 0;
   gap: 5%;
+  @include resolution(big-mobile) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   .card__wrapper {
     width: 50%;
     text-align: center;
@@ -98,6 +109,9 @@ nav ul li.active {
   gap: 5rem;
   align-items: center;
   padding: 5rem 0;
+  @include resolution(mobile) {
+    padding: 2rem 0;
+  }
 }
 
 .team__card {
@@ -106,10 +120,16 @@ nav ul li.active {
   text-align: center;
   gap: 1.5rem;
   width: 60%;
+  @include resolution(mobile) {
+    gap: 0;
+  }
   .team__img {
     width: 20%;
     text-align: center;
     border-radius: 50%;
+    @include resolution(mobile) {
+      width: 40%;
+    }
   }
 }
 
@@ -128,15 +148,31 @@ nav ul li.active {
 .team__tasks {
   display: flex;
   justify-content: space-around;
+  @include resolution(desktop) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   .team__task {
     display: block;
     padding: 2%;
     margin: 2%;
+    @include resolution(desktop) {
+      width: 120px;
+    }
   }
 }
 
 .team__name {
   color: $font-color;
+  @include resolution(mobile) {
+    font-size: 0.8rem;
+  }
+}
+
+a.team__name:first-child {
+  @include resolution(mobile) {
+    order: 1;
+  }
 }
 
 .team__name:hover {
@@ -152,12 +188,17 @@ nav ul li.active {
   height: 50px;
   justify-content: center;
   gap: 5%;
+  @include resolution(mobile) {
+    width: 50%;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
 }
 
 .footer__rs {
   height: 25px;
   width: 60px;
-  @include bg-svg-white('./assets/icons/rs_school_js.svg');
+  @include bg-svg-white('../icons/rs_school_js.svg');
   transition: 0.3s;
 }
 

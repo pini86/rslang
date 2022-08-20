@@ -1,26 +1,10 @@
-$main-font:'Noto Sans',
+$main-font: 'Noto Sans',
 sans-serif;
-$bg-color: #000000;
+$bg-color: #212121;
 $font-color: #ffffff;
 $accent-blue-color: #00acc1;
-$accent-yellow-color:#ffeb3b;
-$accent-pink-color:#f48fb1;
+$accent-yellow-color: #ffeb3b;
+$accent-pink-color: #f48fb1;
 $accent-red-color: #e53935;
 $accent-green-color: #ccff90;
 $accent-dark-color: #283593;
-@mixin card($color) {
-  border: 1px solid $color;
-  background-color: $bg-color;
-}
-
-@mixin flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-@mixin bg-svg-white($url) {
-  background-image: url($url);
-  background-repeat: no-repeat;
-  background-size: contain;
-  filter: invert(100%) sepia(0%) saturate(2%) hue-rotate(87deg) brightness(111%) contrast(101%);
-}
