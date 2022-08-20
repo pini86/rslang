@@ -62,12 +62,12 @@
   }
 }
 
-.authorization {
+#authorization {
   display: flex;
   gap: 15px;
-  list-style: none;
   .authorization__icon {
     width: 60px;
+    display: inline;
   }
 }
 
