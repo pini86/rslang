@@ -1,7 +1,10 @@
-
 body {
   background-color: $bg-color;
   font-family: $main-font;
+}
+
+main {
+  padding: 20px;
 }
 
 .col.card-wrapper {
@@ -15,8 +18,6 @@ body {
 
   &,
   &-image img {
-    max-width: 300px;
-    width: calc(30vw - 90px);
     height: 300px;
   }
 
@@ -25,7 +26,7 @@ body {
   }
 
   &-title {
-    width: 300px;
+    width: 400px;
     background: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0) 0%,
@@ -35,8 +36,12 @@ body {
 
   &-content {
     flex-direction: column;
-    height: 340px;
+    max-height: 340px;
     padding: 20px 20px 20px 0;
+
+    > :first-child > :first-child {
+      margin: 0;
+    }
   }
 
   &-action {
@@ -65,5 +70,69 @@ body {
 
   &-example {
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  }
+}
+
+@media (min-width: 1024px) {
+  .card {
+    &,
+    &-image img {
+      max-width: 400px;
+      width: calc(30vw - 90px);
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .card {
+
+    &-wrapper {
+      flex-direction: column;
+    }
+
+    &-content {
+      padding: 0 20px 20px 20px;
+    }
+
+    &-title {
+      width: 700px;
+    }
+
+    &-action {
+      padding-top: 10px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .col.image-wrapper {
+    padding: 15px;
+  }
+
+  .card {
+    &,
+    &-image img {
+      height: 250px;
+    }
+
+    &-content {
+      padding: 0 15px 15px 15px;
+    }
+
+    &-action .btn {
+      padding: 0 7px;
+      height: 31px;
+      font-size: 12px;
+      line-height: 31;
+    }
+  }
+  
+  .word,
+  .translation {
+    font-size: 18px;
+  }
+
+  .transcription {
+    font-size: 17px;
   }
 }
