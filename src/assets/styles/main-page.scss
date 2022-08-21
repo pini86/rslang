@@ -1,0 +1,281 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+/* ---------- HEADER, NAV ---------- */
+
+.nav {
+  background-color: $bg-color;
+  color: $font-color;
+
+  & &-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & &-list {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+.nav-list-link,
+.sidenav li>a {
+  color: $font-color;
+}
+
+.nav-list-link.active {
+  background-color: rgba($color: $accent-blue-color, $alpha: 0.5);
+}
+
+.sidenav {
+  background-color: lighten($bg-color, 10%);
+
+  li.active {
+    background-color: rgba(0, 172, 193, 0.5);
+  }
+}
+
+
+/* ---------- MAIN-INFO ---------- */
+
+.info__main-image {
+  width: 90%;
+  height: auto;
+}
+
+.main__info {
+  display: flex;
+  padding: 50px 0;
+
+  .info {
+
+    &__left,
+    &__right {
+      width: 50%;
+    }
+  }
+
+  .info__left {
+    padding-top: 10%;
+
+    .info__text {
+      width: auto;
+      max-width: 16rem;
+    }
+
+    .info__logo {
+      width: 70%;
+      height: auto;
+    }
+  }
+}
+
+#authorization {
+  display: flex;
+  gap: 15px;
+
+  .authorization__icon {
+    width: 60px;
+    display: inline;
+  }
+}
+
+.main {
+
+  &__about,
+  &__team {
+    @include flex-column;
+    gap: 5%;
+    text-align: center;
+  }
+
+  .main__subtitle {
+    @include resolution(big-mobile) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+
+/* ---------- TEAM ---------- */
+
+.about__cards {
+  display: flex;
+  padding: 1.5rem 0;
+  gap: 5%;
+
+  @include resolution(big-mobile) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card__wrapper {
+    width: 50%;
+    text-align: center;
+
+    .card__icon {
+      font-size: 60px;
+      color: black;
+    }
+  }
+}
+
+.team__cards {
+  @include flex-column;
+  gap: 5rem;
+  align-items: center;
+  padding: 5rem 0;
+
+  @include resolution(mobile) {
+    padding: 2rem 0;
+  }
+}
+
+.team__card {
+  @include flex-column;
+  padding: 5%;
+  text-align: center;
+  gap: 1.5rem;
+  width: 60%;
+
+  @include resolution(mobile) {
+    gap: 0;
+  }
+
+  .team__img {
+    width: 20%;
+    text-align: center;
+    border-radius: 50%;
+
+    @include resolution(mobile) {
+      width: 40%;
+    }
+  }
+}
+
+.card {
+  &-yellow {
+    @include card($accent-yellow-color);
+  }
+
+  &-blue {
+    @include card($accent-blue-color);
+  }
+
+  &-pink {
+    @include card($accent-pink-color);
+  }
+}
+
+.team__tasks {
+  display: flex;
+  justify-content: space-around;
+
+  @include resolution(desktop) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .team__task {
+    display: block;
+    padding: 2%;
+    margin: 2%;
+
+    @include resolution(desktop) {
+      width: 120px;
+    }
+  }
+
+  .team__task.yellow {
+    text-shadow: 1px 1px 5px #000;
+  }
+}
+
+.team__name {
+  color: $font-color;
+
+  @include resolution(mobile) {
+    font-size: 0.8rem;
+  }
+}
+
+a.team__name:first-child {
+  @include resolution(mobile) {
+    order: 1;
+  }
+}
+
+.team__name:hover {
+  color: $accent-blue-color;
+}
+
+
+/* ---------- FOOTER ---------- */
+
+.footer {
+  margin-bottom: 1.5rem;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+
+    @include resolution(mobile) {
+      width: 50%;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+  }
+
+  &__rs {
+    height: 25px;
+    width: 60px;
+    @include bg-svg-white('../icons/rs_school_js.svg');
+    transition: 0.3s;
+  }
+
+  &__rs:hover {
+    filter: invert(65%) sepia(38%) saturate(350%) hue-rotate(126deg) brightness(90%) contrast(90%);
+  }
+
+  &__year:hover {
+    color: $accent-pink-color;
+  }
+}
+/* ---------- MODAL ---------- */
+
+.auth-headers {
+  display: flex;
+  justify-content: space-around;
+}
+
+.auth-header.active {
+  border-bottom: 1px solid #00acc1;
+}
+
+.signin-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+#register:checked~#views .signin-view {
+  display: none;
+}
+
+#register:checked~#views .signin-view {
+  display: none;
+}
+
+#signin:checked~#views .register-view {
+  display: none;
+}
+
+#signin:checked~#views .signin-view {
+  display: flex;
+}
+
+.input-view {
+  display: none;
+}

@@ -1,7 +1,7 @@
 import signIn from '../../api/signin';
 import { createUser } from '../../api/users';
-import { authModalOff } from '../contentLoaded/materialize';
-import { User } from '../interfaces/interfaces';
+import { hideAuthModal } from '../contentLoaded/materialize';
+import { IUser } from '../../interfaces/interfaces';
 
 class Register {
   form: HTMLFormElement;
@@ -25,15 +25,16 @@ class Register {
         inputValues.push([fieldName, input.value]);
       });
 
-      const user: User = inputValues.reduce(
-        (a, v) => ({ ...a, [v[0]]: v[1] }),
-        { name: '', password: '', email: '' },
-      );
+      const user: IUser = inputValues.reduce((a, v) => ({ ...a, [v[0]]: v[1] }), {
+        name: '',
+        password: '',
+        email: '',
+      });
       const { email, password } = user;
 
       await createUser(user).then(() => {
         signIn({ email, password }).then(() => {
-          authModalOff();
+          hideAuthModal();
         });
       });
     });

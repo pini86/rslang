@@ -1,6 +1,6 @@
 import signIn from '../../api/signin';
-import { User } from '../interfaces/interfaces';
-import { authModalOff } from '../contentLoaded/materialize';
+import { IUser } from '../../interfaces/interfaces';
+import { hideAuthModal } from '../contentLoaded/materialize';
 
 class Login {
   form: HTMLFormElement;
@@ -24,14 +24,14 @@ class Login {
         inputValues.push([fieldName, input.value]);
       });
 
-      const user: Pick<User, 'email' | 'password'> = inputValues.reduce(
+      const user: Pick<IUser, 'email' | 'password'> = inputValues.reduce(
         (a, v) => ({ ...a, [v[0]]: v[1] }),
-        { password: '', email: '' },
+        { password: '', email: '' }
       );
       const { email, password } = user;
 
       await signIn({ email, password }).then(() => {
-        authModalOff();
+        hideAuthModal();
       });
     });
   }
