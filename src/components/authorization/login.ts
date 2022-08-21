@@ -1,6 +1,7 @@
-import signIn from '../../api/signin';
 import { IUser } from '../../interfaces/interfaces';
 import { hideAuthModal } from '../contentLoaded/materialize';
+import api from '../../api/api';
+import { saveToken } from './saveToStorage';
 
 type LoginFields = Pick<IUser, 'email'| 'password'>;
 
@@ -26,7 +27,8 @@ class Login {
 
       const loginFields: LoginFields = Login.getLoginFields();
 
-      await signIn(loginFields).then(() => {
+      await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
+        saveToken(JSON.stringify(tokenData));
         hideAuthModal();
       });
     });

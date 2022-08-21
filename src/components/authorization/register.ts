@@ -1,7 +1,8 @@
-import signIn from '../../api/signin';
 import { createUser } from '../../api/users';
 import { hideAuthModal } from '../contentLoaded/materialize';
 import { IUser } from '../../interfaces/interfaces';
+import api from '../../api/api';
+import { saveToken } from './saveToStorage';
 
 type RegisterFields = IUser;
 
@@ -30,7 +31,8 @@ class Register {
       const {email, password} = registerFields;
       
     await createUser(registerFields).then(() => {
-      signIn({ email, password }).then(() => {
+      api.signIn( email, password ).then((tokenData) => {
+        saveToken(JSON.stringify(tokenData));
         hideAuthModal();
       });
     });
