@@ -74,47 +74,6 @@ main {
   }
 }
 
-.textbook-levels {
-  width: 70px;
-  border-radius: 15px;
-  position: fixed;
-  right: calc(12vw + 10px);
-
-  .collection-item {
-    padding: 15px;
-  }
-
-  .btn {
-    height: 40px;
-    width: 40px;
-    padding: 0;
-    line-height: 40px;
-    border-radius: 100%;
-    &:hover {
-      opacity: 0.8;
-      box-shadow: 0 0 6px $bg-color;
-    }
-  }
-}
-
-.level-active {
-  transform:scale(1.2);
-}
-
-.pagination {
-  margin: 30px auto;
-  width: fit-content;
-
-  li a {
-    color: $font-color;
-  }
-
-  li.active a {
-    background-color: $font-color;
-    color: $bg-color;
-  }
-}
-
 @media (min-width: 1024px) {
   .card {
     &,
@@ -122,10 +81,6 @@ main {
       max-width: 400px;
       width: calc(30vw - 90px);
     }
-  }
-
-  .pagination li a {
-    font-size: 22px;
   }
 }
 
@@ -147,10 +102,6 @@ main {
     &-action {
       padding-top: 10px;
     }
-  }
-
-  .textbook-levels {
-    right: 5vw;
   }
 }
 
@@ -184,39 +135,5 @@ main {
 
   .transcription {
     font-size: 17px;
-  }
-
-  .textbook-levels {
-    display: flex;
-    justify-content: center;
-    margin: 20px auto;
-    width: fit-content;
-    position: static;
-  }
-
-  .pagination {
-    margin: auto;
-
-    li a {
-      padding: 0 6px;
-    }
-
-    .arrow-right,
-    .arrow-left {
-      padding: 0;
-    }
-  }
-}
-
-@media (max-width: 640px) {
-  .textbook-levels .collection-item {
-    padding: 7px;
-
-    .btn {
-      width: 26px;
-      height: 26px;
-      line-height: 26px;
-      font-size: 12px;
-    }
   }
 }
