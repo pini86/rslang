@@ -3,7 +3,7 @@ import {
   saveExpDate,
   saveToken,
 } from '../components/authorization/saveToStorage';
-import { User } from '../components/interfaces/interfaces';
+import { IUser } from '../interfaces/interfaces';
 
 const BASE_URL = 'https://rs-lang-rsschool-task.herokuapp.com';
 
@@ -13,7 +13,7 @@ interface ResponseUser {
 }
 
 export const createUser = async (
-  user: User,
+  user: IUser,
 ): Promise<ResponseUser | undefined> => {
   // TODO: fix eslint error with return/void
   try {
@@ -82,7 +82,7 @@ export const getNewToken = async (id: string): Promise<void> => {
 
 export const updateUser = async (
   id: string,
-  user: Pick<User, 'email' | 'password'>,
+  user: Pick<IUser, 'email' | 'password'>,
 ): Promise<void> => {
   try {
     const response = await axios.put(`${BASE_URL}/users/${id}`, user);

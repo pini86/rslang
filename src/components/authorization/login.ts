@@ -2,6 +2,8 @@ import signIn from '../../api/signin';
 import { IUser } from '../../interfaces/interfaces';
 import { hideAuthModal } from '../contentLoaded/materialize';
 
+type LoginFields = Pick<IUser, 'email'| 'password'>;
+
 class Login {
   form: HTMLFormElement;
 
@@ -13,24 +15,18 @@ class Login {
     this.signOnSubmit();
   }
 
+  static getLoginFields = (): LoginFields => ({
+    email: (document.querySelector('#email-log') as HTMLInputElement).value,
+    password: (document.querySelector('#password-log') as HTMLInputElement).value,
+  });
+
   signOnSubmit(): void {
     this.form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const inputValues: [string, string][] = [];
 
-      this.fields.forEach((field) => {
-        const input = document.querySelector(`#${field}`) as HTMLInputElement;
-        const fieldName = field.slice(0, -4);
-        inputValues.push([fieldName, input.value]);
-      });
+      const loginFields: LoginFields = Login.getLoginFields();
 
-      const user: Pick<IUser, 'email' | 'password'> = inputValues.reduce(
-        (a, v) => ({ ...a, [v[0]]: v[1] }),
-        { password: '', email: '' }
-      );
-      const { email, password } = user;
-
-      await signIn({ email, password }).then(() => {
+      await signIn(loginFields).then(() => {
         hideAuthModal();
       });
     });

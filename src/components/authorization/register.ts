@@ -3,6 +3,8 @@ import { createUser } from '../../api/users';
 import { hideAuthModal } from '../contentLoaded/materialize';
 import { IUser } from '../../interfaces/interfaces';
 
+type RegisterFields = IUser;
+
 class Register {
   form: HTMLFormElement;
 
@@ -14,30 +16,25 @@ class Register {
     this.signOnSubmit();
   }
 
+  static getRegisterFields = (): RegisterFields => ({
+    name: (document.querySelector('#name-reg') as HTMLInputElement).value,
+    email: (document.querySelector('#email-reg') as HTMLInputElement).value,
+    password: (document.querySelector('#password-reg') as HTMLInputElement).value,
+  });
+
   signOnSubmit(): void {
     this.form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const inputValues: [string, string][] = [];
 
-      this.fields.forEach((field) => {
-        const input = document.querySelector(`#${field}`) as HTMLInputElement;
-        const fieldName = field.slice(0, -4);
-        inputValues.push([fieldName, input.value]);
-      });
-
-      const user: IUser = inputValues.reduce((a, v) => ({ ...a, [v[0]]: v[1] }), {
-        name: '',
-        password: '',
-        email: '',
-      });
-      const { email, password } = user;
-
-      await createUser(user).then(() => {
-        signIn({ email, password }).then(() => {
-          hideAuthModal();
-        });
+      const registerFields: RegisterFields = Register.getRegisterFields();
+      const {email, password} = registerFields;
+      
+    await createUser(registerFields).then(() => {
+      signIn({ email, password }).then(() => {
+        hideAuthModal();
       });
     });
-  }
+  });
+}
 }
 export default Register;

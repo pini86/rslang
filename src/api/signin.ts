@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { User } from '../components/interfaces/interfaces';
+import { IUser } from '../interfaces/interfaces';
 import {
   saveExpDate,
   saveToken,
@@ -7,7 +7,7 @@ import {
 
 const BASE_URL = 'https://rs-lang-rsschool-task.herokuapp.com';
 
-async function signIn(user: Pick<User, 'email' | 'password'>): Promise<void> {
+async function signIn(user: Pick<IUser, 'email' | 'password'>): Promise<void> {
   try {
     const response = await axios.post(`${BASE_URL}/signin`, user);
     const content = response.data;
