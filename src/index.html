@@ -1,147 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./assets/icons/favicon.ico" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <title>RS Lang</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="./assets/icons/favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <title>RS Lang</title>
-</head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <div class="nav-wrapper">
+            <div id="icon-menu" class="icon-menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <ul id="body-menu" class="row body-menu">
+              <li id="main">Главная</li>
+              <li id="ebook">Учебник</li>
+              <li id="audiocall">Аудиовызов</li>
+              <li id="sprint">Спринт</li>
+              <li id="statistics">Статистика</li>
+            </ul>
 
-<body>
-  <header class="header">
-    <div class="container">
-      <nav class="nav">
-        <div class="nav-wrapper">
-          <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-          <ul id="nav-mobile" class="hide-on-med-and-down nav-list">
-            <li class="active"><a class="nav-list-link" id="main" href="#">Главная</a></li>
-            <li><a class="nav-list-link" id="ebook" href="#">Учебник</a></li>
-            <li><a class="nav-list-link" id="audiocall" href="#">Аудиовызов</a></li>
-            <li><a class="nav-list-link" id="sprint" href="#">Спринт</a></li>
-            <li><a class="nav-list-link" id="statistics" href="#">Статистика</a></li>
-          </ul>
-          <div class="authorization">
-            <a href="#" id="authorization">
-              <span>Войти</span><i class="material-icons authorization__icon">account_box</i></a>
+            <button id="authorization" class="authorization">
+              <span>Войти</span><i class="material-icons authorization__icon">account_box</i>
+            </button>
           </div>
-        </div>
-      </nav>
-      <ul class="sidenav" id="mobile-demo">
-        <li class="active"><a href="#">Главная</a></li>
-        <li><a href="#">Учебник</a></li>
-        <li><a href="#">Игры</a></li>
-        <li><a href="#">Статистика</a></li>
-      </ul>
-    </div>
-  </header>
-  <main>
-    <div class="container">
-      <div class="main__info">
-        <div class="info__left">
-          <img class="info__logo" src="assets/images/logo.png" alt="RS Lang logotype" />
-          <p class="info__text">
-            — это приложение для изучения английского языка в игровой форме
-          </p>
-        </div>
-        <div class="info__right">
-          <img class="info__main-image" src="assets/images/main-pic.png" alt="Learn, play, enjoy, progress" />
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="container"></div>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__info center">
+          <a class="team__name" href="https://github.com/natashapridanova">@natashapridanova</a>
+          <a href="https://rs.school/js/" class="footer__rs"></a>
+          <p class="footer__year">2022</p>
+          <a class="team__name" href="https://github.com/user0k">@user0k</a>
+          <a class="team__name" href="https://github.com/pini86">@pini86</a>
         </div>
       </div>
-      <div class="main__about">
-        <h3 class="center main__subtitle">О приложении</h3>
-        <p>
-          RS Lang – приложение, созданное командой начинающих разработчиков. Поможем тебе выучить английский. Почему мы?
-        </p>
-        <div class="about__cards">
-          <div class="card__wrapper">
-            <a href="#"><i class="material-icons card__icon yellow">chat</i></a>
-            <p class="card__text">
-              Коллекция из 4000 наиболее используемых в речи слов
-            </p>
-          </div>
-          <div class="card__wrapper">
-            <a href="#"><i class="material-icons card__icon red darken-1">library_books</i></a>
-            <p class="card__text">
-              Электронный учебник с аудио, транскрипцией и переводом слов в контексте
-            </p>
-          </div>
-          <div class="card__wrapper">
-            <a href="#"><i class="material-icons card__icon pink lighten-3">extension</i></a>
-            <p class="card__text">
-              Мини-игры для повторения изученных слов: Аудиовызов и Спринт
-            </p>
-          </div>
-          <div class="card__wrapper">
-            <a href="#"><i class="material-icons card__icon cyan darken">show_chart</i></a>
-            <p class="card__text">
-              Статистика для отслеживания прогресса во время обучения
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="main__team">
-        <h3 class="center main__subtitle">Наша команда</h3>
-        <div class="team__cards">
-          <div class="team__card card-yellow">
-            <div>
-              <img src="https://avatars.githubusercontent.com/u/94520585?v=4" alt="Developer's avatar" class="team__img" />
-            </div>
-            <h5>
-              <a class="team__name" href="https://github.com/pini86">@pini86</a>
-            </h5>
-            <div class="team__tasks">
-              <span class="team__task yellow">Аудиовызов</span>
-              <span class="team__task pink lighten-3">Спринт</span>
-              <span class="team__task cyan darken">Учебник</span>
-              <span class="team__task red darken-1">Верстка</span>
-            </div>
-          </div>
-          <div class="team__card card-blue">
-            <div>
-              <img src="https://avatars.githubusercontent.com/u/25122117?v=4" alt="Developer's avatar" class="team__img" />
-            </div>
-            <h5>
-              <a class="team__name" href="https://github.com/user0k">@user0k</a>
-            </h5>
-            <div class="team__tasks">
-              <span class="team__task cyan darken">Аудиовызов</span>
-              <span class="team__task red darken-1">Спринт</span>
-              <span class="team__task pink lighten-3">Учебник</span>
-              <span class="team__task yellow">Верстка</span>
-            </div>
-          </div>
-          <div class="team__card card-pink">
-            <div>
-              <img src="https://avatars.githubusercontent.com/u/96010768?v=4" alt="Developer's avatar" class="team__img" />
-            </div>
-            <h5>
-              <a class="team__name" href="https://github.com/natashapridanova">@natashapridanova</a>
-            </h5>
-            <div class="team__tasks">
-              <span class="team__task red darken-1">Аудиовызов</span>
-              <span class="team__task yellow">Спринт</span>
-              <span class="team__task cyan darken">Учебник</span>
-              <span class="team__task pink lighten-3">Верстка</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__info center">
-        <a class="team__name" href="https://github.com/natashapridanova">@natashapridanova</a>
-        <a href="https://rs.school/js/" class="footer__rs"></a>
-        <p class="footer__year">2022</p>
-        <a class="team__name" href="https://github.com/user0k">@user0k</a>
-        <a class="team__name" href="https://github.com/pini86">@pini86</a>
-      </div>
-    </div>
-  </footer>
-</body>
-
+    </footer>
+  </body>
 </html>
