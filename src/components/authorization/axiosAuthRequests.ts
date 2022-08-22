@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 const axiosAuth: AxiosInstance = axios.create();
 axiosAuth.interceptors.request.use((requestConfig: AxiosRequestConfig) => {
-  let tokenData: string | null =  null;
+  let tokenData: string | null = null;
   if (localStorage.getItem('tokenData')) {
     tokenData = JSON.parse(localStorage.getItem('tokenData') || '');
   }

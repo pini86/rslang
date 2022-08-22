@@ -1,10 +1,17 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
 .auth-headers {
   display: flex;
   justify-content: space-around;
 }
 
+.auth-header {
+  color: $font-color;
+}
+
 .auth-header.active {
-  border-bottom: 1px solid #00acc1;
+  border-bottom: 1px solid $accent-yellow-color;
 }
 
 .signin-view {
@@ -13,8 +20,9 @@
   align-items: center;
 }
 
-#register:checked~#views .signin-view {
-  display: none;
+#register:checked~#views .register-view {
+  @include flex-column;
+  align-items: center;
 }
 
 #register:checked~#views .signin-view {
@@ -26,9 +34,38 @@
 }
 
 #signin:checked~#views .signin-view {
-  display: flex;
+  @include flex-column;
+  align-items: center;
 }
 
 .input-view {
   display: none;
+}
+
+#authorization {
+  background-color: $bg-color;
+  align-items: center;
+}
+
+#modal1 {
+  background-color: lighten($bg-color, 10%);
+  color: $font-color;
+}
+
+.modal {
+  max-height: 80%;
+  overflow: auto;
+}
+
+.input-group p {
+  color: $font-color;
+}
+
+.modal .modal-footer {
+  background-color: transparent;
+  text-align: center;
+}
+
+#views input {
+  color: $font-color;
 }
