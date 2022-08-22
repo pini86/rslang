@@ -45,6 +45,7 @@
 #authorization {
   background-color: $bg-color;
   align-items: center;
+  box-shadow: none;
 }
 
 #modal1 {
@@ -68,4 +69,8 @@
 
 #views input {
   color: $font-color;
+}
+
+.authorization__logout {
+  display: none;
 }

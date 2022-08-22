@@ -1,3 +1,4 @@
+import api from '../../api/api';
 import Login from '../authorization/login';
 import Register from '../authorization/register';
 
@@ -24,4 +25,11 @@ export function activateForms(): void {
     const fields = ['email-log', 'password-log'];
     const auth = new Login(loginForm, fields);
   }
+}
+
+export function activateLogOut(): void {
+  const logout = document.querySelector('.authorization__logout') as HTMLElement;
+  logout.addEventListener('click', () => {
+    localStorage.clear();
+  });
 }
