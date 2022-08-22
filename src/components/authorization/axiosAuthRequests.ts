@@ -1,8 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import jwt from 'jsonwebtoken';
+import api from '../../api/api';
+import saveToken from './saveToStorage';
 
 const axiosAuth: AxiosInstance = axios.create();
-axiosAuth.interceptors.request.use((requestConfig: AxiosRequestConfig) => {
+axiosAuth.interceptors.request.use((requestConfig: AxiosRequestConfig): AxiosRequestConfig => {
   let tokenData: string | null = null;
   if (localStorage.getItem('tokenData')) {
     tokenData = JSON.parse(localStorage.getItem('tokenData') || '');
@@ -20,5 +22,19 @@ axiosAuth.interceptors.request.use((requestConfig: AxiosRequestConfig) => {
   }
   return requestConfig;
 });
+
+axios.interceptors.response.use(
+  (response: AxiosResponse): AxiosResponse => response,
+  (error) => {
+    if (
+      error.statusText === 'Access token is missing or invalid' ||
+      error.statusText === 'Access token is missing, expired or invalid'
+    ) {
+      api.getNewIUserTokens().then((tokenData) => {
+        saveToken(JSON.stringify(tokenData));
+      });
+    }
+  }
+);
 
 export default axiosAuth;
