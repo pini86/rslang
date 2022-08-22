@@ -1,8 +1,7 @@
-import { createUser } from '../../api/users';
 import { hideAuthModal } from '../contentLoaded/materialize';
 import { IUser } from '../../interfaces/interfaces';
-import api from '../../api/api';
-import { saveToken } from './saveToStorage';
+import api from '../api/api';
+import saveToken from './saveToStorage';
 
 type RegisterFields = IUser;
 
@@ -28,15 +27,15 @@ class Register {
       e.preventDefault();
 
       const registerFields: RegisterFields = Register.getRegisterFields();
-      const {email, password} = registerFields;
-      
-    await createUser(registerFields).then(() => {
-      api.signIn( email, password ).then((tokenData) => {
-        saveToken(JSON.stringify(tokenData));
-        hideAuthModal();
+      const { email, password } = registerFields;
+
+      await api.createNewUser(registerFields).then(() => {
+        api.signIn(email, password).then((tokenData) => {
+          saveToken(JSON.stringify(tokenData));
+          hideAuthModal();
+        });
       });
     });
-  });
-}
+  }
 }
 export default Register;

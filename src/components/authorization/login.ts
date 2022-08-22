@@ -1,9 +1,9 @@
 import { IUser } from '../../interfaces/interfaces';
 import { hideAuthModal } from '../contentLoaded/materialize';
-import api from '../../api/api';
-import { saveToken } from './saveToStorage';
+import api from '../api/api';
+import saveToken from './saveToStorage';
 
-type LoginFields = Pick<IUser, 'email'| 'password'>;
+type LoginFields = Pick<IUser, 'email' | 'password'>;
 
 class Login {
   form: HTMLFormElement;
