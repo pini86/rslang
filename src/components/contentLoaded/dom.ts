@@ -2,14 +2,20 @@ import api from '../../api/api';
 import Login from '../authorization/login';
 import Register from '../authorization/register';
 
+const authHeaderReg = document.querySelector('.auth-header-reg') as HTMLElement;
+const authHeaderLog = document.querySelector('.auth-header-log') as HTMLElement;
+
 export function activateHeaders(): void {
   const authHeadersDiv = document.querySelector('.auth-headers') as HTMLDivElement;
-  const authHeaders = document.querySelectorAll('.auth-header') as NodeListOf<HTMLElement>;
-
-  authHeadersDiv.addEventListener('click', () => {
-    authHeaders.forEach((header) => {
-      header.classList.toggle('active');
-    });
+  authHeadersDiv.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('auth-header-reg')) {
+      target.classList.add('active');
+      authHeaderLog.classList.remove('active');
+    } else if (target.classList.contains('auth-header-log')) {
+      target.classList.add('active');
+      authHeaderReg.classList.remove('active');
+    }
   });
 }
 

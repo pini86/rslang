@@ -8,10 +8,15 @@
 
 .auth-header {
   color: $font-color;
+  cursor: pointer;
 }
 
 .auth-header.active {
   border-bottom: 1px solid $accent-yellow-color;
+}
+
+.close-sign {
+  color: $font-color;
 }
 
 .signin-view {
@@ -44,11 +49,12 @@
 
 #authorization {
   background-color: $bg-color;
+  display: flex;
   align-items: center;
   box-shadow: none;
 }
 
-#modal1 {
+#modalAuth {
   background-color: lighten($bg-color, 10%);
   color: $font-color;
 }

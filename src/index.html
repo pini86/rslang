@@ -24,7 +24,7 @@
             <li><a class="nav-list-link" id="statistics" href="#">Статистика</a></li>
           </ul>
           <div class="authorization">
-            <a href="#modal1" id="authorization" class="waves-effect waves-light btn modal-trigger">
+            <a href="#modalAuth" id="authorization" class="waves-effect waves-light btn modal-trigger">
               <span class="authorization__greet">Войти</span><i class="material-icons authorization__icon">account_box</i>
               <span class="authorization__logout">Выйти</span></a>
           </div>
@@ -146,10 +146,10 @@
 
   <div id="modal1" class="modal auth-modal">
     <div class="modal-content">
-      <button class="modal-close waves-effect waves-green btn-flat right"><i class="material-icons">close</i></button>
+      <button class="modal-close waves-effect waves-green btn-flat right"><i class="material-icons close-sign">close</i></button>
       <div class="auth-headers">
-        <label for="register"><h5 class="auth-header active">Регистрация</h5></label>
-        <label for="signin"><h5 class="auth-header">Вход</h5></label>
+        <label for="register"><h5 class="auth-header auth-header-reg active">Регистрация</h5></label>
+        <label for="signin"><h5 class="auth-header auth-header-log">Вход</h5></label>
       </div>
 
       <input type="radio" id="register" name="view" checked class="input-view">
@@ -161,15 +161,15 @@
           <form action="#" class="register-form">
             <div class="input-group">
               <label for="name-reg"><p>Имя пользователя</p></label>
-              <input type="text" id="name-reg">
+              <input type="text" id="name-reg" required>
             </div>
             <div class="input-group">
               <label for="email-reg"><p>Адрес электронной почты</p></label>
-              <input type="email" id="email-reg">
+              <input type="email" id="email-reg" required>
             </div>
             <div class="input-group">
               <label for="password-reg"><p>Пароль</p></label>
-              <input type="password" minlength="8" id="password-reg">
+              <input type="password" minlength="8" id="password-reg" required>
               <span class="error-message"></span>
             </div>
             <div class="modal-footer">
@@ -182,11 +182,11 @@
           <form action="#" class="login-form">
             <div class="input-group">
               <label for="email-log"><p>Адрес электронной почты</p></label>
-              <input type="email" id="email-log">
+              <input type="email" id="email-log" required>
             </div>
             <div class="input-group">
               <label for="password-log"><p>Пароль</p></label>
-              <input type="password" minlength="8" id="password-log">
+              <input type="password" minlength="8" id="password-log" required>
               <span class="error-message"></span>
             </div>
             <div class="modal-footer">
