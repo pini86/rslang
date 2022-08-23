@@ -39,6 +39,20 @@ export default class Controller {
     const authBtn = document.getElementById('authorization') as HTMLElement;
     const statisticsBtn = document.getElementById('statistics') as HTMLElement;
     const iconMenu = document.getElementById('icon-menu') as HTMLElement;
+    const routes = [
+      { domElement: mainBtn, pageClass: new Main(), page: EPages.main },
+      { domElement: ebookBtn, pageClass: new Ebook(), page: EPages.ebook },
+      { domElement: audiocallBtn, pageClass: new Audiocall(), page: EPages.audiocall },
+      { domElement: sprintBtn, pageClass: new Sprint(), page: EPages.sprint },
+      { domElement: authBtn, pageClass: new Authorization(), page: EPages.auth },
+      { domElement: statisticsBtn, pageClass: new Statistics(), page: EPages.statistics }
+    ];
+console.log(routes);
+    routes.forEach((item) =>
+      item.domElement.addEventListener('click', () =>
+        this.addBtnListener(item.page, item.pageClass, item.domElement)
+      )
+    );
 
     iconMenu.addEventListener('click', () => {
       if (iconMenu.classList.contains('icon-menu--active')) {
@@ -48,7 +62,7 @@ export default class Controller {
       }
     });
 
-    authBtn.addEventListener('click', (): void =>
+   /*  authBtn.addEventListener('click', (): void =>
       this.addBtnListener(EPages.auth, new Authorization(), authBtn)
     );
 
@@ -70,7 +84,7 @@ export default class Controller {
 
     statisticsBtn.addEventListener('click', (): void =>
       this.addBtnListener(EPages.statistics, new Statistics(), statisticsBtn)
-    );
+    ); */
 
     this.checkSessionStorage();
 

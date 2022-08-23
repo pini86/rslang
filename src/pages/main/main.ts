@@ -2,9 +2,8 @@ export default class Main{
   mainContent!: HTMLElement;
 
   constructor() {
-    this.mainContent = document.querySelector('main') as HTMLElement;
-    this.mainContent.innerHTML = `<div class="container">
-    <div class="main__info">
+    this.mainContent = document.querySelector('main div.container') as HTMLElement;
+    this.mainContent.innerHTML = `<div class="main__info">
     <div class="info__left">
       <img class="info__logo" src="assets/images/logo.png" alt="RS Lang logotype" />
       <p class="info__text">
@@ -93,7 +92,6 @@ export default class Main{
         </div>
       </div>
     </div>
-  </div>
   </div>`;
   }
 }
