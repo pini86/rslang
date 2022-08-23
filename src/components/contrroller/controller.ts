@@ -42,55 +42,32 @@ export default class Controller {
       }
     });
 
-    authBtn.addEventListener('click', (): void => {
-      if (this.currentPage === EPages.auth) return;
-      this.currentPage = EPages.auth;
-      this.setActiveMenuItem(authBtn);
-      this.mainView = new Authorization();
-    });
+    authBtn.addEventListener('click', (): void =>
+      this.addBtnListener(EPages.auth, new Authorization(), authBtn)
+    );
 
-    mainBtn.addEventListener('click', (): void => {
-      if (this.currentPage === EPages.main) return;
-      this.currentPage = EPages.main;
-      this.mainView = new Main();
-      Controller.toggleHeaderMenu('close');
-      this.setActiveMenuItem(mainBtn);
-    });
+    mainBtn.addEventListener('click', (): void =>
+      this.addBtnListener(EPages.main, new Main(), mainBtn)
+    );
 
-    ebookBtn.addEventListener('click', (): void => {
-      if (this.currentPage === EPages.ebook) return;
-      this.currentPage = EPages.ebook;
-      this.mainView = new Ebook();
-      Controller.toggleHeaderMenu('close');
-      this.setActiveMenuItem(ebookBtn);
-    });
+    ebookBtn.addEventListener('click', (): void =>
+      this.addBtnListener(EPages.ebook, new Ebook(), ebookBtn)
+    );
 
-    audiocallBtn.addEventListener('click', (): void => {
-      if (this.currentPage === EPages.audiocall) return;
-      this.currentPage = EPages.audiocall;
-      this.mainView = new Audiocall();
-      Controller.toggleHeaderMenu('close');
-      this.setActiveMenuItem(audiocallBtn);
-    });
+    audiocallBtn.addEventListener('click', (): void =>
+      this.addBtnListener(EPages.audiocall, new Audiocall(), audiocallBtn)
+    );
 
-    sprintBtn.addEventListener('click', (): void => {
-      if (this.currentPage === EPages.sprint) return;
-      this.currentPage = EPages.sprint;
-      this.mainView = new Sprint();
-      Controller.toggleHeaderMenu('close');
-      this.setActiveMenuItem(sprintBtn);
-    });
+    sprintBtn.addEventListener('click', (): void =>
+      this.addBtnListener(EPages.sprint, new Sprint(), sprintBtn)
+    );
 
-    statisticsBtn.addEventListener('click', (): void => {
-      if (this.currentPage === EPages.statistics) return;
-      this.currentPage = EPages.statistics;
-      this.mainView = new Statistics();
-      Controller.toggleHeaderMenu('close');
-      this.setActiveMenuItem(statisticsBtn);
-    });
+    statisticsBtn.addEventListener('click', (): void =>
+      this.addBtnListener(EPages.statistics, new Statistics(), statisticsBtn)
+    );
 
     this.checkSessionStorage();
-    
+
     switch (this.currentPage) {
       case 'Auth':
         this.setActiveMenuItem(authBtn);
@@ -115,6 +92,18 @@ export default class Controller {
       default:
         this.setActiveMenuItem(mainBtn);
     }
+  }
+
+  addBtnListener(
+    page: EPages,
+    PageClass: Main | Ebook | Audiocall | Sprint | Statistics | Authorization,
+    btn: HTMLElement
+  ): void {
+    if (this.currentPage === page) return;
+    this.currentPage = page;
+    this.mainView = PageClass;
+    Controller.toggleHeaderMenu('close');
+    this.setActiveMenuItem(btn);
   }
 
   setActiveMenuItem(menuItem: HTMLElement): void {
