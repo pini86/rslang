@@ -1,11 +1,8 @@
-body {
-  background-color: $bg-color;
-  font-family: $main-font;
-}
-
-main {
+#textbook {
   position: relative;
   padding-top: 20px;
+  background-color: $bg-color;
+  font-family: $main-font;
 }
 
 .col.card-wrapper {
