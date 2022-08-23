@@ -9,11 +9,8 @@ type RegisterFields = IUser;
 class Register {
   form: HTMLFormElement;
 
-  fields: string[];
-
-  constructor(form: HTMLFormElement, fields: string[]) {
+  constructor(form: HTMLFormElement) {
     this.form = form;
-    this.fields = fields;
     this.signOnSubmit();
   }
 

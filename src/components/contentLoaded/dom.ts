@@ -16,14 +16,12 @@ export function activateHeaders(): void {
 export function activateForms(): void {
   const registerForm = document.querySelector('.register-form') as HTMLFormElement;
   if (registerForm) {
-    const fields = ['name-reg', 'email-reg', 'password-reg'];
-    const auth = new Register(registerForm, fields);
+    const auth = new Register(registerForm);
   }
 
   const loginForm = document.querySelector('.login-form') as HTMLFormElement;
   if (loginForm) {
-    const fields = ['email-log', 'password-log'];
-    const auth = new Login(loginForm, fields);
+    const auth = new Login(loginForm);
   }
 }
 

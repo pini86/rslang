@@ -9,11 +9,8 @@ type LoginFields = Pick<IUser, 'email' | 'password'>;
 class Login {
   form: HTMLFormElement;
 
-  fields: string[];
-
-  constructor(form: HTMLFormElement, fields: string[]) {
+  constructor(form: HTMLFormElement) {
     this.form = form;
-    this.fields = fields;
     this.signOnSubmit();
   }
 
