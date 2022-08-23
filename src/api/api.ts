@@ -395,6 +395,7 @@ class API {
       })
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.FORBIDDEN) {
+          M.toast({text: `${StatusMessages.INVALID_PASSWORD}`});
           throw new Error(StatusMessages.INVALID_PASSWORD);
         }
         throw err;

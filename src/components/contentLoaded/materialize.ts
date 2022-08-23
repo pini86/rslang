@@ -2,12 +2,19 @@ import * as Materialize from '@materializecss/materialize';
 
 const modals = document.querySelectorAll('.modal') as NodeListOf<HTMLElement>;
 const authModal = document.querySelector('.auth-modal') as HTMLElement;
-export function showModals(): void {
+
+export function activateModals(): void {
   Materialize.Modal.init(modals, {});
 }
+
 export function hideAuthModal(): void {
   const modal = Materialize.Modal.getInstance(authModal);
   modal.close();
+}
+
+export function teardownAuthModal(): void {
+  const modal = Materialize.Modal.getInstance(authModal);
+  modal.destroy();
 }
 
 export function initializeSidenav(): void {

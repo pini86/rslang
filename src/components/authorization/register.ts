@@ -30,8 +30,8 @@ class Register {
       await api.createNewUser(registerFields).then(() => {
         api.signIn(email, password).then((tokenData) => {
           saveToken(tokenData);
-          showUserLoggedMode(tokenData.name);
           hideAuthModal();
+          showUserLoggedMode(tokenData.name);
         });
       });
     });

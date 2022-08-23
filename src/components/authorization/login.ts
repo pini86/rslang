@@ -27,8 +27,8 @@ class Login {
 
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
         saveToken(tokenData);
-        showUserLoggedMode(tokenData.name);
         hideAuthModal();
+        showUserLoggedMode(tokenData.name);
       });
     });
   }
