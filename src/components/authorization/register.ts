@@ -2,7 +2,7 @@ import { hideAuthModal } from '../contentLoaded/materialize';
 import { IUser } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import saveToken from './saveToStorage';
-import { showUserName } from './userName';
+import { showUserLoggedMode } from './userLoggedMode';
 
 type RegisterFields = IUser;
 
@@ -30,7 +30,7 @@ class Register {
       await api.createNewUser(registerFields).then(() => {
         api.signIn(email, password).then((tokenData) => {
           saveToken(tokenData);
-          showUserName(tokenData.name);
+          showUserLoggedMode(tokenData.name);
           hideAuthModal();
         });
       });

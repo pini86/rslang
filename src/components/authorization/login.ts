@@ -2,7 +2,7 @@ import { IUser } from '../../interfaces/interfaces';
 import { hideAuthModal } from '../contentLoaded/materialize';
 import api from '../../api/api';
 import saveToken from './saveToStorage';
-import { showUserName } from './userName';
+import { showUserLoggedMode } from './userLoggedMode';
 
 type LoginFields = Pick<IUser, 'email' | 'password'>;
 
@@ -27,7 +27,7 @@ class Login {
 
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
         saveToken(tokenData);
-        showUserName(tokenData.name);
+        showUserLoggedMode(tokenData.name);
         hideAuthModal();
       });
     });
