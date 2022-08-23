@@ -2,8 +2,9 @@ export default class Main{
   mainContent!: HTMLElement;
 
   constructor() {
-    this.mainContent = document.querySelector('main div.container') as HTMLElement;
-    this.mainContent.innerHTML = `<div class="main__info">
+    this.mainContent = document.querySelector('main') as HTMLElement;
+    this.mainContent.innerHTML = `<div class="container">
+    <div class="main__info">
     <div class="info__left">
       <img class="info__logo" src="assets/images/logo.png" alt="RS Lang logotype" />
       <p class="info__text">
@@ -17,7 +18,7 @@ export default class Main{
   <div class="main__about">
     <h3 class="center main__subtitle">О приложении</h3>
     <p>
-      RS Lang – приложение, созданное командой начинающих разработчиков. Поможем тебе выучить английский. Почему мы?
+      RS Lang – приложение, созданное командой начинающих разработчиков. Поможем тебе выучить английский. Почему выбирают нас? Ответ очевиден - только наше приложение предлагает сбалансированный набор инструментов для эффективного изучения английского языка!
     </p>
     <div class="about__cards">
       <div class="card__wrapper">
@@ -92,6 +93,7 @@ export default class Main{
         </div>
       </div>
     </div>
+  </div>
   </div>`;
   }
 }
