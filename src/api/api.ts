@@ -49,27 +49,25 @@ class API {
   private words = `${this.baseUrl}/words`;
 
   static initializeToken(): string {
-    let localStorageTokenData: string | null = null;
+    let localStorageTokenData: IUserTokens | null = null;
     let token = '';
     if (localStorage.getItem('tokenData')) {
       localStorageTokenData = JSON.parse(localStorage.getItem('tokenData') || '');
     }
     if (localStorageTokenData) {
-      const tokenDataParsed: IUserTokens = JSON.parse(localStorageTokenData);
-      token = tokenDataParsed.token;
+      token = localStorageTokenData.token;
     }
     return token;
   }
 
   static initializeId(): string {
-    let localStorageTokenData: string | null = null;
+    let localStorageTokenData: IUserTokens | null = null;
     let id = '';
     if (localStorage.getItem('tokenData')) {
       localStorageTokenData = JSON.parse(localStorage.getItem('tokenData') || '');
     }
     if (localStorageTokenData) {
-      const tokenDataParsed: IUserTokens = JSON.parse(localStorageTokenData);
-      id = tokenDataParsed.userId;
+      id = localStorageTokenData.userId;
     }
     return id;
   }
@@ -136,13 +134,10 @@ class API {
   ): Promise<IUser> | never => {
     const url = `${this.users}/${id}`;
     return axiosAuth
-      .put<IUser>(
-        url,
-        {
-          email,
-          password,
-        },
-      )
+      .put<IUser>(url, {
+        email,
+        password,
+      })
       .then((response) => response.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.BAD_REQUEST) {

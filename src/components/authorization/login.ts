@@ -26,7 +26,7 @@ class Login {
       const loginFields: LoginFields = Login.getLoginFields();
 
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
-        saveToken(JSON.stringify(tokenData));
+        saveToken(tokenData);
         showUserName(tokenData.name);
         hideAuthModal();
       });

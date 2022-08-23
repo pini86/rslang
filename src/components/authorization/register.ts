@@ -29,7 +29,7 @@ class Register {
 
       await api.createNewUser(registerFields).then(() => {
         api.signIn(email, password).then((tokenData) => {
-          saveToken(JSON.stringify(tokenData));
+          saveToken(tokenData);
           showUserName(tokenData.name);
           hideAuthModal();
         });

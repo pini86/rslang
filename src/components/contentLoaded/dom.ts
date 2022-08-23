@@ -1,6 +1,8 @@
 import api from '../../api/api';
 import Login from '../authorization/login';
 import Register from '../authorization/register';
+import { hideUserName } from '../authorization/userName';
+import { hideAuthModal } from './materialize';
 
 const authHeaderReg = document.querySelector('.auth-header-reg') as HTMLElement;
 const authHeaderLog = document.querySelector('.auth-header-log') as HTMLElement;
@@ -33,7 +35,9 @@ export function activateForms(): void {
 
 export function activateLogOut(): void {
   const logout = document.querySelector('.authorization__logout') as HTMLElement;
-  logout.addEventListener('click', () => {
+  logout.addEventListener('click', (event) => {
     localStorage.clear();
+    event.stopPropagation();
+    hideUserName();
   });
 }

@@ -54,6 +54,11 @@
   box-shadow: none;
 }
 
+.authorization {
+  display: flex;
+  align-items: center;
+}
+
 #modalAuth {
   background-color: lighten($bg-color, 10%);
   color: $font-color;
