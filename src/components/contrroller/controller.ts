@@ -4,6 +4,8 @@ import Audiocall from '../../pages/audiocall/audiocall';
 import Sprint from '../../pages/sprint/sprint';
 import Statistics from '../../pages/statistics/statistics';
 import Authorization from '../../pages/authorization/authorization';
+import Header from '../../pages/header/header';
+import Footer from '../../pages/footer/footer';
 
 enum EPages {
   auth = 'Auth',
@@ -19,7 +21,11 @@ export default class Controller {
 
   keyStorage = 'currentPage';
 
+  header = new Header();
+
   mainView = new Main();
+
+  footer = new Footer();
 
   initApp(): void {
     this.createView();
