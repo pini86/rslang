@@ -1,12 +1,25 @@
 @use 'variables' as *;
 @use 'mixins' as *;
+@import './authorization.scss';
 
 /* ---------- HEADER, NAV ---------- */
+.main {
+  min-height: calc(100vh - 154px);
+}
+
+.nav__link {
+  padding: 0 15px;
+}
+
+.nav-wrapper ul.row {
+  margin-bottom: 0;
+}
 
 .header {
   margin: 0 0 30px 0;
   background-color: $bg-color;
   color: $font-color;
+
   .nav {
     background-color: $bg-color;
     color: $font-color;
@@ -33,11 +46,12 @@
         color: var($accent-dark-color);
       }
 
-      & + li {
+      &+li {
         margin: 0 0 0 20px;
       }
     }
   }
+
   .authorization {
     margin: auto 0 auto auto;
     padding: 0 0 0 15px;
@@ -72,10 +86,12 @@
         margin: 80px 0 30px;
         font-size: 20px;
         float: none;
+
         &.active {
           background-color: rgba(0, 172, 193, 0.5);
         }
-        & + li {
+
+        &+li {
           margin: 30px 0;
         }
       }
@@ -109,6 +125,7 @@
     &:first-child {
       top: 0px;
     }
+
     &:last-child {
       top: auto;
       bottom: 0px;
@@ -118,10 +135,12 @@
   &--active {
     span {
       transform: scale(0);
+
       &:first-child {
         transform: rotate(-45deg);
         top: 8px;
       }
+
       &:last-child {
         transform: rotate(45deg);
         bottom: 8px;
@@ -146,6 +165,7 @@
   padding: 50px 0;
 
   .info {
+
     &__left,
     &__right {
       width: 50%;
@@ -168,6 +188,7 @@
 }
 
 .main {
+
   &__about,
   &__team {
     @include flex-column;

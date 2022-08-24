@@ -12,14 +12,15 @@ export default class Header {
           <span></span>
         </div>
         <ul id="body-menu" class="row body-menu">
-          <li id="main">Главная</li>
-          <li id="ebook">Учебник</li>
-          <li id="audiocall">Аудиовызов</li>
-          <li id="sprint">Спринт</li>
-          <li id="statistics">Статистика</li>
+          <li class="nav__link" id="main">Главная</li>
+          <li class="nav__link" id="ebook">Учебник</li>
+          <li class="nav__link" id="audiocall">Аудиовызов</li>
+          <li class="nav__link" id="sprint">Спринт</li>
+          <li class="nav__link" id="statistics">Статистика</li>
         </ul>
         <button id="authorization" class="authorization">
-          <span>Войти</span><i class="material-icons authorization__icon">account_box</i>
+          <span class="authorization__greet">Войти</span><i class="material-icons authorization__icon">account_box</i>
+          <span class="authorization__logout">Выйти</span></a>
         </button>
       </div>
     </nav>
