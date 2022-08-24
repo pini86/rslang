@@ -1,20 +1,20 @@
-import { activateModals, teardownAuthModal } from "../contentLoaded/materialize";
-
-const greetText = document.querySelector('.authorization__greet') as HTMLSpanElement;
-const logout = document.querySelector('.authorization__logout') as HTMLElement;
-const auth = document.querySelector('#authorization') as HTMLAnchorElement;
+import Main from '../../pages/main/main';
 
 export function showUserLoggedMode(name: string): void {
+  const greetText = document.querySelector('.authorization__greet') as HTMLSpanElement;
+  const logout = document.querySelector('.authorization__logout') as HTMLElement;
   greetText.innerHTML = name;
   logout.style.display = 'inline';
-  auth.href = '#';
-  auth.classList.remove('waves-effect', 'waves-light');
-  teardownAuthModal();
+  const view = new Main();
+  const authBtn = document.querySelector('#authorization') as HTMLButtonElement;
+  authBtn.disabled = true;
 }
 export function hideUserLoggedMode(): void {
+  const greetText = document.querySelector('.authorization__greet') as HTMLSpanElement;
+  const logout = document.querySelector('.authorization__logout') as HTMLElement;
   greetText.innerHTML = 'Войти';
   logout.style.display = 'none';
-  auth.href = '#modalAuth';
-  auth.classList.add('waves-effect', 'waves-light');
-  activateModals();
+  const view = new Main();
+  const authBtn = document.querySelector('#authorization') as HTMLButtonElement;
+  authBtn.disabled = false;
 }

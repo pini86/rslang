@@ -1,5 +1,4 @@
 import { IUser } from '../../interfaces/interfaces';
-import { hideAuthModal } from '../contentLoaded/materialize';
 import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
@@ -27,7 +26,6 @@ class Login {
 
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
         saveToken(tokenData);
-        hideAuthModal();
         showUserLoggedMode(tokenData.name);
       });
     });

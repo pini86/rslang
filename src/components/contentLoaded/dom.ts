@@ -1,4 +1,3 @@
-import api from '../../api/api';
 import Login from '../authorization/login';
 import Register from '../authorization/register';
 import { hideUserLoggedMode } from '../authorization/userLoggedMode';

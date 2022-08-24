@@ -395,8 +395,12 @@ class API {
       })
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.FORBIDDEN) {
-          M.toast({text: `${StatusMessages.INVALID_PASSWORD}`});
+          M.toast({ text: `Ошибка при авторизации: ${StatusMessages.INVALID_PASSWORD}` });
           throw new Error(StatusMessages.INVALID_PASSWORD);
+        }
+        if (err.response?.data) {
+          const toastMessage = err.response?.data as string;
+          M.toast({ text: `Ошибка при авторизации: ${toastMessage}` });
         }
         throw err;
       });

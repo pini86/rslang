@@ -49,6 +49,7 @@
 
 #authorization {
   background-color: $bg-color;
+  color: $font-color;
   display: flex;
   align-items: center;
   box-shadow: none;
@@ -57,19 +58,19 @@
 .authorization {
   display: flex;
   align-items: center;
+  cursor: pointer;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
 }
 
 #modalAuth {
-  background-color: lighten($bg-color, 10%);
   color: $font-color;
 
   & .modal {
     position: relative;
-  }
-
-  & .modal-close {
-    position: absolute;
-    right: 10%;
   }
 }
 
@@ -93,4 +94,8 @@
 
 .authorization__logout {
   display: none;
+}
+
+.modal-content label {
+  font-size: 1rem;
 }
