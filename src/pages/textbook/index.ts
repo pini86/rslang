@@ -1,7 +1,7 @@
 import './style.scss';
-import createDiffPanel from './difficulty-panel';
-import renderCards from './render-cards';
-import { initPagination } from './pagination';
+import createDiffPanel from './components/difficulty-panel';
+import renderCards from './components/cards';
+import initPagination from './components/pagination';
 
 createDiffPanel();
 renderCards();
