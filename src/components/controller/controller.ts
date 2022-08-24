@@ -110,6 +110,7 @@ export default class Controller {
     this.mainView = PageClass;
     Controller.toggleHeaderMenu('close');
     this.setActiveMenuItem(btn);
+    document.onkeyup = null;
   }
 
   setActiveMenuItem(menuItem: HTMLElement): void {
