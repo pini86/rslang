@@ -1,8 +1,10 @@
-import cardLevels from './card-Levels';
-import api from '../../api/api';
+import api from '../../../api/api';
+import cardLevels from '../card-Levels';
+import state from '../state';
 
 const BASE = 'https://rs-lang-rsschool-task.herokuapp.com';
 const container = document.querySelector('main .container') as HTMLElement;
+const { curPage, curGroup } = state;
 
 function generateCard(
   group: number,
@@ -55,8 +57,8 @@ function generateCard(
   `;
 }
 
-export default async function renderCards(group = 0, page = 0) {
-  const words = await api.getWords(group, page);
+export default async function renderCards(group?: number, page?: number) {
+  const words = await api.getWords(group ?? curGroup, page ?? curPage);
   let cardsToRender = '';
   words.forEach((w) => {
     const {
@@ -72,7 +74,7 @@ export default async function renderCards(group = 0, page = 0) {
     } = w;
 
     cardsToRender += generateCard(
-      group,
+      group ?? curGroup,
       id,
       image,
       word,
