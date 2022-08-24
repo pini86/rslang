@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -73,12 +74,22 @@ module.exports = ({ development }) => ({
       patterns: [{ from: 'src/assets', to: 'assets' }],
     }),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
+    }),
   ],
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
       '~': path.resolve(__dirname, './src'),
     },
+    fallback: {
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve("buffer/"),
+      util: require.resolve("util/")
+  },
   },
   ...devServer(development),
 });
