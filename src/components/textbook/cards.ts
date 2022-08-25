@@ -1,6 +1,6 @@
-import api from '../../../api/api';
-import cardLevels from '../card-Levels';
-import state from '../state';
+import api from '../../api/api';
+import cardLevels from './card-Levels';
+import state from './state';
 
 const BASE = 'https://rs-lang-rsschool-task.herokuapp.com';
 const container = document.querySelector('main .container') as HTMLElement;

@@ -2,7 +2,11 @@
 @import '~normalize.css/normalize.css';
 @import '~@materializecss/materialize/dist/css/materialize.css';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
-@import './main-page.scss';
+@import './global';
+@import './main-page';
+@import './textbook';
+@import './difficulty-panel';
+@import './pagination';
 
 body {
   font-family: $main-font;

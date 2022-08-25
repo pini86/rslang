@@ -1,7 +1,7 @@
 import renderCards from './cards';
-import state from '../state';
+import state from './state';
 
-const main = document.querySelector('#textbook') as HTMLElement;
+const main = document.querySelector('main') as HTMLElement;
 const { totalPages } = state;
 let { curPage } = state;
 

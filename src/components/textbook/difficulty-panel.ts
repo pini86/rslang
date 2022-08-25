@@ -1,9 +1,9 @@
-import cardLevels from '../card-Levels';
-import state from '../state';
+import cardLevels from './card-Levels';
+import state from './state';
 import renderCards from './cards';
 import initPagination from './pagination';
 
-const main = document.querySelector('#textbook') as HTMLElement;
+const main = document.querySelector('main') as HTMLElement;
 let { curGroup, curPage } = state;
 
 export default function createDiffPanel() {
