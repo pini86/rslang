@@ -1,8 +1,9 @@
 import api from '../../api/api';
-import cardLevels from './card-Levels';
-import state from './state';
+import cardLevels from '../../pages/ebook/card-Levels';
+import state from '../../pages/ebook/state';
+import soundHadler from '../../pages/ebook/sound-hadler';
 
-const BASE = 'https://rs-lang-rsschool-task.herokuapp.com';
+const { base } = state;
 const container = document.querySelector('main .container') as HTMLElement;
 const { curPage, curGroup } = state;
 
@@ -24,7 +25,7 @@ function generateCard(
         <div class="col image-wrapper">
           <div class="card">
             <div class="card-image z-depth-3">
-              <img src=${BASE}/${image}>
+              <img src=${base}/${image}>
               <div class="card-title">
                 <div>
                   <span class="word">${word}</span>
@@ -93,25 +94,6 @@ export default async function renderCards(group?: number, page?: number) {
 container.addEventListener('click', async e => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
-    if (state.audioChunk) {
-      (state.audioChunk as HTMLAudioElement).pause();
-    }
-
-    const id = el.getAttribute('id') as string;
-    const { audio, audioExample, audioMeaning }  = await api.getWord(id);
-    const audioLinks = [`${BASE}/${audio}`, `${BASE}/${audioExample}`, `${BASE}/${audioMeaning}`];
-    const audioChunk = new Audio(audioLinks[0]);
-    audioChunk.src = `${BASE}/${audio}`;
-    state.audioChunk = audioChunk;
-    audioChunk.play();
-    let i = 1;
-
-    audioChunk.onended = () => {
-      if (i < audioLinks.length) {
-        audioChunk.src = audioLinks[i];
-        audioChunk.play();
-        i++;
-      }
-    }
+    soundHadler(el);
   }
 })

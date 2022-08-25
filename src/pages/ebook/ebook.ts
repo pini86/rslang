@@ -1,6 +1,6 @@
-import createDiffPanel from '../../components/textbook/difficulty-panel';
-import renderCards from '../../components/textbook/cards';
-import initPagination from '../../components/textbook/pagination';
+import createDiffPanel from '../../components/ebook/difficulty-panel';
+import renderCards from '../../components/ebook/cards';
+import initPagination from '../../components/ebook/pagination';
 
 export class Ebook {
   mainContent!: HTMLElement;

@@ -1,5 +1,5 @@
 import renderCards from './cards';
-import state from './state';
+import state from '../../pages/ebook/state';
 
 const main = document.querySelector('main') as HTMLElement;
 const { totalPages } = state;

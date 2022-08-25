@@ -1,5 +1,5 @@
-import cardLevels from './card-Levels';
-import state from './state';
+import cardLevels from '../../pages/ebook/card-Levels';
+import state from '../../pages/ebook/state';
 import renderCards from './cards';
 import initPagination from './pagination';
 
