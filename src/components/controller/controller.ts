@@ -1,5 +1,5 @@
 import Main from '../../pages/main/main';
-import Ebook from '../../pages/ebook/ebook';
+import { Ebook, initEbook } from '../../pages/ebook/ebook';
 import Audiocall from '../../pages/audiocall/audiocall';
 import Sprint from '../../pages/sprint/sprint';
 import Statistics from '../../pages/statistics/statistics';
@@ -56,9 +56,11 @@ export default class Controller {
       this.addBtnListener(EPages.main, new Main(), mainBtn)
     );
 
-    ebookBtn.addEventListener('click', (): void =>
-      this.addBtnListener(EPages.ebook, new Ebook(), ebookBtn)
-    );
+    ebookBtn.addEventListener('click', (): void => {
+      this.removePanels();
+      this.addBtnListener(EPages.ebook, new Ebook(), ebookBtn);
+      initEbook();
+    });
 
     audiocallBtn.addEventListener('click', (): void =>
       this.addBtnListener(EPages.audiocall, new Audiocall(), audiocallBtn)
@@ -82,6 +84,7 @@ export default class Controller {
       case 'Ebook':
         this.setActiveMenuItem(ebookBtn);
         this.mainView = new Ebook();
+        initEbook();
         break;
       case 'Audiocall':
         this.setActiveMenuItem(audiocallBtn);
@@ -110,6 +113,7 @@ export default class Controller {
     this.mainView = PageClass;
     Controller.toggleHeaderMenu('close');
     this.setActiveMenuItem(btn);
+    this.removePanels();
     document.onkeyup = null;
   }
 
@@ -119,6 +123,18 @@ export default class Controller {
     menuItems.forEach((li) => li.classList.remove('active'));
     menuItem.classList.add('active');
     this.setSessionStorage();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  removePanels(): void {
+    const levels =  document.querySelector('.textbook-levels');
+    const pagination = document.querySelector('.pagination');
+    if (levels) {
+      levels.remove();
+    }
+    if (pagination) {
+      pagination.remove();
+    }
   }
 
   static toggleHeaderMenu(action: string): void {
