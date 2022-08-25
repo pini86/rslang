@@ -46,10 +46,10 @@ function generateCard(
           </div>
           <div class="card-action">
             <button id="${id}" class="btn ${cardLevels[group].color} btn-listen">
-              <i class="material-icons">volume_up</i>
+              <i id="${id}" class="material-icons">volume_up</i>
             </button>
             <button id="${id}" class="btn ${cardLevels[group].color} btn-hard">В трудные</button>
-            <button id="${id}" class="btn ${cardLevels[group].color} btn-remove-hard disabled">Из трудных</button>
+            <button id="${id}" class="btn ${cardLevels[group].color} btn-learned">Изучено</button>
           </div>
         </div>
       </div>
@@ -89,3 +89,29 @@ export default async function renderCards(group?: number, page?: number) {
 
   container.innerHTML = cardsToRender;
 }
+
+container.addEventListener('click', async e => {
+  const el = e.target as HTMLElement;
+  if (el.closest('.btn-listen')) {
+    if (state.audioChunk) {
+      (state.audioChunk as HTMLAudioElement).pause();
+    }
+
+    const id = el.getAttribute('id') as string;
+    const { audio, audioExample, audioMeaning }  = await api.getWord(id);
+    const audioLinks = [`${BASE}/${audio}`, `${BASE}/${audioExample}`, `${BASE}/${audioMeaning}`];
+    const audioChunk = new Audio(audioLinks[0]);
+    audioChunk.src = `${BASE}/${audio}`;
+    state.audioChunk = audioChunk;
+    audioChunk.play();
+    let i = 1;
+
+    audioChunk.onended = () => {
+      if (i < audioLinks.length) {
+        audioChunk.src = audioLinks[i];
+        audioChunk.play();
+        i++;
+      }
+    }
+  }
+})
