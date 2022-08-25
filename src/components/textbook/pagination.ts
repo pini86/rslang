@@ -34,10 +34,10 @@ function createPaginationPages(page: number) {
 
     if (page >= 3 && i < 2) {
       i = page - 2;
-      pagination.insertAdjacentHTML('beforeend', '<li><a class="cursor-def" href="#">...</a></li>');
+      pagination.insertAdjacentHTML('beforeend', '<li><a class="cursor-def">...</a></li>');
       liCount++;
     } else if (liCount === 5 && i < totalPages - 2) {
-      pagination.insertAdjacentHTML('beforeend', '<li><a class="cursor-def" href="#">...</a></li>');
+      pagination.insertAdjacentHTML('beforeend', '<li><a class="cursor-def">...</a></li>');
       i = totalPages - 1;
     }
   }
