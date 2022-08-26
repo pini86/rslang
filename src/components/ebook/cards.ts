@@ -2,6 +2,7 @@ import api from '../../api/api';
 import cardLevels from '../../pages/ebook/card-Levels';
 import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
+import preloader from './preloader';
 
 const { baseUrl } = api;
 const container = document.querySelector('main .container') as HTMLElement;
@@ -59,14 +60,16 @@ function generateCard(
 }
 
 export default async function renderCards(group?: number, page?: number) {
+  container.innerHTML = preloader;
   if (page !== undefined) {
     curPage = page;
   }
   if (group !== undefined) {
     curGroup = group;
   }
-  
+
   const words = await api.getWords(group ?? curGroup, page ?? curPage);
+
   let cardsToRender = '';
   words.forEach((w) => {
     const {
@@ -95,12 +98,14 @@ export default async function renderCards(group?: number, page?: number) {
     );
   });
 
-  container.innerHTML = cardsToRender;
+  if (words) {
+    container.innerHTML = cardsToRender;
+  }
 }
 
-container.addEventListener('click', async e => {
+container.addEventListener('click', async (e) => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
     soundHandler(el);
   }
-})
+});
