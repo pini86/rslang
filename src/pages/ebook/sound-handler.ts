@@ -2,16 +2,15 @@ import api from '../../api/api';
 import state from './state';
 
 export default async function soundHadler(el: HTMLElement) {
-  const { base } = state;
+  const { baseUrl } = api;
   if (state.audioChunk) {
     (state.audioChunk as HTMLAudioElement).pause();
   }
 
   const id = el.getAttribute('id') as string;
   const { audio, audioExample, audioMeaning } = await api.getWord(id);
-  const audioLinks = [`${base}/${audio}`, `${base}/${audioExample}`, `${base}/${audioMeaning}`];
+  const audioLinks = [`${baseUrl}/${audio}`, `${baseUrl}/${audioExample}`, `${baseUrl}/${audioMeaning}`];
   const audioChunk = new Audio(audioLinks[0]);
-  audioChunk.src = `${base}/${audio}`;
   state.audioChunk = audioChunk;
   audioChunk.play();
   let i = 1;

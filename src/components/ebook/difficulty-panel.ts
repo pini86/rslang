@@ -32,6 +32,7 @@ export default function createDiffPanel() {
       curId = el.getAttribute('id') as string;
       curGroup = cardLevels.findIndex((level) => level.difficultyId === curId);
       curPage = 0;
+      state.curPage = curPage;
       state.curGroup = curGroup;
       sessionStorage.setItem('page', `${curPage}`);
       sessionStorage.setItem('group', `${curGroup}`);

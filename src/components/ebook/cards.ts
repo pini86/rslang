@@ -1,11 +1,11 @@
 import api from '../../api/api';
 import cardLevels from '../../pages/ebook/card-Levels';
 import state from '../../pages/ebook/state';
-import soundHadler from '../../pages/ebook/sound-hadler';
+import soundHandler from '../../pages/ebook/sound-handler';
 
-const { base } = state;
+const { baseUrl } = api;
 const container = document.querySelector('main .container') as HTMLElement;
-const { curPage, curGroup } = state;
+let { curPage, curGroup } = state;
 
 function generateCard(
   group: number,
@@ -25,7 +25,7 @@ function generateCard(
         <div class="col image-wrapper">
           <div class="card">
             <div class="card-image z-depth-3">
-              <img src=${base}/${image}>
+              <img src=${baseUrl}/${image}>
               <div class="card-title">
                 <div>
                   <span class="word">${word}</span>
@@ -59,6 +59,13 @@ function generateCard(
 }
 
 export default async function renderCards(group?: number, page?: number) {
+  if (page !== undefined) {
+    curPage = page;
+  }
+  if (group !== undefined) {
+    curGroup = group;
+  }
+  
   const words = await api.getWords(group ?? curGroup, page ?? curPage);
   let cardsToRender = '';
   words.forEach((w) => {
@@ -94,6 +101,6 @@ export default async function renderCards(group?: number, page?: number) {
 container.addEventListener('click', async e => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
-    soundHadler(el);
+    soundHandler(el);
   }
 })

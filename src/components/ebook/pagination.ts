@@ -22,6 +22,7 @@ function createPaginationPages(page: number) {
 
   pagination.append(arrowLeft);
 
+  // conditions on 38 - 49 lines will insert '...' between page numbers
   for (let i = 0, liCount = 1; i <= totalPages; i++, liCount++) {
     const li = document.createElement('li');
 
@@ -32,10 +33,16 @@ function createPaginationPages(page: number) {
     li.innerHTML = `<a id="${i}" href="#">${i + 1}</a>`;
     pagination.append(li);
 
+    // this condition will insert '...' after page 1 if the current page >= 4, and count '...' as li element (to decrease amount of li)
+    // if we want to see previous page after '...' we should do i = page - 2 because page - 1 equals to current page
     if (page >= 3 && i < 2) {
       i = page - 2;
       pagination.insertAdjacentHTML('beforeend', '<li><a class="cursor-def">...</a></li>');
       liCount++;
+
+      // amount of li === 5 means that the next page after the current is created and we want to insert '...' after that
+      // i = totalPages will not render the last page if we are on 26 page or below
+      // i = totalPages - 2 will render extra page before the last page; i = totalPages - 1 works fine for the tail of pagination
     } else if (liCount === 5 && i < totalPages - 2) {
       pagination.insertAdjacentHTML('beforeend', '<li><a class="cursor-def">...</a></li>');
       i = totalPages - 1;
@@ -61,6 +68,7 @@ export default function initPagination() {
 }
 
 function togglePage() {
+  state.curPage = curPage;
   sessionStorage.setItem('page', `${curPage}`);
   renderCards(state.curGroup, curPage);
   renderPagination(curPage);
@@ -70,8 +78,8 @@ pagination.addEventListener('click', (e) => {
   const el = e.target as HTMLElement;
 
   if (
-    (el.classList.contains('arrow-left') && curPage !== 0) ||
-    (el.classList.contains('prev') && curPage !== 0)
+    (el.classList.contains('arrow-left') && curPage) ||
+    (el.classList.contains('prev') && curPage)
   ) {
     curPage--;
     togglePage();
