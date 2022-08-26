@@ -1,0 +1,56 @@
+.textbook-levels {
+  width: 70px;
+  border-radius: 15px;
+  position: fixed;
+  top: 86px;
+  right: calc(12vw + 10px);
+
+  .collection-item {
+    padding: 15px;
+  }
+
+  .btn {
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    line-height: 40px;
+    border-radius: 100%;
+    &:hover {
+      opacity: 0.8;
+      box-shadow: 0 0 6px $bg-color;
+    }
+  }
+}
+
+.level-active {
+  transform:scale(1.2);
+}
+
+@media (max-width: 1023px) {
+  .textbook-levels {
+    right: 5vw;
+  }
+}
+
+@media (max-width: 767px) {
+  .textbook-levels {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+    width: fit-content;
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .textbook-levels .collection-item {
+    padding: 7px;
+
+    .btn {
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      font-size: 12px;
+    }
+  }
+}
