@@ -1,5 +1,5 @@
 import api from '../../api/api';
-import cardLevels from '../../pages/ebook/card-Levels';
+import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
