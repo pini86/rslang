@@ -1,5 +1,6 @@
-import { IWord, IAuthObject, IWordData } from '../../interfaces/interfaces';
+import { IWord, IUserTokens } from '../../interfaces/interfaces';
 import API from '../../api/api';
+import getRandomNumber from '../../components/utils/getRandomNumber';
 
 // eslint-disable-next-line import/no-cycle
 import SprintGame from './sprint-game';
@@ -9,17 +10,17 @@ export default class SprintStart {
 
   mainContent!: HTMLElement;
 
-  auth = false;
+  isLoggedIn = false;
 
   userId!: string;
 
   static sprintWordsArray: IWord[];
 
-  authObj: IAuthObject | null;
+  authObj: IUserTokens | null;
 
   constructor() {
     this.authObj = null;
-    this.auth = this.getAuthentification();
+    this.isLoggedIn = this.getAuthentification();
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
     this.mainContent.innerHTML = SprintStart.getHTML();
     this.selectDiff = this.setDifficultyListeners();
@@ -65,19 +66,15 @@ export default class SprintStart {
     };
   }
 
-  private static getRandomPage(): number {
-    return Math.floor(Math.random() * 30);
-  }
-
   private async setWordsArray(group: number): Promise<void> {
     try {
-      const page = SprintStart.getRandomPage();
-      if (!this.auth) {
+      const page = getRandomNumber(30);
+      if (!this.isLoggedIn) {
         const response = await API.getWords(group, page);
         SprintStart.sprintWordsArray = response as IWord[];
       } else {
         const response = await API.getAllAggregatedUserWords(
-          (this.authObj as IAuthObject).userId,
+          (this.authObj as IUserTokens).userId,
           '0',
           `${page}`,
           '20'
@@ -101,8 +98,8 @@ export default class SprintStart {
 
   private getAuthentification(): boolean {
     const authBtn = document.querySelector('#authorization') as HTMLButtonElement;
-    this.auth = authBtn.disabled; 
-    if (this.auth) {
+    this.isLoggedIn = authBtn.disabled;
+    if (this.isLoggedIn) {
       this.authObj = JSON.parse(localStorage.getItem('tokenData') as string);
       return true;
     }

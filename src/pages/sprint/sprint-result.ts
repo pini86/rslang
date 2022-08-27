@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { IWord, IAuthObject, IWordData } from '../../interfaces/interfaces';
+import { IWord, IUserTokens, IWordData, ISprintResult } from '../../interfaces/interfaces';
 import api from '../../api/api';
 // eslint-disable-next-line import/no-cycle
 import Sprint from './sprint';
@@ -9,40 +9,16 @@ export default class SprintResult {
 
   mainContent!: HTMLElement;
 
-  sprintResult: {
-    sprintNewWords: number;
-    sprintStatData: {
-      correctWords: IWord[];
-      incorrectWords: IWord[];
-      learnedWords: number;
-      maxStreak: number;
-    };
-    sprintTimer: number;
-    sprintScore: string;
-    sprintWordsArray: IWord[];
-    auth: IAuthObject | null;
-  };
+  sprintResult: ISprintResult;
 
-  auth = false;
+  isLoggedIn = false;
 
-  authObj: IAuthObject | null;
+  authObj: IUserTokens | null;
 
-  constructor(sprintResult: {
-    sprintNewWords: number;
-    sprintStatData: {
-      correctWords: IWord[];
-      incorrectWords: IWord[];
-      learnedWords: number;
-      maxStreak: number;
-    };
-    sprintTimer: number;
-    sprintScore: string;
-    sprintWordsArray: IWord[];
-    auth: IAuthObject | null;
-  }) {
+  constructor(sprintResult: ISprintResult) {
     this.sprintResult = sprintResult;
     this.authObj = null;
-    this.auth = this.getAuthentification();
+    this.isLoggedIn = this.getAuthentification();
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
     this.mainContent.innerHTML = SprintResult.getHTML();
     this.start = this.showStatWords();
@@ -86,7 +62,7 @@ export default class SprintResult {
     const wrongSection = document.getElementById('sprint-incorrect-stat') as HTMLElement;
 
     document.onkeyup = null;
-    if (this.auth) {
+    if (this.isLoggedIn) {
       this.changeStatistics();
     }
 
@@ -95,8 +71,8 @@ export default class SprintResult {
     rightSection.innerHTML = `Правильных ответов: ${this.sprintResult.sprintStatData.correctWords.length}`;
     wrongSection.innerHTML = `Ошибок: ${this.sprintResult.sprintStatData.incorrectWords.length}`;
     this.rotateWave();
-    this.showRightWords();
-    this.showWrongWords();
+    this.showWords(this.sprintResult.sprintStatData.correctWords, true);
+    this.showWords(this.sprintResult.sprintStatData.incorrectWords, false);
     this.setAudioListeners();
     this.setRepeatBtnListener();
   }
@@ -153,44 +129,27 @@ export default class SprintResult {
     api.upsertStatistics(statistic);
   }
 
-  private showRightWords(): void {
-    const rightSection = document.getElementById('sprint-result-stat') as HTMLElement;
+  private showWords(arrayWords: IWord[], valid: boolean): void {
+    const wordsSection = document.getElementById('sprint-result-stat') as HTMLElement;
 
-    this.sprintResult.sprintStatData.correctWords.forEach((elem) => {
-      rightSection.innerHTML += `<div class="sprint__statistics__right_word">
-        <button class="sprint__statistics__good_audio" id="${
-          !this.auth ? (elem as IWordData).id : (elem as IWord)._id
+    wordsSection.innerHTML += valid ? '' : '<h2>Неправильные ответы</h2>';
+    arrayWords.forEach((elem) => {
+      wordsSection.innerHTML += `<div class="sprint__statistics__words">
+        <button class="sprint__statistics__audio" id="${
+          !this.isLoggedIn ? (elem as IWordData).id : (elem as IWord)._id
         }"></button>
         <div class="property_word">${elem.word}</div>
         <div class="property_word_tr">${elem.transcription}</div>
         <div class="property_word_lang">${elem.wordTranslate}</div>
-        <div id="check-answer" class="check__answer valid"> 
-        </div>`;
-    });
-  }
-
-  private showWrongWords(): void {
-    const wrongSection = document.getElementById('sprint-result-stat') as HTMLElement;
-
-    wrongSection.innerHTML += '<h2>Неправильные ответы</h2>';
-    this.sprintResult.sprintStatData.incorrectWords.forEach((elem) => {
-      wrongSection.innerHTML += `<div class="sprint__statistics__wrong_word">
-        <button class="sprint__statistics__bad_audio" id="${
-          !this.auth ? (elem as IWordData).id : (elem as IWord)._id
-        }"></button>
-        <div class="property_word">${elem.word}</div>
-        <div class="property_word_tr">${elem.transcription}</div>
-        <div class="property_word_lang">${elem.wordTranslate}</div>
-        <div id="check-answer" class="check__answer novalid"> 
+        <div id="check-answer" class="check__answer ${valid ? `valid` : `novalid`}"> 
         </div>`;
     });
   }
 
   private setAudioListeners(): void {
-    const rightAudioBtn = document.querySelectorAll('.sprint__statistics__good_audio');
-    const wrongAudioBtn = document.querySelectorAll('.sprint__statistics__bad_audio');
+    const answerAudioBtn = document.querySelectorAll('.sprint__statistics__audio');
 
-    [...rightAudioBtn, ...wrongAudioBtn].forEach((elem) => {
+    answerAudioBtn.forEach((elem) => {
       const audio = new Audio();
       audio.src = `${api.baseUrl}/${
         (
@@ -230,9 +189,9 @@ export default class SprintResult {
 
   private getAuthentification(): boolean {
     const authBtn = document.querySelector('#authorization') as HTMLButtonElement;
-    
-    this.auth = authBtn.disabled;
-    if (this.auth) {
+
+    this.isLoggedIn = authBtn.disabled;
+    if (this.isLoggedIn) {
       this.authObj = JSON.parse(localStorage.getItem('tokenData') as string);
       return true;
     }

@@ -232,6 +232,7 @@ $black: black;
   align-items: center;
   justify-content: center;
   color: #000;
+  border-radius: 10px;
 
   &__stat__wrapper {
     width: 50%;
@@ -347,8 +348,7 @@ $black: black;
     text-align: center;
   }
 
-  &__right_word,
-  &__wrong_word {
+  &__words {
     width: 100%;
     display: flex;
     justify-content: space-around;
@@ -356,8 +356,7 @@ $black: black;
     margin: 10px 0 10px 0;
   }
 
-  &__good_audio,
-  &__bad_audio {
+  &__audio {
     width: 1rem;
     height: 1rem;
     border: none;
@@ -402,8 +401,7 @@ $black: black;
 
 @media (max-width: 1000px) {
   .sprint__statistics {
-    &__right_word,
-    &__wrong_word {
+    &__words{
       font-size: 15px;
     }
   }
@@ -472,8 +470,7 @@ $black: black;
     &__stat__wrapper {
       width: 95%;
     }
-    &__right_word,
-    &__wrong_word {
+    &__words {
       font-size: 12px;
     }
   }
