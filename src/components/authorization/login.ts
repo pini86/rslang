@@ -3,6 +3,8 @@ import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
 import Main from '../../pages/main/main';
+// eslint-disable-next-line import/no-cycle
+import Controller from '../controller/controller';
 
 type LoginFields = Pick<IUser, 'email' | 'password'>;
 
@@ -20,6 +22,7 @@ export default function activateLogin() {
         saveToken(tokenData);
         showUserLoggedMode(tokenData.name);
         const view = new Main();
+        Controller.isLoggedIn = true;
       });
     });
 }

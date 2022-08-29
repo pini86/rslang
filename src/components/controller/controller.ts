@@ -19,6 +19,8 @@ enum EPages {
 }
 
 export default class Controller {
+  static isLoggedIn = false;
+  
   private currentPage = EPages.main;
 
   keyStorage = 'currentPage';

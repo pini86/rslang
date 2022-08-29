@@ -1,6 +1,8 @@
+/* eslint-disable import/no-cycle */
 import activateLogin from '../authorization/login';
 import activateRegister from '../authorization/register';
 import { hideUserLoggedMode } from '../authorization/userLoggedMode';
+import Controller from '../controller/controller';
 
 
 export function activateAuthentification(): void {
@@ -20,5 +22,6 @@ export function activateLogOut(): void {
     localStorage.clear();
     event.stopPropagation();
     hideUserLoggedMode();
+    Controller.isLoggedIn = false;
   });
 }
