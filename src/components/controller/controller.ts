@@ -28,7 +28,7 @@ export default class Controller {
 
   footer = new Footer();
 
-  static isLoggedIn = true;
+  static isLoggedIn = false;
 
   initApp(): void {
     this.createView();
