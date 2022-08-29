@@ -6,6 +6,7 @@ import Statistics from '../../pages/statistics/statistics';
 import Authorization from '../../pages/authorization/authorization';
 import Header from '../../pages/header/header';
 import Footer from '../../pages/footer/footer';
+import { showUserAuthentification } from '../authorization/userLoggedMode';
 
 enum EPages {
   auth = 'Auth',
@@ -115,6 +116,7 @@ export default class Controller {
     this.setActiveMenuItem(btn);
     this.removePanels();
     document.onkeyup = null;
+    showUserAuthentification();
   }
 
   setActiveMenuItem(menuItem: HTMLElement): void {
@@ -127,7 +129,7 @@ export default class Controller {
 
   // eslint-disable-next-line class-methods-use-this
   removePanels(): void {
-    const levels =  document.querySelector('.textbook-levels');
+    const levels = document.querySelector('.textbook-levels');
     const pagination = document.querySelector('.pagination');
     if (levels) {
       levels.remove();

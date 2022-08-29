@@ -12,7 +12,7 @@ export default class Authorization {
       <div id="views">
 
         <div class="register-view">
-          <form action="#" class="register-form">
+          <form action="" class="register-form">
             <div class="input-group">
               <label for="name-reg"><p>Имя пользователя</p></label>
               <input type="text" id="name-reg" required>
@@ -34,7 +34,7 @@ export default class Authorization {
         </div>
 
         <div class="signin-view">
-          <form action="#" class="login-form">
+          <form action="" class="login-form">
             <div class="input-group">
               <label for="email-log"><p>Адрес электронной почты</p></label>
               <input type="email" id="email-log" required>

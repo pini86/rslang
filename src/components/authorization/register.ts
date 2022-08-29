@@ -2,6 +2,7 @@ import { IUser } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
+import Main from '../../pages/main/main';
 
 type RegisterFields = IUser;
 
@@ -30,6 +31,7 @@ class Register {
         api.signIn(email, password).then((tokenData) => {
           saveToken(tokenData);
           showUserLoggedMode(tokenData.name);
+          const view = new Main();
         });
       });
     });

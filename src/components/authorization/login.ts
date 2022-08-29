@@ -2,6 +2,7 @@ import { IUser } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
+import Main from '../../pages/main/main';
 
 type LoginFields = Pick<IUser, 'email' | 'password'>;
 
@@ -27,6 +28,7 @@ class Login {
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
         saveToken(tokenData);
         showUserLoggedMode(tokenData.name);
+        const view = new Main();
       });
     });
   }
