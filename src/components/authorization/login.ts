@@ -6,24 +6,15 @@ import Main from '../../pages/main/main';
 
 type LoginFields = Pick<IUser, 'email' | 'password'>;
 
-class Login {
-  form: HTMLFormElement;
+const getLoginFields = (): LoginFields => ({
+  email: (document.querySelector('#email-log') as HTMLInputElement).value,
+  password: (document.querySelector('#password-log') as HTMLInputElement).value,
+});
 
-  constructor(form: HTMLFormElement) {
-    this.form = form;
-    this.signOnSubmit();
-  }
-
-  static getLoginFields = (): LoginFields => ({
-    email: (document.querySelector('#email-log') as HTMLInputElement).value,
-    password: (document.querySelector('#password-log') as HTMLInputElement).value,
-  });
-
-  signOnSubmit(): void {
-    this.form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const loginFields: LoginFields = Login.getLoginFields();
+export default function activateLogin() {
+  const loginBtn = document.querySelector('.login-btn') as HTMLButtonElement;
+    loginBtn.addEventListener('click', async () => {
+      const loginFields: LoginFields = getLoginFields();
 
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
         saveToken(tokenData);
@@ -31,6 +22,4 @@ class Login {
         const view = new Main();
       });
     });
-  }
 }
-export default Login;

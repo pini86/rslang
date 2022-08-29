@@ -6,35 +6,25 @@ import Main from '../../pages/main/main';
 
 type RegisterFields = IUser;
 
-class Register {
-  form: HTMLFormElement;
+const getRegisterFields = (): RegisterFields => ({
+  name: (document.querySelector('#name-reg') as HTMLInputElement).value,
+  email: (document.querySelector('#email-reg') as HTMLInputElement).value,
+  password: (document.querySelector('#password-reg') as HTMLInputElement).value,
+});
 
-  constructor(form: HTMLFormElement) {
-    this.form = form;
-    this.signOnSubmit();
-  }
+export default function activateRegister() {
+  const registerBtn = document.querySelector('.register-btn') as HTMLButtonElement;
 
-  static getRegisterFields = (): RegisterFields => ({
-    name: (document.querySelector('#name-reg') as HTMLInputElement).value,
-    email: (document.querySelector('#email-reg') as HTMLInputElement).value,
-    password: (document.querySelector('#password-reg') as HTMLInputElement).value,
-  });
+  registerBtn.addEventListener('click', async () => {
+    const registerFields: RegisterFields = getRegisterFields();
+    const { email, password } = registerFields;
 
-  signOnSubmit(): void {
-    this.form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const registerFields: RegisterFields = Register.getRegisterFields();
-      const { email, password } = registerFields;
-
-      await api.createNewUser(registerFields).then(() => {
-        api.signIn(email, password).then((tokenData) => {
-          saveToken(tokenData);
-          showUserLoggedMode(tokenData.name);
-          const view = new Main();
-        });
+    await api.createNewUser(registerFields).then(() => {
+      api.signIn(email, password).then((tokenData) => {
+        saveToken(tokenData);
+        showUserLoggedMode(tokenData.name);
+        const view = new Main();
       });
     });
-  }
+  });
 }
-export default Register;

@@ -7,6 +7,7 @@ import Authorization from '../../pages/authorization/authorization';
 import Header from '../../pages/header/header';
 import Footer from '../../pages/footer/footer';
 import { showUserAuthentification } from '../authorization/userLoggedMode';
+import { activateAuthentification } from '../contentLoaded/dom';
 
 enum EPages {
   auth = 'Auth',
@@ -49,9 +50,10 @@ export default class Controller {
       }
     });
 
-    authBtn.addEventListener('click', (): void =>
-      this.addBtnListener(EPages.auth, new Authorization(), authBtn)
-    );
+    authBtn.addEventListener('click', (): void => {
+      this.addBtnListener(EPages.auth, new Authorization(), authBtn);
+      activateAuthentification();
+    });
 
     mainBtn.addEventListener('click', (): void =>
       this.addBtnListener(EPages.main, new Main(), mainBtn)
@@ -102,6 +104,7 @@ export default class Controller {
       default:
         this.setActiveMenuItem(mainBtn);
     }
+    showUserAuthentification();
   }
 
   addBtnListener(
@@ -116,7 +119,6 @@ export default class Controller {
     this.setActiveMenuItem(btn);
     this.removePanels();
     document.onkeyup = null;
-    showUserAuthentification();
   }
 
   setActiveMenuItem(menuItem: HTMLElement): void {

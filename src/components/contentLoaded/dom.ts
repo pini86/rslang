@@ -1,19 +1,19 @@
-import Login from '../authorization/login';
-import Register from '../authorization/register';
+import activateLogin from '../authorization/login';
+import activateRegister from '../authorization/register';
 import { hideUserLoggedMode } from '../authorization/userLoggedMode';
 
-export function activateForms(): void {
-  const registerForm = document.querySelector('.register-form') as HTMLFormElement;
-  if (registerForm) {
-    const auth = new Register(registerForm);
+
+export function activateAuthentification(): void {
+  const loginBtn = document.querySelector('.login-btn') as HTMLButtonElement;
+  if (loginBtn) {
+   activateLogin();
   }
 
-  const loginForm = document.querySelector('.login-form') as HTMLFormElement;
-  if (loginForm) {
-    const auth = new Login(loginForm);
+  const registerBtn = document.querySelector('.register-btn') as HTMLButtonElement;
+  if(registerBtn){
+    activateRegister();
   }
 }
-
 export function activateLogOut(): void {
   const logout = document.querySelector('.authorization__logout') as HTMLElement;
   logout.addEventListener('click', (event) => {
