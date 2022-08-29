@@ -1,9 +1,12 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-underscore-dangle */
 import { IWord, ISprintWord, IWordData, IUserWord, IUserTokens, ISprintResult } from '../../interfaces/interfaces';
 // eslint-disable-next-line import/no-cycle
 import SprintResult from './sprint-result';
 import api from '../../api/api';
 import getRandomNumber from '../../components/utils/getRandomNumber';
+import getAuthentification from '../../components/utils/getAuthentification';
+import Controller from '../../components/controller/controller';
 
 export default class SprintGame {
   start: void;
@@ -11,8 +14,6 @@ export default class SprintGame {
   mainContent!: HTMLElement;
 
   sprintWordsArray: IWord[];
-
-  isLoggedIn = false;
 
   authObj: IUserTokens | null;
 
@@ -44,8 +45,7 @@ export default class SprintGame {
     this.streak = 0;
     this.viewChanged = false;
     this.index = 0;
-    this.authObj = null;
-    this.isLoggedIn = this.getAuthentification();
+    this.authObj = getAuthentification();
     this.sprintWordsArray = sprintWordsArray;
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
     this.mainContent.innerHTML = SprintGame.getHTML();
@@ -150,7 +150,7 @@ export default class SprintGame {
     const wordName = word.innerHTML;
     const correctWord = this.sprint.sprintWordsArray.find((elem) => elem.word === wordName);
 
-    if (this.isLoggedIn) {
+    if (Controller.isLoggedIn) {
       this.updateCorrectUserWord(correctWord);
     }
     this.updateSprintStatData(correctWord);
@@ -199,7 +199,7 @@ export default class SprintGame {
     wrongAudio.src = '../../assets/sounds/bad.mp3';
     const wordName = word.innerHTML;
     const incorrectWord = this.sprint.sprintWordsArray.find((elem) => elem.word === wordName);
-    if (this.isLoggedIn) {
+    if (Controller.isLoggedIn) {
       this.updateIncorrectUserWord(incorrectWord);
     }
     this.updateSprintStatData(
@@ -406,16 +406,6 @@ export default class SprintGame {
     }, 1000);
   }
 
-  private getAuthentification(): boolean {
-    const authBtn = document.querySelector('#authorization') as HTMLButtonElement;
-    this.isLoggedIn = authBtn.disabled; // если кнопка скрыта, значит пользователь вошел
-    if (this.isLoggedIn) {
-      this.authObj = JSON.parse(localStorage.getItem('tokenData') as string);
-      return true;
-    }
-    return false;
-  }
-
   private updateSprintStatData(
     correctWord: IWordData | IWord | null = null,
     incorrectWord: IWordData | IWord | null = null,
@@ -423,10 +413,10 @@ export default class SprintGame {
     streak = 0
   ): void {
     if (correctWord) {
-      this.sprint.sprintStatData.correctWords.push(correctWord);
+      this.sprint.sprintStatData.correctWords.push(correctWord as IWordData);
     }
     if (incorrectWord) {
-      this.sprint.sprintStatData.incorrectWords.push(incorrectWord);
+      this.sprint.sprintStatData.incorrectWords.push(incorrectWord as IWordData);
     }
     if (learnedWord) {
       this.sprint.sprintStatData.learnedWords = learnedWord;

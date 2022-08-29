@@ -88,12 +88,7 @@ export interface ISprintStatObj {
 
 export interface ISprintResult {
   sprintNewWords: number;
-  sprintStatData: {
-    correctWords: IWord[];
-    incorrectWords: IWord[];
-    learnedWords: number;
-    maxStreak: number;
-  };
+  sprintStatData: ISprintStatObj;
   sprintTimer: number;
   sprintScore: string;
   sprintWordsArray: IWord[];

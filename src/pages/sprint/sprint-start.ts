@@ -1,26 +1,22 @@
+/* eslint-disable import/no-cycle */
 import { IWord, IUserTokens } from '../../interfaces/interfaces';
 import API from '../../api/api';
 import getRandomNumber from '../../components/utils/getRandomNumber';
-
-// eslint-disable-next-line import/no-cycle
+import Controller from '../../components/controller/controller';
 import SprintGame from './sprint-game';
+import getAuthentification from '../../components/utils/getAuthentification';
 
 export default class SprintStart {
   selectDiff: void;
 
   mainContent!: HTMLElement;
 
-  isLoggedIn = false;
-
-  userId!: string;
-
   static sprintWordsArray: IWord[];
 
   authObj: IUserTokens | null;
 
   constructor() {
-    this.authObj = null;
-    this.isLoggedIn = this.getAuthentification();
+    this.authObj = getAuthentification();
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
     this.mainContent.innerHTML = SprintStart.getHTML();
     this.selectDiff = this.setDifficultyListeners();
@@ -69,7 +65,7 @@ export default class SprintStart {
   private async setWordsArray(group: number): Promise<void> {
     try {
       const page = getRandomNumber(30);
-      if (!this.isLoggedIn) {
+      if (!Controller.isLoggedIn) {
         const response = await API.getWords(group, page);
         SprintStart.sprintWordsArray = response as IWord[];
       } else {
@@ -94,15 +90,5 @@ export default class SprintStart {
     } catch (err) {
       throw new Error(err as string);
     }
-  }
-
-  private getAuthentification(): boolean {
-    const authBtn = document.querySelector('#authorization') as HTMLButtonElement;
-    this.isLoggedIn = authBtn.disabled;
-    if (this.isLoggedIn) {
-      this.authObj = JSON.parse(localStorage.getItem('tokenData') as string);
-      return true;
-    }
-    return false;
   }
 }

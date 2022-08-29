@@ -1,8 +1,11 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-underscore-dangle */
 import { IWord, IUserTokens, IWordData, ISprintResult } from '../../interfaces/interfaces';
 import api from '../../api/api';
 // eslint-disable-next-line import/no-cycle
 import Sprint from './sprint';
+import getAuthentification from '../../components/utils/getAuthentification';
+import Controller from '../../components/controller/controller';
 
 export default class SprintResult {
   start: void | Sprint;
@@ -11,14 +14,11 @@ export default class SprintResult {
 
   sprintResult: ISprintResult;
 
-  isLoggedIn = false;
-
   authObj: IUserTokens | null;
 
   constructor(sprintResult: ISprintResult) {
     this.sprintResult = sprintResult;
-    this.authObj = null;
-    this.isLoggedIn = this.getAuthentification();
+    this.authObj = getAuthentification();
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
     this.mainContent.innerHTML = SprintResult.getHTML();
     this.start = this.showStatWords();
@@ -62,7 +62,7 @@ export default class SprintResult {
     const wrongSection = document.getElementById('sprint-incorrect-stat') as HTMLElement;
 
     document.onkeyup = null;
-    if (this.isLoggedIn) {
+    if (Controller.isLoggedIn) {
       this.changeStatistics();
     }
 
@@ -71,8 +71,8 @@ export default class SprintResult {
     rightSection.innerHTML = `Правильных ответов: ${this.sprintResult.sprintStatData.correctWords.length}`;
     wrongSection.innerHTML = `Ошибок: ${this.sprintResult.sprintStatData.incorrectWords.length}`;
     this.rotateWave();
-    this.showWords(this.sprintResult.sprintStatData.correctWords, true);
-    this.showWords(this.sprintResult.sprintStatData.incorrectWords, false);
+    SprintResult.showWords(this.sprintResult.sprintStatData.correctWords, true);
+    SprintResult.showWords(this.sprintResult.sprintStatData.incorrectWords, false);
     this.setAudioListeners();
     this.setRepeatBtnListener();
   }
@@ -129,14 +129,14 @@ export default class SprintResult {
     api.upsertStatistics(statistic);
   }
 
-  private showWords(arrayWords: IWord[], valid: boolean): void {
+  private static showWords(arrayWords: IWord[], valid: boolean): void {
     const wordsSection = document.getElementById('sprint-result-stat') as HTMLElement;
 
     wordsSection.innerHTML += valid ? '' : '<h2>Неправильные ответы</h2>';
     arrayWords.forEach((elem) => {
       wordsSection.innerHTML += `<div class="sprint__statistics__words">
         <button class="sprint__statistics__audio" id="${
-          !this.isLoggedIn ? (elem as IWordData).id : (elem as IWord)._id
+          !Controller.isLoggedIn ? (elem as IWordData).id : (elem as IWord)._id
         }"></button>
         <div class="property_word">${elem.word}</div>
         <div class="property_word_tr">${elem.transcription}</div>
@@ -148,15 +148,17 @@ export default class SprintResult {
 
   private setAudioListeners(): void {
     const answerAudioBtn = document.querySelectorAll('.sprint__statistics__audio');
-
+    const resultArrayWords = [
+      ...this.sprintResult.sprintStatData.correctWords,
+      ...this.sprintResult.sprintStatData.incorrectWords,
+    ];
     answerAudioBtn.forEach((elem) => {
       const audio = new Audio();
       audio.src = `${api.baseUrl}/${
         (
-          [
-            ...this.sprintResult.sprintStatData.correctWords,
-            ...this.sprintResult.sprintStatData.incorrectWords,
-          ].find((el) => el._id === elem.id || el.id === elem.id) as IWordData | IWord
+          resultArrayWords.find((el) => el._id === elem.id || el.id === elem.id) as
+            | IWordData
+            | IWord
         ).audio
       }`;
       elem.addEventListener('click', () => {
@@ -185,16 +187,5 @@ export default class SprintResult {
       fullStat.classList.add('hidden');
       shortStat.classList.remove('hidden');
     });
-  }
-
-  private getAuthentification(): boolean {
-    const authBtn = document.querySelector('#authorization') as HTMLButtonElement;
-
-    this.isLoggedIn = authBtn.disabled;
-    if (this.isLoggedIn) {
-      this.authObj = JSON.parse(localStorage.getItem('tokenData') as string);
-      return true;
-    }
-    return false;
   }
 }

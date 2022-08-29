@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import Main from '../../pages/main/main';
 import Ebook from '../../pages/ebook/ebook';
 import Audiocall from '../../pages/audiocall/audiocall';
@@ -26,6 +27,8 @@ export default class Controller {
   mainView = new Main();
 
   footer = new Footer();
+
+  static isLoggedIn = true;
 
   initApp(): void {
     this.createView();

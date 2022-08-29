@@ -233,6 +233,7 @@ $black: black;
   justify-content: center;
   color: #000;
   border-radius: 10px;
+  box-sizing: border-box;
 
   &__stat__wrapper {
     width: 50%;
@@ -354,6 +355,19 @@ $black: black;
     justify-content: space-around;
     border-bottom: 1px solid rgb(0, 30, 60);
     margin: 10px 0 10px 0;
+
+    .property_word {
+      display: flex;
+      width: 20%;
+      &_tr {
+        display: flex;
+        width: 20%;
+      }
+      &_lang {
+        display: flex;
+        width: 30%;
+      }
+    }
   }
 
   &__audio {
@@ -401,7 +415,7 @@ $black: black;
 
 @media (max-width: 1000px) {
   .sprint__statistics {
-    &__words{
+    &__words {
       font-size: 15px;
     }
   }
