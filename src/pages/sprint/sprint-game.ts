@@ -1,6 +1,13 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-underscore-dangle */
-import { IWord, ISprintWord, IWordData, IUserWord, IUserTokens, ISprintResult } from '../../interfaces/interfaces';
+import {
+  IWord,
+  ISprintWord,
+  IWordData,
+  IUserWord,
+  IUserTokens,
+  ISprintResult,
+} from '../../interfaces/interfaces';
 // eslint-disable-next-line import/no-cycle
 import SprintResult from './sprint-result';
 import api from '../../api/api';

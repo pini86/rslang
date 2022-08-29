@@ -27,7 +27,7 @@ export default class SprintResult {
   private static getHTML(): string {
     return `
   <div class="sprint__statistics">
-   <div class="sprint__statistics__stat__wrapper" id="sprint-stat-short">
+   <div class="sprint__statistics__short" id="sprint-stat-short">
    <p class="sprint__statistics__title">Ваш результат в игре Спринт</[]>
    <div class="sprint__statistics__circle">
      <div class="sprint__statistics__wave"></div>
