@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import api from '../../api/api';
 import { IWord } from '../../interfaces/interfaces';
 import {

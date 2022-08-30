@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { IWord } from '../../interfaces/interfaces';
 import Audiocall from '../../pages/audiocall/audiocall';
 import AudioCall from './audiocall';

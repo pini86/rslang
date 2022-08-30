@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { IWord } from '../../interfaces/interfaces';
 import { activateNextAudiocallBtn, activatePlayAudioBtns } from './audiocallUtils';
 
