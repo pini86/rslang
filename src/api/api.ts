@@ -102,8 +102,11 @@ class API {
       .then((response) => response.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
+          const toastMessage = err.response?.data as string;
+          M.toast({ text: `Ошибка при авторизации: ${toastMessage}` });
           throw new Error(StatusMessages.INVALID_PASSWORD);
         } else if (err.response?.status === StatusCodes.EXPECTATION_FAILED) {
+          M.toast({ text: `Ошибка при авторизации: ${StatusMessages.USER_EXISTS}` });
           throw new Error(StatusMessages.USER_EXISTS);
         }
         throw err;
