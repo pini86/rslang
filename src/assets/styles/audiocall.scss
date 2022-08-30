@@ -2,11 +2,6 @@
 @use 'mixins' as *;
 
 .audiocall {
-  height: calc(100vh - 154px);
-
-  @include resolution(mobile) {
-    min-height: calc(100vh - 184px);
-  }
 
   @include flex-column;
   justify-content: center;
@@ -80,11 +75,13 @@
       flex-direction: column;
     }
   }
-  &__word{
+
+  &__word {
     display: flex;
     gap: 10px;
   }
-  &__word-list{
+
+  &__word-list {
     width: 60%;
   }
 
@@ -93,9 +90,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 90%;
+    height: 50vh;
+    width: 70%;
   }
-  &__word-image{
+
+  &__word-image {
     height: 100px;
     display: none;
   }
@@ -136,8 +135,9 @@
 
 .word-item {
   display: flex;
-  gap: 10%;
+  gap: 10px;
   align-items: center;
+  cursor: pointer;
 }
 
 .audiocall__play-word {
@@ -152,4 +152,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.icon {
+  &-blue {
+    color: $accent-blue-color;
+  }
+
+  &-green {
+    color: $accent-green-color;
+  }
 }

@@ -15,6 +15,10 @@ body {
   background-color: $bg-color;
   color: $font-color;
   font-size: 1.2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .container {

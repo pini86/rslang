@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import api from '../../api/api';
 import { IWord } from '../../interfaces/interfaces';
 import {
@@ -9,6 +10,7 @@ import {
   showGameStyles,
   playAudio,
   shuffleArray,
+  pauseAudio,
 } from './audiocallUtils';
 import ResultsMode from './resultsMode';
 import RoundMode from './roundMode';
@@ -31,6 +33,10 @@ export default class AudioCall {
 
   private wrongWords: IWord[] = [];
 
+  static isAudioPlaying = false;
+
+  static audio: HTMLAudioElement;
+
   initGame(): void {
     this.currentView = new StartMode();
     const selectedLevel = getUserSelectedLevel();
@@ -46,15 +52,14 @@ export default class AudioCall {
     });
   }
 
-  playRound(): void {
+  async playRound(): Promise<void> {
     this.currentView = new RoundMode();
     this.wordsInRound = [];
 
     const mainWord = this.gameWords[this.round];
     const image = document.querySelector('.audiocall__word-image') as HTMLImageElement;
     image.src = `https://react-learnwords-example.herokuapp.com/${mainWord.image}`;
-    const audioUrl = `https://react-learnwords-example.herokuapp.com/${mainWord.audio}`;
-    playAudio(audioUrl);
+
     this.mainWordId = mainWord.id;
     this.mainWordTranslate = mainWord.wordTranslate;
     this.wordsInRound.push(mainWord);
@@ -67,6 +72,14 @@ export default class AudioCall {
     }
     shuffleArray(this.wordsInRound);
     displayWords(this.wordsInRound);
+
+    const audioUrl = `https://react-learnwords-example.herokuapp.com/${mainWord.audio}`;
+    AudioCall.audio = new Audio(audioUrl);
+    playAudio();
+    const playBtn = document.querySelector('.audiocall__play-btn') as HTMLElement;
+    playBtn.addEventListener('click', () => {
+      playAudio();
+    });
 
     const wordsContainer = document.querySelector('.audiocall__words') as HTMLElement;
 
@@ -136,6 +149,7 @@ export default class AudioCall {
 
   clickListenerContinueBtn = () => {
     this.checkIfGameFinished();
+    pauseAudio();
     const continueBtn = document.querySelector('.audiocall__continue-btn') as HTMLElement;
     continueBtn.removeEventListener('click', this.clickListenerContinueBtn);
   };
@@ -143,6 +157,7 @@ export default class AudioCall {
   keyboardListenerContinueBtn = (keyEvent: KeyboardEvent) => {
     if (keyEvent.key === ' ') {
       this.checkIfGameFinished();
+      pauseAudio();
     }
     document.removeEventListener('keydown', this.keyboardListenerContinueBtn);
   };
@@ -153,7 +168,7 @@ export default class AudioCall {
       this.playRound();
     } else {
       this.currentView = new ResultsMode();
-      ResultsMode.showResults(this.wrongWords, this.correctWords);
+      ResultsMode.showResults(this.wrongWords, this.correctWords, this.gameWords);
     }
   };
 }

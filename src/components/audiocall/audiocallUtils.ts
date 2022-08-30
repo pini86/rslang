@@ -1,4 +1,7 @@
+/* eslint-disable import/no-cycle */
 import { IWord } from '../../interfaces/interfaces';
+import Audiocall from '../../pages/audiocall/audiocall';
+import AudioCall from './audiocall';
 
 export function shuffleArray<T>(array: T[]): void {
   for (let i = array.length - 1; i > 0; i--) {
@@ -66,13 +69,23 @@ export function getUserSelectedLevel(): number {
   return selectedLevel;
 }
 
-export function playAudio(url: string): void {
-  const audio = new Audio(url);
-  audio.play();
-  const playBtn = document.querySelector('.audiocall__play-btn') as HTMLElement;
-  playBtn.addEventListener('click', () => {
-    audio.play();
-  });
+// eslint-disable-next-line consistent-return
+export async function playAudio(): Promise<void> {
+  AudioCall.audio.onplaying = () => {
+    AudioCall.isAudioPlaying = true;
+  };
+  AudioCall.audio.onpause = () => {
+    AudioCall.isAudioPlaying = false;
+  };
+  if (AudioCall.audio.paused && !AudioCall.isAudioPlaying) {
+    return AudioCall.audio.play();
+  }
+}
+
+export async function pauseAudio(): Promise<void> {
+  if (!AudioCall.audio.paused && AudioCall.isAudioPlaying) {
+    AudioCall.audio.pause();
+  }
 }
 
 export function displayWords(wordsInRound: IWord[]) {
@@ -93,7 +106,7 @@ export function showGameStyles(mainWord: IWord): void {
 
   const wordsBtns = document.querySelectorAll('.audiocall__word') as NodeListOf<HTMLElement>;
   disableBtnStyles(wordsBtns);
-  
+
   const words = Array.from(wordsBtns);
   const correctWord = words.find((word) => {
     const text = (word.querySelector('.word__text') as HTMLElement).innerText.toLowerCase();
@@ -104,4 +117,24 @@ export function showGameStyles(mainWord: IWord): void {
   const wordToPlay = document.querySelector('.audiocall__play-word') as HTMLElement;
   wordToPlay.innerHTML = mainWord.word;
   wordToPlay.style.display = 'block';
+}
+
+export function activateNextAudiocallBtn() {
+  const playAgainBtn = document.querySelector('.next__play') as HTMLElement;
+  playAgainBtn.addEventListener('click', () => {
+    const view = new Audiocall();
+  });
+}
+
+export function activatePlayAudioBtns(gameWords: IWord[]): void {
+  const words = document.querySelectorAll('.word-item') as NodeListOf<HTMLElement>;
+  words.forEach((word) => {
+    word.addEventListener('click', () => {
+      const textWord = (word.querySelector('.word-item__word') as HTMLElement).innerText;
+      const wordCard = gameWords.find((el) => el.word === textWord) as IWord;
+      const audioUrl = `https://react-learnwords-example.herokuapp.com/${wordCard.audio}`;
+      const audio = new Audio(audioUrl);
+      audio.play();
+    });
+  });
 }

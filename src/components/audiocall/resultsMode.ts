@@ -1,4 +1,6 @@
+/* eslint-disable import/no-cycle */
 import { IWord } from '../../interfaces/interfaces';
+import { activateNextAudiocallBtn, activatePlayAudioBtns } from './audiocallUtils';
 
 export default class ResultsMode {
   gameContent!: HTMLElement;
@@ -6,6 +8,7 @@ export default class ResultsMode {
   constructor() {
     this.gameContent = document.querySelector('main div.container') as HTMLElement;
     this.gameContent.innerHTML = `<div class="audiocall">
+    <div class="audiocall__wrapper">
     <div class="audiocall__results">
       <h5 class="audiocall__start-header">Результаты игры</h5>
       <div class="audiocall__word-list">
@@ -17,17 +20,21 @@ export default class ResultsMode {
         </div>
       </div>
   </div>
+  <div class="audiocall__next ">
+  <button class="next__play waves-effect waves-light btn">Сыграть еще</button>
+  </div>
+  </div>
 </div>`;
   }
 
-  static showResults(wrongWords: IWord[], correctWords: IWord[]) {
+  static showResults(wrongWords: IWord[], correctWords: IWord[], gameWords: IWord[]) {
     const correctCount = document.querySelector('.correct-counter') as HTMLElement;
     correctCount.innerHTML = correctWords.length.toString();
     const correctWordsList = document.querySelector('.word-list__correct') as HTMLElement;
     correctWords.forEach((word: IWord) => {
       correctWordsList.innerHTML += `<div class="word-item">
       <span class="word-item__sound">
-      <i class="material-icons">volume_up</i>
+      <i class="material-icons icon-green">volume_up</i>
       </span>
       <span class="word-item__word">${word.word}</span>
       <span> — </span>
@@ -40,7 +47,7 @@ export default class ResultsMode {
     const wrongWordsList = document.querySelector('.word-list__wrong') as HTMLElement;
     wrongWords.forEach((word: IWord) => {
       wrongWordsList.innerHTML += `<div class="word-item">
-      <span class="word-item__sound">
+      <span class="word-item__sound icon-blue">
       <i class="material-icons">volume_up</i>
       </span>
       <span class="word-item__word">${word.word}</span>
@@ -48,5 +55,7 @@ export default class ResultsMode {
       <span class="word-item__translate">${word.wordTranslate}</span>
     </div>`;
     });
+    activateNextAudiocallBtn();
+    activatePlayAudioBtns(gameWords);
   }
 }
