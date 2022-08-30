@@ -81,6 +81,10 @@ export default class AudioCall {
       playAudio();
     });
 
+    const wrongAudio = new Audio('../../assets/sounds/bad.mp3');
+    const correctAudio = new Audio('../../assets/sounds/good.mp3');
+
+
     const wordsContainer = document.querySelector('.audiocall__words') as HTMLElement;
 
     const wordsMouseListener = (event: MouseEvent): void => {
@@ -101,8 +105,10 @@ export default class AudioCall {
         if (selectedWord.toLowerCase() !== this.mainWordTranslate.toLowerCase()) {
           colorIncorrectElement(target.closest('.audiocall__word') as HTMLElement);
           this.wrongWords.push(mainWord);
+          wrongAudio.play();
         } else {
           this.correctWords.push(mainWord);
+          correctAudio.play();
         }
 
         wordsContainer.removeEventListener('click', wordsMouseListener);
@@ -129,8 +135,10 @@ export default class AudioCall {
         if (selectedWord.toLowerCase() !== this.mainWordTranslate.toLowerCase()) {
           colorIncorrectElement(button);
           this.wrongWords.push(mainWord);
+          wrongAudio.play();
         } else {
           this.correctWords.push(mainWord);
+          correctAudio.play();
         }
         document.removeEventListener('keydown', wordsKeyboardListener);
         this.activateContinueBtn();
