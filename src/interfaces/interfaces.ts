@@ -1,5 +1,6 @@
 export interface IWord {
   id: string;
+  _id?: string;
   group: number;
   page: number;
   word: string;
@@ -13,6 +14,8 @@ export interface IWord {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+  difficulty?: string;
+  userWord?: IUserWord;
 }
 
 export interface IUser {
@@ -29,17 +32,40 @@ export interface IUserTokens {
   name: string;
 }
 
+export interface IGetUserWord {
+  difficulty: string;
+  id: string;
+  wordId: string;
+}
+
 export interface IUserWord {
   difficulty: string;
   optional: {
-    difficulty: string;
-    optional: object;
+    correctCount?: number;
+    totalIncorrectCount?: number;
+    totalCorrectCount?: number;
   };
 }
 
+export type TAggregatedObj = [{paginatedResults: IWord[], totalCount: object}];
+
 export interface IUserStatistics {
+  id?: string;
   learnedWords: number;
-  optional: object;
+  optional: {
+    audiocall: {
+      correctWords: number,
+      incorrectWords: number,
+      streak: number,
+      newWords: number
+    },
+    sprint: {
+      correctWords: number,
+      incorrectWords: number,
+      streak: number,
+      newWords: number
+    }
+  }
 }
 
 export interface ISettings {
