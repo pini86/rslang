@@ -14,6 +14,7 @@ import {
 } from './audiocallUtils';
 import ResultsMode from './resultsMode';
 import RoundMode from './roundMode';
+import StartFromEbookMode from './startFromEbookMode';
 import StartMode from './startMode';
 
 export default class AudioCall {
@@ -44,6 +45,22 @@ export default class AudioCall {
 
     startAudiocallBtn.addEventListener('click', () => {
       api.getWords(selectedLevel, getRandomNumber(0, 30)).then((words) => {
+        this.gameWords = [...words];
+        shuffleArray(this.gameWords);
+        this.currentView = new RoundMode();
+        this.playRound();
+      });
+    });
+  }
+
+  initGameFromEbook(){
+    this.currentView = new StartFromEbookMode();
+    const startAudiocallBtn = document.querySelector('.audiocall__start-btn') as HTMLButtonElement;
+
+    startAudiocallBtn.addEventListener('click', () => {
+      const page = sessionStorage.getItem('page') || '0';
+      const group = sessionStorage.getItem('group') || '0';
+      api.getWords(+page, +group).then((words) => {
         this.gameWords = [...words];
         shuffleArray(this.gameWords);
         this.currentView = new RoundMode();

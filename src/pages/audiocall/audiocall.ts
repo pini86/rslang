@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import AudioCall from "../../components/audiocall/audiocall";
 
 export default class Audiocall {
