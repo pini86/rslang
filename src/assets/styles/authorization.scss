@@ -53,12 +53,16 @@
   display: flex;
   align-items: center;
   box-shadow: none;
+  max-width: 200px;
 }
 
 .authorization {
   display: flex;
   align-items: center;
   cursor: pointer;
+  &__greet{
+    overflow: hidden;
+  }
 }
 
 .login-form {
