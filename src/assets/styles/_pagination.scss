@@ -1,0 +1,35 @@
+.pagination {
+  margin: 0 auto;
+  padding: 10px 0 20px 0;
+  width: fit-content;
+
+  li a {
+    color: $font-color;
+  }
+
+  li.active-page a {
+    background-color: $font-color;
+    color: $bg-color;
+  }
+}
+
+@media (min-width: 1090px) {
+  .pagination li a {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 767px) {
+  .pagination {
+    margin: auto;
+
+    li a {
+      padding: 0 6px;
+    }
+
+    .arrow-right,
+    .arrow-left {
+      padding: 0;
+    }
+  }
+}
