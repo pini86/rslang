@@ -12,7 +12,7 @@ export default class Authorization {
       <div id="views">
 
         <div class="register-view">
-          <div class="register-form">
+          <form class="register-form" action="#" onsubmit="return false">
             <div class="input-group">
               <label for="name-reg"><p>Имя пользователя</p></label>
               <input type="text" id="name-reg" required>
@@ -29,12 +29,12 @@ export default class Authorization {
             <div class="modal-footer">
               <button class="waves-effect waves-green btn-flat yellow register-btn">Зарегистрироваться</button>
             </div>
-          </div>
+          </form>
         <label for="signin"><p class="auth-header auth-header-log">Уже есть аккаунт? <span class="auth-header-accent">Войти</span></p></label>
         </div>
 
         <div class="signin-view">
-          <div class="login-form">
+          <form class="login-form" action="#" onsubmit="return false">
             <div class="input-group">
               <label for="email-log"><p>Адрес электронной почты</p></label>
               <input type="email" id="email-log" required>
@@ -47,7 +47,7 @@ export default class Authorization {
             <div class="modal-footer">
               <button class="waves-effect waves-green btn-flat yellow login-btn">Войти</button>
             </div>
-          </div>
+          </form>
         <label for="register"><p class="auth-header auth-header-reg">Нет аккаунта? <span class="auth-header-accent">Зарегистрироваться</span></p></label>
         </div>
       </div>
