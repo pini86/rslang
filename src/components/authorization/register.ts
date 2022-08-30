@@ -8,26 +8,39 @@ import Controller from '../controller/controller';
 
 type RegisterFields = IUser;
 
-const getRegisterFields = (): RegisterFields => ({
-  name: (document.querySelector('#name-reg') as HTMLInputElement).value,
-  email: (document.querySelector('#email-reg') as HTMLInputElement).value,
-  password: (document.querySelector('#password-reg') as HTMLInputElement).value,
+const getRegisterFields = (
+  nameInput: HTMLInputElement,
+  emailInput: HTMLInputElement,
+  passwordInput: HTMLInputElement
+): RegisterFields => ({
+  name: nameInput.value,
+  email: emailInput.value,
+  password: passwordInput.value,
 });
 
 export default function activateRegister() {
   const registerBtn = document.querySelector('.register-btn') as HTMLButtonElement;
 
   registerBtn.addEventListener('click', async () => {
-    const registerFields: RegisterFields = getRegisterFields();
-    const { email, password } = registerFields;
+    const emailInput = document.querySelector('#email-reg') as HTMLInputElement;
+    const passwordInput = document.querySelector('#password-reg') as HTMLInputElement;
+    const nameInput = document.querySelector('#name-reg') as HTMLInputElement;
+    if (emailInput.checkValidity() && passwordInput.checkValidity() && nameInput.checkValidity()) {
+      const registerFields: RegisterFields = getRegisterFields(
+        nameInput,
+        emailInput,
+        passwordInput
+      );
+      const { email, password } = registerFields;
 
-    await api.createNewUser(registerFields).then(() => {
-      api.signIn(email, password).then((tokenData) => {
-        saveToken(tokenData);
-        showUserLoggedMode(tokenData.name);
-        const view = new Main();
-        Controller.isLoggedIn = true;
+      await api.createNewUser(registerFields).then(() => {
+        api.signIn(email, password).then((tokenData) => {
+          saveToken(tokenData);
+          showUserLoggedMode(tokenData.name);
+          const view = new Main();
+          Controller.isLoggedIn = true;
+        });
       });
-    });
+    }
   });
 }
