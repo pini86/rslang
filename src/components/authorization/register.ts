@@ -3,7 +3,6 @@ import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
 import Main from '../../pages/main/main';
-// eslint-disable-next-line import/no-cycle
 import Controller from '../controller/controller';
 
 type RegisterFields = IUser;
