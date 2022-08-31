@@ -2,7 +2,6 @@
 /* eslint-disable no-underscore-dangle */
 import { IWord, IUserTokens, IWordData, ISprintResult } from '../../interfaces/interfaces';
 import api from '../../api/api';
-// eslint-disable-next-line import/no-cycle
 import Sprint from './sprint';
 import getAuthentification from '../../components/utils/getAuthentification';
 import Controller from '../../components/controller/controller';
@@ -47,8 +46,7 @@ export default class SprintResult {
    </div>
    <div class="sprint__statistics__full hidden" id="sprint-stat-full">
     <div class="sprint__statistics__result__words" id="sprint-result-stat">
-    <h2>Правильные ответы</h2>
-   </div>
+  </div>
     <div class="sprint__statistics__return__button" id="sprint-return-button">Назад</div>
    </div>
   </div>
@@ -130,9 +128,10 @@ export default class SprintResult {
   }
 
   private static showWords(arrayWords: IWord[], valid: boolean): void {
+    if (arrayWords.length === 0) return;
     const wordsSection = document.getElementById('sprint-result-stat') as HTMLElement;
 
-    wordsSection.innerHTML += valid ? '' : '<h2>Неправильные ответы</h2>';
+    wordsSection.innerHTML += valid ? '<h2>Правильные ответы</h2>' : '<h2>Неправильные ответы</h2>';
     arrayWords.forEach((elem) => {
       wordsSection.innerHTML += `<div class="sprint__statistics__words">
         <button class="sprint__statistics__audio" id="${

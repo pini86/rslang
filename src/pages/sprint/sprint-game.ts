@@ -7,6 +7,7 @@ import {
   IUserWord,
   IUserTokens,
   ISprintResult,
+  Difficulty
 } from '../../interfaces/interfaces';
 // eslint-disable-next-line import/no-cycle
 import SprintResult from './sprint-result';
@@ -46,7 +47,6 @@ export default class SprintGame {
       sprintTimer: 59,
       sprintScore: '0',
       sprintWordsArray,
-      auth: null,
     };
     this.sprintCorrectness = true;
     this.streak = 0;
@@ -225,7 +225,7 @@ export default class SprintGame {
     if (!(word as IWord).userWord) {
       this.sprint.sprintNewWords++;
       const userWordData = {
-        difficulty: 'normal',
+        difficulty: 'normal' as Difficulty,
         optional: {
           correctCount: 1,
           totalCorrectCount: 1,
@@ -269,7 +269,7 @@ export default class SprintGame {
     if (!(word as IWord).userWord) {
       this.sprint.sprintNewWords++;
       const userWordData = {
-        difficulty: 'normal',
+        difficulty: 'normal' as Difficulty,
         optional: {
           correctCount: 0,
           totalCorrectCount: 0,

@@ -32,13 +32,15 @@ export interface IUserTokens {
 }
 
 export interface IUserWord {
-  difficulty: string;
+  difficulty: Difficulty;
   optional: {
     correctCount: number;
     totalIncorrectCount: number;
     totalCorrectCount: number;
   };
 }
+
+export type Difficulty = 'easy' | 'normal' | 'hard';
 
 export interface IUserStatistics {
   id?: string;
@@ -92,5 +94,4 @@ export interface ISprintResult {
   sprintTimer: number;
   sprintScore: string;
   sprintWordsArray: IWord[];
-  auth: IUserTokens | null;
 }
