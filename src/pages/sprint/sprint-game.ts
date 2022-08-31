@@ -224,8 +224,8 @@ export default class SprintGame {
   private updateCorrectUserWord(word: IWord | IWordData | undefined): void {
     if (!(word as IWord).userWord) {
       this.sprint.sprintNewWords++;
-      const userWordData = {
-        difficulty: 'normal' as Difficulty,
+      const userWordData: IUserWord = {
+        difficulty: 'normal',
         optional: {
           correctCount: 1,
           totalCorrectCount: 1,
@@ -268,8 +268,8 @@ export default class SprintGame {
   private updateIncorrectUserWord(word: IWord | IWordData | undefined): void {
     if (!(word as IWord).userWord) {
       this.sprint.sprintNewWords++;
-      const userWordData = {
-        difficulty: 'normal' as Difficulty,
+      const userWordData: IUserWord = {
+        difficulty: 'normal',
         optional: {
           correctCount: 0,
           totalCorrectCount: 0,
