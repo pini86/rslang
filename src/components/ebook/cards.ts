@@ -6,15 +6,9 @@ import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
 
 const { baseUrl } = api;
-const container = document.querySelector('main .container') as HTMLElement;
+const main = document.querySelector('main') as HTMLElement;
+const container = main.querySelector('.container') as HTMLElement;
 let { curPage, curGroup } = state;
-
-function easyOrHard(userDifficulty: string) {
-  return {
-    difficulty: userDifficulty,
-    optional: {},
-  };
-}
 
 function generateCard(
   group: number,
@@ -78,7 +72,7 @@ function generateCard(
   `;
 }
 
-async function getUserIdsWords(words: IWord[]) {
+async function getUserWordIds(words: IWord[]) {
   const allUserWords = await api.getAllUserWords();
   const userWords = allUserWords.filter(word => words.map(w => w.id).includes(word.wordId));
   const userWordIds = userWords.map(word => word.wordId);
@@ -97,7 +91,7 @@ export default async function renderCards(group?: number, page?: number) {
 
   state.isAuth = localStorage.getItem('tokenData');
   const words = await api.getWords(group ?? curGroup, page ?? curPage);
-  const userWords = state.isAuth ? await getUserIdsWords(words) : [];
+  const userWords = state.isAuth ? await getUserWordIds(words) : [];
 
   let cardsToRender = '';
   words.forEach((w) => {
@@ -137,22 +131,38 @@ export default async function renderCards(group?: number, page?: number) {
     );
   });
 
-  if (words) {
+  if (cardsToRender) {
     container.innerHTML = cardsToRender;
   }
 }
 
+function provideDifficulty(userDifficulty: string, id: string) {
+  return {
+    difficulty: userDifficulty,
+    optional: { wordId: id },
+  };
+}
+
 async function updateWordDifficulty(id: string, difficulty: string) {
   if (state.userWordIds.includes(id)) {
-    await api.updateUserWord(id, easyOrHard(difficulty));
+    await api.updateUserWord(id, provideDifficulty(difficulty, id));
   } else {
-    await api.createUserWord(id, easyOrHard(difficulty));
+    await api.createUserWord(id, provideDifficulty(difficulty, id));
   }
 }
 
 function checkLearnedPage() {
   if (state.easyCount === 20) {
     document.querySelector('active-page')?.classList.add('learned-page');
+  }
+}
+
+function getIdGetCard(el: HTMLElement) {
+  const id = el.getAttribute('id') as string;
+  const card = container.querySelector(`[id='${id}'].card-wrapper`) as HTMLElement;
+  return {
+    id,
+    card,
   }
 }
 
@@ -163,8 +173,7 @@ container.addEventListener('click', async (e) => {
 
   } else if (el.classList.contains('btn-hard')) {
     el.classList.add('disabled');
-    const id = el.getAttribute('id') as string;
-    const card = container.querySelector(`[id='${id}'].card-wrapper`) as HTMLElement;
+    const { id, card } = getIdGetCard(el);
     card.classList.add('hard');
     card.classList.remove('easy');
     await updateWordDifficulty(id, 'hard');
@@ -173,23 +182,26 @@ container.addEventListener('click', async (e) => {
     el.classList.add('btn-learned');
     el.classList.remove('btn-to-learn');
     el.textContent = 'Изучено';
-    const id = el.getAttribute('id') as string;
-    const card = container.querySelector(`[id='${id}'].card-wrapper`) as HTMLElement;
+    const { id, card } = getIdGetCard(el);
     card.classList.remove('easy');
     state.easyCount--;
-    await api.updateUserWord(`${id}`, easyOrHard('normal'));
+    await updateWordDifficulty(id, 'normal');
 
   } else if (el.classList.contains('btn-learned')) {
     el.classList.add('btn-to-learn');
     el.classList.remove('btn-learned');
     el.textContent = 'Из изученных';
-    const id = el.getAttribute('id') as string;
-    const card = container.querySelector(`[id='${id}'].card-wrapper`) as HTMLElement;
+    const { id, card } = getIdGetCard(el);
     card.classList.add('easy');
     card.classList.remove('hard');
     card.querySelector('.btn-hard')?.classList.remove('disabled');
     state.easyCount++;
     checkLearnedPage();
     await updateWordDifficulty(id, 'easy');
+
+  } else if (el.classList.contains('btn-hard-remove')) {
+    const { id, card } = getIdGetCard(el);
+    card.remove();
+    await api.updateUserWord(id, provideDifficulty('normal', id));
   }
 });

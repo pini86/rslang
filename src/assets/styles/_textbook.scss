@@ -1,8 +1,7 @@
-#textbook {
-  position: relative;
-  padding-top: 20px;
-  background-color: $bg-color;
-  font-family: $main-font;
+.main.learned-page {
+  background: linear-gradient(rgba(255, 255, 255, 0) .9em, rgba(0, 0, 0, .15) 1em) 0 0,
+  linear-gradient(90deg, rgba(255,255,255, 0) .9em, rgba(0, 0, 0, .15) 1em) 0 0;
+  background-size: 1em 1em;
 }
 
 .col.card-wrapper {

@@ -1,6 +1,7 @@
+import state from './state';
 import createDiffPanel from '../../components/ebook/difficulty-panel';
 import renderCards from '../../components/ebook/cards';
-import initPagination from '../../components/ebook/pagination';
+import { initPagination } from '../../components/ebook/pagination';
 
 export class Ebook {
   mainContent!: HTMLElement;
@@ -14,5 +15,7 @@ export class Ebook {
 export function initEbook() {
   createDiffPanel();
   renderCards();
-  initPagination();
+  if (state.curGroup !== 6) {
+    initPagination();
+  }
 }

@@ -44,6 +44,7 @@ export interface IUserWord {
     correctCount?: number;
     totalIncorrectCount?: number;
     totalCorrectCount?: number;
+    wordId?: string;
   };
 }
 

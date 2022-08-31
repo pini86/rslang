@@ -8,7 +8,14 @@ let { curPage } = state;
 const pagination = document.createElement('ul');
 pagination.classList.add('pagination');
 
-function createPaginationPages(page: number) {
+function setActivePage(el: HTMLElement, isLearned: boolean) {
+  el.classList.add('active-page');
+  if (isLearned) {
+    el.classList.add('learned-page');
+  }
+}
+
+function createPaginationPages(page: number, isLearnedPage = false) {
   const arrowLeft = document.createElement('li');
   const arrowRight = document.createElement('li');
   arrowLeft.innerHTML =
@@ -27,7 +34,7 @@ function createPaginationPages(page: number) {
     const li = document.createElement('li');
 
     if (page === i) {
-      li.classList.add('active-page');
+      setActivePage(li, isLearnedPage);
     }
 
     li.innerHTML = `<a id="${i}" href="#">${i + 1}</a>`;
@@ -56,15 +63,23 @@ function createPaginationPages(page: number) {
   pagination.append(arrowRight);
 }
 
-function renderPagination(page: number) {
+function renderPagination(page: number, isLearnedPage = false) {
   pagination.innerHTML = '';
-  createPaginationPages(page);
+  createPaginationPages(page, isLearnedPage);
   main.append(pagination);
 }
 
-export default function initPagination() {
+export function initPagination() {
   const page = sessionStorage.getItem('page') ?? 0;
-  renderPagination(+page);
+  let isLearnedPage = false;
+  if (state.easyCount === 20) {
+    isLearnedPage = true;
+  }
+  renderPagination(+page, isLearnedPage);
+}
+
+export function removePagination() {
+  pagination.remove();
 }
 
 function togglePage() {

@@ -1,7 +1,8 @@
 import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import renderCards from './cards';
-import initPagination from './pagination';
+import renderDifficultCards from './difficult-cards';
+import { initPagination, removePagination } from './pagination';
 
 const main = document.querySelector('main') as HTMLElement;
 let { curGroup, curPage } = state;
@@ -24,9 +25,10 @@ export default function createDiffPanel() {
 
   textBookLevels.addEventListener('click', (e) => {
     const el = e.target as HTMLElement;
+    const elId = el.getAttribute('id');
     let curId = cardLevels[curGroup].difficultyId;
 
-    if (el.classList.contains('btn') && el.getAttribute('id') !== curId) {
+    if (el.classList.contains('btn') && elId !== curId && elId !== 'u') {
       textBookLevels.querySelector(`#${curId}`)?.classList.remove('level-active');
       el.classList.add('level-active');
       curId = el.getAttribute('id') as string;
@@ -38,6 +40,18 @@ export default function createDiffPanel() {
       sessionStorage.setItem('group', `${curGroup}`);
       renderCards(curGroup, curPage);
       initPagination();
+    } else if (elId === 'u') {
+      textBookLevels.querySelector(`#${curId}`)?.classList.remove('level-active');
+      el.classList.add('level-active');
+      curId = el.getAttribute('id') as string;
+      curGroup = 6;
+      curPage = 0;
+      state.curPage = curPage;
+      state.curGroup = curGroup;
+      sessionStorage.setItem('page', `${curPage}`);
+      sessionStorage.setItem('group', `${curGroup}`);
+      renderDifficultCards();
+      removePagination();
     }
   });
 
