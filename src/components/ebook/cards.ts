@@ -80,6 +80,17 @@ async function getUserWordIds(words: IWord[]) {
   return userWords;
 }
 
+function checkLearnedPage() {
+  if (state.easyCount === 20) {
+    main.classList.add('learned-page');
+  }
+}
+
+export function removeLearnedPage() {
+  main.classList.remove('learned-page');
+  state.easyCount = 0;
+}
+
 export default async function renderCards(group?: number, page?: number) {
   container.innerHTML = preloader;
   if (page !== undefined) {
@@ -134,6 +145,7 @@ export default async function renderCards(group?: number, page?: number) {
   if (cardsToRender) {
     container.innerHTML = cardsToRender;
   }
+  checkLearnedPage();
 }
 
 function provideDifficulty(userDifficulty: string, id: string) {
@@ -148,12 +160,6 @@ async function updateWordDifficulty(id: string, difficulty: string) {
     await api.updateUserWord(id, provideDifficulty(difficulty, id));
   } else {
     await api.createUserWord(id, provideDifficulty(difficulty, id));
-  }
-}
-
-function checkLearnedPage() {
-  if (state.easyCount === 20) {
-    document.querySelector('active-page')?.classList.add('learned-page');
   }
 }
 
@@ -185,6 +191,7 @@ container.addEventListener('click', async (e) => {
     const { id, card } = getIdGetCard(el);
     card.classList.remove('easy');
     state.easyCount--;
+    main.classList.remove('learned-page');
     await updateWordDifficulty(id, 'normal');
 
   } else if (el.classList.contains('btn-learned')) {

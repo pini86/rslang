@@ -1,4 +1,4 @@
-import renderCards from './cards';
+import renderCards, { removeLearnedPage } from './cards';
 import state from '../../pages/ebook/state';
 
 const main = document.querySelector('main') as HTMLElement;
@@ -8,14 +8,15 @@ let { curPage } = state;
 const pagination = document.createElement('ul');
 pagination.classList.add('pagination');
 
-function setActivePage(el: HTMLElement, isLearned: boolean) {
+function setActivePage(el: HTMLElement) {
   el.classList.add('active-page');
-  if (isLearned) {
-    el.classList.add('learned-page');
+  el.classList.remove('pagination-learned-page');
+  if (state.easyCount === 20) {
+    el.classList.add('pagination-learned-page');
   }
 }
 
-function createPaginationPages(page: number, isLearnedPage = false) {
+function createPaginationPages(page: number) {
   const arrowLeft = document.createElement('li');
   const arrowRight = document.createElement('li');
   arrowLeft.innerHTML =
@@ -34,7 +35,7 @@ function createPaginationPages(page: number, isLearnedPage = false) {
     const li = document.createElement('li');
 
     if (page === i) {
-      setActivePage(li, isLearnedPage);
+      setActivePage(li);
     }
 
     li.innerHTML = `<a id="${i}" href="#">${i + 1}</a>`;
@@ -63,19 +64,15 @@ function createPaginationPages(page: number, isLearnedPage = false) {
   pagination.append(arrowRight);
 }
 
-function renderPagination(page: number, isLearnedPage = false) {
+function renderPagination(page: number) {
   pagination.innerHTML = '';
-  createPaginationPages(page, isLearnedPage);
+  createPaginationPages(page);
   main.append(pagination);
 }
 
 export function initPagination() {
   const page = sessionStorage.getItem('page') ?? 0;
-  let isLearnedPage = false;
-  if (state.easyCount === 20) {
-    isLearnedPage = true;
-  }
-  renderPagination(+page, isLearnedPage);
+  renderPagination(+page);
 }
 
 export function removePagination() {
@@ -98,18 +95,21 @@ pagination.addEventListener('click', (e) => {
   ) {
     curPage--;
     togglePage();
+    removeLearnedPage();
   } else if (
     (el.classList.contains('arrow-right') && curPage !== totalPages) ||
     (el.classList.contains('next') && curPage !== totalPages)
   ) {
     curPage++;
     togglePage();
+    removeLearnedPage();
   } else {
     const id = el.getAttribute('id');
 
     if (id && +id !== curPage) {
       curPage = +id;
       togglePage();
+      removeLearnedPage();
     }
   }
 });

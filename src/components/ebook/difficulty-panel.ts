@@ -1,6 +1,6 @@
 import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
-import renderCards from './cards';
+import renderCards, { removeLearnedPage } from './cards';
 import renderDifficultCards from './difficult-cards';
 import { initPagination, removePagination } from './pagination';
 
@@ -38,8 +38,10 @@ export default function createDiffPanel() {
       state.curGroup = curGroup;
       sessionStorage.setItem('page', `${curPage}`);
       sessionStorage.setItem('group', `${curGroup}`);
+      removeLearnedPage();
       renderCards(curGroup, curPage);
       initPagination();
+
     } else if (elId === 'u') {
       textBookLevels.querySelector(`#${curId}`)?.classList.remove('level-active');
       el.classList.add('level-active');
@@ -50,6 +52,7 @@ export default function createDiffPanel() {
       state.curGroup = curGroup;
       sessionStorage.setItem('page', `${curPage}`);
       sessionStorage.setItem('group', `${curGroup}`);
+      removeLearnedPage();
       renderDifficultCards();
       removePagination();
     }
