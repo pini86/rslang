@@ -92,9 +92,9 @@ export default async function renderDifficultCards() {
     );
   });
 
-  if (words) {
+  if (cardsToRender) {
     container.innerHTML = cardsToRender;
-  } else if (words === '') {
-    container.innerHTML = '<h2>Сложные слова отсутствуют в вашем словаре.</h2>';
+  } else if (cardsToRender === '') {
+    container.innerHTML = '<h5 class="center-align">Сложные слова отсутствуют в вашем словаре.</h5>';
   }
 }
