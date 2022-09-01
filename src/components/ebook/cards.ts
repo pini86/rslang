@@ -1,9 +1,9 @@
-import { IWord, Difficulty } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
+import { getUserWordIds, provideDifficulty, updateWordDifficulty, checkLearnedPage } from '../../pages/ebook/helpers';
 
 const { baseUrl } = api;
 const main = document.querySelector('main') as HTMLElement;
@@ -72,25 +72,6 @@ function generateCard(
   `;
 }
 
-async function getUserWordIds(words: IWord[]) {
-  const allUserWords = await api.getAllUserWords();
-  const userWords = allUserWords.filter(word => words.map(w => w.id).includes(word.wordId));
-  const userWordIds = userWords.map(word => word.wordId);
-  state.userWordIds = userWordIds;
-  return userWords;
-}
-
-function checkLearnedPage() {
-  if (state.easyCount === 20) {
-    main.classList.add('learned-page');
-  }
-}
-
-export function removeLearnedPage() {
-  main.classList.remove('learned-page');
-  state.easyCount = 0;
-}
-
 export default async function renderCards(group?: number, page?: number) {
   container.innerHTML = preloader;
   if (page !== undefined) {
@@ -145,22 +126,7 @@ export default async function renderCards(group?: number, page?: number) {
   if (cardsToRender) {
     container.innerHTML = cardsToRender;
   }
-  checkLearnedPage();
-}
-
-function provideDifficulty(userDifficulty: Difficulty, id: string) {
-  return {
-    difficulty: userDifficulty,
-    optional: { wordId: id },
-  };
-}
-
-async function updateWordDifficulty(id: string, difficulty: Difficulty) {
-  if (state.userWordIds.includes(id)) {
-    await api.updateUserWord(id, provideDifficulty(difficulty, id));
-  } else {
-    await api.createUserWord(id, provideDifficulty(difficulty, id));
-  }
+  checkLearnedPage(main);
 }
 
 function getIdGetCard(el: HTMLElement) {
@@ -203,7 +169,7 @@ container.addEventListener('click', async (e) => {
     card.classList.remove('hard');
     card.querySelector('.btn-hard')?.classList.remove('disabled');
     state.easyCount++;
-    checkLearnedPage();
+    checkLearnedPage(main);
     await updateWordDifficulty(id, 'easy');
 
   } else if (el.classList.contains('btn-hard-remove')) {

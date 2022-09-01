@@ -1,5 +1,6 @@
-import renderCards, { removeLearnedPage } from './cards';
 import state from '../../pages/ebook/state';
+import renderCards from './cards';
+import { removeLearnedPage } from '../../pages/ebook/helpers';
 
 const main = document.querySelector('main') as HTMLElement;
 const { totalPages } = state;
@@ -95,21 +96,21 @@ pagination.addEventListener('click', (e) => {
   ) {
     curPage--;
     togglePage();
-    removeLearnedPage();
+    removeLearnedPage(main);
   } else if (
     (el.classList.contains('arrow-right') && curPage !== totalPages) ||
     (el.classList.contains('next') && curPage !== totalPages)
   ) {
     curPage++;
     togglePage();
-    removeLearnedPage();
+    removeLearnedPage(main);
   } else {
     const id = el.getAttribute('id');
 
     if (id && +id !== curPage) {
       curPage = +id;
       togglePage();
-      removeLearnedPage();
+      removeLearnedPage(main);
     }
   }
 });
