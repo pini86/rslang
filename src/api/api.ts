@@ -104,8 +104,11 @@ class API {
       .then((response) => response.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
+          const toastMessage = err.response?.data as string;
+          M.toast({ text: `Ошибка при авторизации: ${toastMessage}` });
           throw new Error(StatusMessages.INVALID_PASSWORD);
         } else if (err.response?.status === StatusCodes.EXPECTATION_FAILED) {
+          M.toast({ text: `Ошибка при авторизации: ${StatusMessages.USER_EXISTS}` });
           throw new Error(StatusMessages.USER_EXISTS);
         }
         throw err;
@@ -296,8 +299,8 @@ class API {
   ): Promise<IWord[]> | never => {
     const url = `${this.users}/${id}/aggregatedWords?&group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
     return axiosAuth
-      .get<IWord[]>(url)
-      .then((response) => response.data)
+      .get<[{ paginatedResults: IWord[] }]>(url)
+      .then((response) => response.data[0].paginatedResults)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
@@ -328,7 +331,7 @@ class API {
 
   /** Gets statistics */
   getStatistics = async (id = this.userId): Promise<IUserStatistics> | never => {
-    const url = `${this.users}/users/${id}/statistics`;
+    const url = `${this.users}/${id}/statistics`;
     return axiosAuth
       .get<IUserStatistics>(url)
       .then((response) => response.data)
@@ -349,7 +352,7 @@ class API {
     statistic: IUserStatistics,
     id = this.userId
   ): Promise<IUserStatistics> | never => {
-    const url = `${this.users}/users/${id}/statistics`;
+    const url = `${this.users}/${id}/statistics`;
     return axiosAuth
       .put<IUserStatistics>(url, statistic)
       .then((response) => response.data)
@@ -367,7 +370,7 @@ class API {
 
   /** Gets settings */
   getSettings = async (id = this.userId): Promise<ISettings> | never => {
-    const url = `${this.users}/users/${id}/settings`;
+    const url = `${this.users}/${id}/settings`;
     return axiosAuth
       .get<ISettings>(url)
       .then((response) => response.data)
@@ -385,7 +388,7 @@ class API {
 
   /** Upsert new settings */
   upsertSettings = async (setting: ISettings, id = this.userId): Promise<ISettings> | never => {
-    const url = `${this.users}/users/${id}/settings`;
+    const url = `${this.users}/${id}/settings`;
     return axiosAuth
       .put<ISettings>(url, setting)
       .then((response) => response.data)

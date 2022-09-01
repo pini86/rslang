@@ -2,33 +2,29 @@ import { IUser } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
+import Main from '../../pages/main/main';
+import Controller from '../controller/controller';
 
 type LoginFields = Pick<IUser, 'email' | 'password'>;
 
-class Login {
-  form: HTMLFormElement;
+const getLoginFields = (emailInput: HTMLInputElement, passwordInput: HTMLInputElement): LoginFields => ({
+  email: emailInput.value,
+  password: passwordInput.value,
+});
 
-  constructor(form: HTMLFormElement) {
-    this.form = form;
-    this.signOnSubmit();
-  }
-
-  static getLoginFields = (): LoginFields => ({
-    email: (document.querySelector('#email-log') as HTMLInputElement).value,
-    password: (document.querySelector('#password-log') as HTMLInputElement).value,
-  });
-
-  signOnSubmit(): void {
-    this.form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const loginFields: LoginFields = Login.getLoginFields();
-
+export default function activateLogin() {
+  const loginBtn = document.querySelector('.login-btn') as HTMLButtonElement;
+  loginBtn.addEventListener('click', async () => {
+    const emailInput = document.querySelector('#email-log') as HTMLInputElement;
+    const passwordInput = (document.querySelector('#password-log') as HTMLInputElement);
+    if (emailInput.checkValidity() && passwordInput.checkValidity()) {
+      const loginFields: LoginFields = getLoginFields(emailInput, passwordInput);
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
         saveToken(tokenData);
         showUserLoggedMode(tokenData.name);
+        const view = new Main();
+        Controller.isLoggedIn = true;
       });
-    });
-  }
+    }
+  });
 }
-export default Login;

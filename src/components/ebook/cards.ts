@@ -1,4 +1,4 @@
-import { IWord } from '../../interfaces/interfaces';
+import { IWord, Difficulty } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
@@ -148,14 +148,14 @@ export default async function renderCards(group?: number, page?: number) {
   checkLearnedPage();
 }
 
-function provideDifficulty(userDifficulty: string, id: string) {
+function provideDifficulty(userDifficulty: Difficulty, id: string) {
   return {
     difficulty: userDifficulty,
     optional: { wordId: id },
   };
 }
 
-async function updateWordDifficulty(id: string, difficulty: string) {
+async function updateWordDifficulty(id: string, difficulty: Difficulty) {
   if (state.userWordIds.includes(id)) {
     await api.updateUserWord(id, provideDifficulty(difficulty, id));
   } else {

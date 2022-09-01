@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import Main from '../../pages/main/main';
 import { Ebook, initEbook } from '../../pages/ebook/ebook';
 import Audiocall from '../../pages/audiocall/audiocall';
@@ -6,6 +7,8 @@ import Statistics from '../../pages/statistics/statistics';
 import Authorization from '../../pages/authorization/authorization';
 import Header from '../../pages/header/header';
 import Footer from '../../pages/footer/footer';
+import { showUserAuthentification } from '../authorization/userLoggedMode';
+import { activateAuthentification } from '../contentLoaded/dom';
 
 enum EPages {
   auth = 'Auth',
@@ -17,6 +20,8 @@ enum EPages {
 }
 
 export default class Controller {
+  static isLoggedIn = false;
+
   private currentPage = EPages.main;
 
   keyStorage = 'currentPage';
@@ -26,6 +31,8 @@ export default class Controller {
   mainView = new Main();
 
   footer = new Footer();
+
+  static isLoggedIn = false;
 
   initApp(): void {
     this.createView();
@@ -48,9 +55,10 @@ export default class Controller {
       }
     });
 
-    authBtn.addEventListener('click', (): void =>
-      this.addBtnListener(EPages.auth, new Authorization(), authBtn)
-    );
+    authBtn.addEventListener('click', (): void => {
+      this.addBtnListener(EPages.auth, new Authorization(), authBtn);
+      activateAuthentification();
+    });
 
     mainBtn.addEventListener('click', (): void =>
       this.addBtnListener(EPages.main, new Main(), mainBtn)
@@ -101,6 +109,7 @@ export default class Controller {
       default:
         this.setActiveMenuItem(mainBtn);
     }
+    showUserAuthentification();
   }
 
   addBtnListener(
@@ -127,8 +136,12 @@ export default class Controller {
 
   // eslint-disable-next-line class-methods-use-this
   removePanels(): void {
-    const levels =  document.querySelector('.textbook-levels');
+    const gamePanel = document.querySelector('.game-panel');
+    const levels = document.querySelector('.textbook-levels');
     const pagination = document.querySelector('.pagination');
+    if (gamePanel) {
+      gamePanel.remove();
+    }
     if (levels) {
       levels.remove();
     }

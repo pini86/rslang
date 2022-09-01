@@ -38,8 +38,10 @@ export interface IGetUserWord {
   wordId: string;
 }
 
+export type Difficulty = 'easy' | 'normal' | 'hard';
+
 export interface IUserWord {
-  difficulty: string;
+  difficulty: Difficulty;
   optional: {
     correctCount?: number;
     totalIncorrectCount?: number;
@@ -54,22 +56,52 @@ export interface IUserStatistics {
   id?: string;
   learnedWords: number;
   optional: {
-    audiocall: {
-      correctWords: number,
-      incorrectWords: number,
-      streak: number,
-      newWords: number
-    },
-    sprint: {
-      correctWords: number,
-      incorrectWords: number,
-      streak: number,
-      newWords: number
-    }
-  }
+    audiocall: IStatisticsOptional;
+    sprint: IStatisticsOptional;
+  };
+}
+
+interface IStatisticsOptional {
+  correctWords: number;
+  incorrectWords: number;
+  streak: number;
+  newWords: number;
 }
 
 export interface ISettings {
   wordsPerDay: number;
   optional: object;
+}
+
+export interface ISprintWord {
+  word: string;
+  wordTranslate: string;
+  correct: boolean;
+}
+
+export interface IWordData extends IWord {
+  sprintTimer: number;
+  sprintStatData: ISprintStatObj;
+  updateSprintStatData: (
+    correctWord: IWordData | IWord | null,
+    incorrectWord: IWordData | IWord | null,
+    learnedWord: IWordData | IWord | null,
+    streak: number
+  ) => void;
+  sprintScore: string;
+}
+
+export interface ISprintStatObj {
+  correctWords: IWordData[] | IWord[];
+  incorrectWords: IWordData[] | IWord[];
+  learnedWords: number;
+  maxStreak: number;
+}
+
+export interface ISprintResult {
+  sprintNewWords: number;
+  sprintStatData: ISprintStatObj;
+  sprintTimer: number;
+  sprintScore: string;
+  sprintWordsArray: IWord[];
 }
