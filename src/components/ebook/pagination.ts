@@ -1,4 +1,5 @@
 import state from '../../pages/ebook/state';
+import api from '../../api/api';
 import renderCards from './cards';
 import { removeLearnedPage } from '../../pages/ebook/helpers';
 
@@ -9,10 +10,11 @@ let { curPage } = state;
 const pagination = document.createElement('ul');
 pagination.classList.add('pagination');
 
-function setActivePage(el: HTMLElement) {
+async function setActivePage(el: HTMLElement, page: number) {
   el.classList.add('active-page');
   el.classList.remove('pagination-learned-page');
-  if (state.easyCount === 20) {
+  const easyCount = (await api.getAllAggregatedUserWords(`${state.curGroup}`, `${page}`, '20', 'easy')).length;
+  if (easyCount === 20) {
     el.classList.add('pagination-learned-page');
   }
 }
@@ -36,7 +38,7 @@ function createPaginationPages(page: number) {
     const li = document.createElement('li');
 
     if (page === i) {
-      setActivePage(li);
+      setActivePage(li, page);
     }
 
     li.innerHTML = `<a id="${i}" href="#">${i + 1}</a>`;

@@ -82,6 +82,7 @@ export default async function renderCards(group?: number, page?: number) {
   }
 
   state.isAuth = localStorage.getItem('tokenData');
+  state.easyCount = 0;
   const words = await api.getWords(group ?? curGroup, page ?? curPage);
   const userWords = state.isAuth ? await getUserWordIds(words) : [];
 

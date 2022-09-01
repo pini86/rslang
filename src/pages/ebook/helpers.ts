@@ -1,12 +1,11 @@
-import { IWord, Difficulty } from "../../interfaces/interfaces";
-import api from "../../api/api";
-import state from "./state";
-
+import { IWord, Difficulty } from '../../interfaces/interfaces';
+import api from '../../api/api';
+import state from './state';
 
 export async function getUserWordIds(words: IWord[]) {
   const allUserWords = await api.getAllUserWords();
-  const userWords = allUserWords.filter(word => words.map(w => w.id).includes(word.wordId));
-  const userWordIds = userWords.map(word => word.wordId);
+  const userWords = allUserWords.filter((word) => words.map((w) => w.id).includes(word.wordId));
+  const userWordIds = userWords.map((word) => word.wordId);
   state.userWordIds = userWordIds;
   return userWords;
 }
