@@ -21,7 +21,7 @@ enum EPages {
 
 export default class Controller {
   static isLoggedIn = false;
-  
+
   private currentPage = EPages.main;
 
   keyStorage = 'currentPage';
@@ -31,8 +31,6 @@ export default class Controller {
   mainView = new Main();
 
   footer = new Footer();
-
-  static isLoggedIn = false;
 
   initApp(): void {
     this.createView();
