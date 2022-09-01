@@ -123,6 +123,9 @@ export default class Controller {
     Controller.toggleHeaderMenu('close');
     this.setActiveMenuItem(btn);
     this.removePanels();
+    if (page !== 'Ebook') {
+      document.querySelector('main')?.classList.remove('learned-page');
+    }
     document.onkeyup = null;
   }
 
