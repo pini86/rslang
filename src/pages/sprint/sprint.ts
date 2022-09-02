@@ -1,8 +1,12 @@
-export default class Sprint{
+// eslint-disable-next-line import/no-cycle
+import SprintStart from './sprint-start';
+
+export default class Sprint {
   mainContent!: HTMLElement;
 
+  sprintView = new SprintStart();
+
   constructor() {
-    this.mainContent = document.querySelector('main div.container') as HTMLElement;
-    this.mainContent.innerHTML = 'This is Sprint page !!!';
+    this.sprintView = new SprintStart();
   }
 }
