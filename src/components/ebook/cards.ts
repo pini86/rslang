@@ -1,3 +1,4 @@
+import { Difficulty } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
@@ -21,7 +22,7 @@ function generateCard(
   textTranslate: string,
   meaning: string,
   meaningTranslate: string,
-  difficulty: string
+  difficulty: Difficulty
 ) {
   const btnHard =
     difficulty === 'hard'
@@ -88,7 +89,7 @@ export default async function renderCards(group?: number, page?: number) {
 
   let cardsToRender = '';
   words.forEach((w) => {
-    let difficulty = 'normal';
+    let difficulty: Difficulty = 'normal';
     const {
       id,
       image,

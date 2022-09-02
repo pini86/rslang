@@ -1,3 +1,4 @@
+import { PANEL_LEVELS_AMOUNT } from '../../constants/constants';
 import state from './state';
 import createDiffPanel from '../../components/ebook/difficulty-panel';
 import createGamePanel from '../../components/ebook/game-panel';
@@ -17,7 +18,7 @@ export class Ebook {
 export function initEbook() {
   createDiffPanel();
   createGamePanel();
-  if (state.curGroup !== 6) {
+  if (state.curGroup !== PANEL_LEVELS_AMOUNT) {
     renderCards();
     initPagination();
   } else {

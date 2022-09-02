@@ -1,3 +1,4 @@
+import { Difficulty } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
@@ -17,7 +18,7 @@ function generateHardCard(
   textTranslate: string,
   meaning: string,
   meaningTranslate: string,
-  difficulty: string
+  difficulty: Difficulty
 ) {
   return `
     <div class="row d-flex">
@@ -94,7 +95,7 @@ export default async function renderDifficultCards() {
 
   if (cardsToRender) {
     container.innerHTML = cardsToRender;
-  } else if (cardsToRender === '') {
+  } else if (!cardsToRender) {
     container.innerHTML = '<h5 class="center-align">Сложные слова отсутствуют в вашем словаре.</h5>';
   }
 }

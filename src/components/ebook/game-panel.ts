@@ -1,3 +1,4 @@
+import { TOTAL_PAGES_AMOUNT } from '../../constants/constants';
 import state from '../../pages/ebook/state';
 
 const main = document.querySelector('main') as HTMLElement;
@@ -5,7 +6,7 @@ const main = document.querySelector('main') as HTMLElement;
 export default function createGamePanel() {
   const gamePanel = document.createElement('ul');
   gamePanel.classList.add('collection', 'game-panel');
-  const isActive = state.easyCount === 20 ? 'disabled' : '';
+  const isActive = state.easyCount === TOTAL_PAGES_AMOUNT - 1 ? 'disabled' : '';
   gamePanel.innerHTML = `
     <li class="collection-item avatar btn ${isActive}">
       <a href="#">

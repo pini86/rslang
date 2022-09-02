@@ -14,7 +14,7 @@ export interface IWord {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
-  difficulty?: string;
+  difficulty?: Difficulty;
   userWord?: IUserWord;
 }
 
@@ -33,7 +33,7 @@ export interface IUserTokens {
 }
 
 export interface IGetUserWord {
-  difficulty: string;
+  difficulty: Difficulty;
   id: string;
   wordId: string;
 }
@@ -50,7 +50,10 @@ export interface IUserWord {
   };
 }
 
-export type TAggregatedObj = [{paginatedResults: IWord[], totalCount: object}];
+export interface IAggregatedObj {
+  paginatedResults: IWord[];
+  totalCount: object;
+}
 
 export interface IUserStatistics {
   id?: string;
@@ -104,4 +107,13 @@ export interface ISprintResult {
   sprintTimer: number;
   sprintScore: string;
   sprintWordsArray: IWord[];
+}
+
+export interface IState {
+  curPage: number;
+  curGroup: number;
+  audioChunk: HTMLAudioElement | null;
+  isAuth: string | null;
+  userWordIds: string[];
+  easyCount: number;
 }

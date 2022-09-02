@@ -7,7 +7,7 @@ import {
   IUser,
   IUserWord,
   IWord,
-  TAggregatedObj,
+  IAggregatedObj,
   IGetUserWord,
 } from '../interfaces/interfaces';
 
@@ -277,7 +277,7 @@ class API {
   ): Promise<IWord[]> | never => {
     const url = `${this.users}/${id}/aggregatedWords?filter={"userWord.difficulty":"${filter}"}`;
     return axiosAuth
-      .get<TAggregatedObj>(url)
+      .get<[IAggregatedObj]>(url)
       .then((response) => response.data[0].paginatedResults)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
