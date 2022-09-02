@@ -6,6 +6,7 @@ export default class StartFromEbookMode {
     this.gameContent.innerHTML = `<div class="audiocall"><div class="audiocall__wrapper">
     <h5 class="audiocall__start-header">Игра начнется со словами из выбранной страницы словаря</h5>
     <button class="audiocall__start-btn waves-effect waves-light btn">начать</button>
+    <p class="audiocall__start-header">Используй мышку или клавиши 1-5 и пробел</p>
   </div>
   </div>`;
   }

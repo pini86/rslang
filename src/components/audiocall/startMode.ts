@@ -15,6 +15,7 @@ export default class StartMode {
       <button class="audiocall__level waves-light waves-effect indigo darken-3">C2</button>
     </div>
     <button class="audiocall__start-btn waves-effect waves-light btn">начать</button>
+    <p class="audiocall__start-header">Используй мышку или клавиши 1-5 и пробел</p>
   </div>
   </div>`;
   }
