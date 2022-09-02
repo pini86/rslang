@@ -85,7 +85,7 @@ export default class SprintGame {
         <div class="sprint__answer__wrapper">
           <button class="sprint__wrong-answer" id="sprint-wrong">НЕТ</button>
           <button class="sprint__right-answer" id="sprint-right">ДА</button>
-        </div>  
+        </div>
       </div>`;
   }
 
@@ -245,14 +245,14 @@ export default class SprintGame {
         this.sprint.sprintNewWords++;
       }
       const userWordOptional = (word as IWord).userWord as IUserWord;
-      userWordOptional.optional.correctCount++;
-      userWordOptional.optional.totalCorrectCount++;
-      if (userWordOptional.difficulty === 'normal' && userWordOptional.optional.correctCount >= 3) {
+      (userWordOptional.optional.correctCount as number)++;
+      (userWordOptional.optional.totalCorrectCount as number)++;
+      if (userWordOptional.difficulty === 'normal' && (userWordOptional.optional.correctCount as number) >= 3) {
         this.sprint.sprintStatData.learnedWords++;
         userWordOptional.difficulty = 'easy';
       } else if (
         userWordOptional.difficulty === 'hard' &&
-        userWordOptional.optional.correctCount >= 5
+        (userWordOptional.optional.correctCount as number) >= 5
       ) {
         this.sprint.sprintStatData.learnedWords++;
         userWordOptional.difficulty = 'easy';
@@ -289,7 +289,7 @@ export default class SprintGame {
         this.sprint.sprintNewWords++;
       }
       const userWordOptional = (word as IWord).userWord as IUserWord;
-      userWordOptional.optional.totalIncorrectCount++;
+      (userWordOptional.optional.totalIncorrectCount as number)++;
       if (userWordOptional.difficulty === 'easy') {
         userWordOptional.difficulty = 'normal';
         userWordOptional.optional.correctCount = 0;
