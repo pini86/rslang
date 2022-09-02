@@ -33,6 +33,8 @@ export default class AudioCall {
 
   private wrongWords: IWord[] = [];
 
+  private streak = 0;
+
   static isAudioPlaying = false;
 
   static audio: HTMLAudioElement;
@@ -52,7 +54,7 @@ export default class AudioCall {
     });
   }
 
-  initGameFromEbook(){
+  initGameFromEbook() {
     this.currentView = new StartFromEbookMode();
     const startAudiocallBtn = document.querySelector('.audiocall__start-btn') as HTMLButtonElement;
 
@@ -74,7 +76,7 @@ export default class AudioCall {
 
     const mainWord = this.gameWords[this.round];
     const image = document.querySelector('.audiocall__word-image') as HTMLImageElement;
-    image.src = `https://react-learnwords-example.herokuapp.com/${mainWord.image}`;
+    image.src = `https:rs-lang-rsschool-task.herokuapp.com/${mainWord.image}`;
 
     this.mainWordId = mainWord.id;
     this.mainWordTranslate = mainWord.wordTranslate;
@@ -89,17 +91,16 @@ export default class AudioCall {
     shuffleArray(this.wordsInRound);
     displayWords(this.wordsInRound);
 
-    const audioUrl = `https://react-learnwords-example.herokuapp.com/${mainWord.audio}`;
+    const audioUrl = `https:rs-lang-rsschool-task.herokuapp.com/${mainWord.audio}`;
     AudioCall.audio = new Audio(audioUrl);
     playAudio();
     const playBtn = document.querySelector('.audiocall__play-btn') as HTMLElement;
     playBtn.addEventListener('click', () => {
       playAudio();
     });
-
+    
     const wrongAudio = new Audio('../../assets/sounds/bad.mp3');
     const correctAudio = new Audio('../../assets/sounds/good.mp3');
-
 
     const wordsContainer = document.querySelector('.audiocall__words') as HTMLElement;
 
@@ -122,9 +123,11 @@ export default class AudioCall {
           colorIncorrectElement(target.closest('.audiocall__word') as HTMLElement);
           this.wrongWords.push(mainWord);
           wrongAudio.play();
+          this.streak = 0;
         } else {
           this.correctWords.push(mainWord);
           correctAudio.play();
+          this.streak += 1;
         }
 
         wordsContainer.removeEventListener('click', wordsMouseListener);
@@ -152,9 +155,11 @@ export default class AudioCall {
           colorIncorrectElement(button);
           this.wrongWords.push(mainWord);
           wrongAudio.play();
+          this.streak = 0;
         } else {
           this.correctWords.push(mainWord);
           correctAudio.play();
+          this.streak += 1;
         }
         document.removeEventListener('keydown', wordsKeyboardListener);
         this.activateContinueBtn();
