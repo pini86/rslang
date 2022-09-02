@@ -7,7 +7,7 @@ import {
   IUserWord,
   IUserTokens,
   ISprintResult,
-  Difficulty
+  Difficulty,
 } from '../../interfaces/interfaces';
 // eslint-disable-next-line import/no-cycle
 import SprintResult from './sprint-result';
@@ -157,12 +157,6 @@ export default class SprintGame {
     const wordName = word.innerHTML;
     const correctWord = this.sprint.sprintWordsArray.find((elem) => elem.word === wordName);
 
-    if (Controller.isLoggedIn) {
-      this.updateCorrectUserWord(correctWord);
-    }
-    this.updateSprintStatData(correctWord);
-    rightAudio.play();
-
     switch (this.streak) {
       case 0:
       case 1:
@@ -197,6 +191,11 @@ export default class SprintGame {
         this.correctAnswerDisplay(multiply);
         break;
     }
+    if (Controller.isLoggedIn) {
+      this.updateCorrectUserWord(correctWord);
+    }
+    this.updateSprintStatData(correctWord);
+    rightAudio.play();
   }
 
   private countIncorrectAnswer(word: HTMLElement): void {
@@ -206,15 +205,12 @@ export default class SprintGame {
     wrongAudio.src = '../../assets/sounds/bad.mp3';
     const wordName = word.innerHTML;
     const incorrectWord = this.sprint.sprintWordsArray.find((elem) => elem.word === wordName);
+
     if (Controller.isLoggedIn) {
       this.updateIncorrectUserWord(incorrectWord);
     }
-    this.updateSprintStatData(
-      null,
-      incorrectWord,
-      this.sprint.sprintStatData.learnedWords,
-      this.streak
-    );
+
+    this.updateSprintStatData(null, incorrectWord, this.sprint.sprintStatData.learnedWords);
     this.streak = 0;
     wrongAudio.play();
     currentCount.innerHTML = '+0';
@@ -317,7 +313,7 @@ export default class SprintGame {
     const cloneCurrentCount = currentCount.cloneNode() as HTMLElement;
     const cloneScore = score.cloneNode() as HTMLElement;
     const baseScore = 50;
-    this.streak++;
+    this.streak += 1;
     cloneCurrentCount.innerHTML = `+${baseScore * multiply}`;
     currentCount.parentNode?.replaceChild(cloneCurrentCount, currentCount);
     cloneScore.innerHTML = (+score.innerHTML + baseScore * multiply).toString();
@@ -416,8 +412,8 @@ export default class SprintGame {
   private updateSprintStatData(
     correctWord: IWordData | IWord | null = null,
     incorrectWord: IWordData | IWord | null = null,
-    learnedWord = 0,
-    streak = 0
+    learnedWord = 0
+    // streak = 0
   ): void {
     if (correctWord) {
       this.sprint.sprintStatData.correctWords.push(correctWord as IWordData);
@@ -429,6 +425,8 @@ export default class SprintGame {
       this.sprint.sprintStatData.learnedWords = learnedWord;
     }
     this.sprint.sprintStatData.maxStreak =
-      streak > this.sprint.sprintStatData.maxStreak ? streak : this.sprint.sprintStatData.maxStreak;
+      this.streak > this.sprint.sprintStatData.maxStreak
+        ? this.streak
+        : this.sprint.sprintStatData.maxStreak;
   }
 }
