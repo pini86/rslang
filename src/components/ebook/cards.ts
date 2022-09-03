@@ -148,41 +148,49 @@ container.addEventListener('click', async (e) => {
   } else if (el.classList.contains('btn-hard')) {
     el.classList.add('disabled');
     const { id, card } = getIdGetCard(el);
-    card.classList.add('hard');
-    card.classList.remove('easy');
-    const btnEasy = el.nextElementSibling as HTMLElement;
-    if (btnEasy.classList.contains('btn-to-learn')) {
-      btnEasy.classList.remove('btn-to-learn');
-      btnEasy.classList.add('btn-learned');
-      btnEasy.textContent = 'Изучено';
+    const response = await updateWordDifficulty(id, 'hard');
+    if (response) {
+      card.classList.add('hard');
+      card.classList.remove('easy');
+      const btnEasy = el.nextElementSibling as HTMLElement;
+      if (btnEasy.classList.contains('btn-to-learn')) {
+        btnEasy.classList.remove('btn-to-learn');
+        btnEasy.classList.add('btn-learned');
+        btnEasy.textContent = 'Изучено';
+      }
     }
-    await updateWordDifficulty(id, 'hard');
 
   } else if (el.classList.contains('btn-to-learn')) {
-    el.classList.add('btn-learned');
-    el.classList.remove('btn-to-learn');
-    el.textContent = 'Изучено';
     const { id, card } = getIdGetCard(el);
-    card.classList.remove('easy');
-    state.easyCount--;
-    main.classList.remove('learned-page');
-    await updateWordDifficulty(id, 'normal');
+    const response = await updateWordDifficulty(id, 'normal');
+    if (response) {
+      el.classList.add('btn-learned');
+      el.classList.remove('btn-to-learn');
+      el.textContent = 'Изучено';
+      card.classList.remove('easy');
+      state.easyCount--;
+      main.classList.remove('learned-page');
+    }
 
   } else if (el.classList.contains('btn-learned')) {
-    el.classList.add('btn-to-learn');
-    el.classList.remove('btn-learned');
-    el.textContent = 'Из изученных';
     const { id, card } = getIdGetCard(el);
-    card.classList.add('easy');
-    card.classList.remove('hard');
-    card.querySelector('.btn-hard')?.classList.remove('disabled');
-    state.easyCount++;
-    checkLearnedPage(main);
-    await updateWordDifficulty(id, 'easy');
+    const response = await updateWordDifficulty(id, 'easy');
+    if (response) {
+      el.classList.add('btn-to-learn');
+      el.classList.remove('btn-learned');
+      el.textContent = 'Из изученных';
+      card.classList.add('easy');
+      card.classList.remove('hard');
+      card.querySelector('.btn-hard')?.classList.remove('disabled');
+      state.easyCount++;
+      checkLearnedPage(main);
+    }
 
   } else if (el.classList.contains('btn-hard-remove')) {
     const { id, card } = getIdGetCard(el);
-    card.remove();
-    await api.updateUserWord(id, provideDifficulty('normal', id));
+    const response = await api.updateUserWord(id, provideDifficulty('normal', id));
+    if (response) {
+      card.remove();
+    }
   }
 });

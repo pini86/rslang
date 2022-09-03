@@ -20,10 +20,12 @@ export function provideDifficulty(userDifficulty: Difficulty, id: string) {
 
 export async function updateWordDifficulty(id: string, difficulty: Difficulty) {
   if (state.userWordIds.includes(id)) {
-    await api.updateUserWord(id, provideDifficulty(difficulty, id));
-  } else {
-    await api.createUserWord(id, provideDifficulty(difficulty, id));
+    const response = await api.updateUserWord(id, provideDifficulty(difficulty, id));
+    return response;
   }
+
+  const response = await api.createUserWord(id, provideDifficulty(difficulty, id));
+  return response;
 }
 
 export function checkLearnedPage(main: HTMLElement) {
