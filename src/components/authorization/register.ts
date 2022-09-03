@@ -3,7 +3,7 @@ import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
 import Main from '../../pages/main/main';
-import Controller from '../controller/controller';
+import Controller, { EPages } from '../controller/controller';
 
 type RegisterFields = IUser;
 
@@ -37,7 +37,12 @@ export default function activateRegister() {
           saveToken(tokenData);
           showUserLoggedMode(tokenData.name);
           const view = new Main();
+          const mainBtn = document.getElementById('main') as HTMLElement;
+
           Controller.isLoggedIn = true;
+          Controller.setActiveMenuItem(mainBtn);
+          Controller.currentPage = EPages.main;
+          Controller.setSessionStorage();
         });
       });
     }
