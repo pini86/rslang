@@ -64,7 +64,7 @@ export default class Statistics {
           <div class="statistics__auth__card__percent">
             <div id="statistic_circle" class="sprint__statistics__circle">
               <div id="statistic_circle-wave" class="sprint__statistics__wave"></div>
-              <div id="statistic_circle-percent" class="sprint__statistics__percent"></div>
+              <div id="statistic_circle-percent" class="sprint__statistics__percent">0%</div>
             </div>
             <p class="statistics__auth__words__text">правильных ответов</p>
           </div>

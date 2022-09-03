@@ -105,7 +105,7 @@
     border-radius: 10px;
     background-color: $font-color;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     column-gap: 20px;
     align-items: center;
   }
@@ -122,7 +122,7 @@
   &__learn__wrapper {
     display: flex;
     flex-flow: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     width: 100%;
   }
