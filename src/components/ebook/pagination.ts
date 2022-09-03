@@ -1,12 +1,23 @@
-import renderCards from './cards';
+import { TOTAL_PAGES_AMOUNT, WORDS_PER_PAGE } from '../../constants/constants';
 import state from '../../pages/ebook/state';
+import api from '../../api/api';
+import renderCards from './cards';
+import { removeLearnedPage } from '../../pages/ebook/helpers';
 
 const main = document.querySelector('main') as HTMLElement;
-const { totalPages } = state;
 let { curPage } = state;
 
 const pagination = document.createElement('ul');
 pagination.classList.add('pagination');
+
+async function setActivePage(el: HTMLElement, page: number) {
+  el.classList.add('active-page');
+  el.classList.remove('pagination-learned-page');
+  const easyCount = (await api.getAllAggregatedUserWords(`${state.curGroup}`, `${page}`, `${WORDS_PER_PAGE}`, 'easy')).length;
+  if (easyCount === WORDS_PER_PAGE) {
+    el.classList.add('pagination-learned-page');
+  }
+}
 
 function createPaginationPages(page: number) {
   const arrowLeft = document.createElement('li');
@@ -23,11 +34,11 @@ function createPaginationPages(page: number) {
   pagination.append(arrowLeft);
 
   // conditions on 38 - 49 lines will insert '...' between page numbers
-  for (let i = 0, liCount = 1; i <= totalPages; i++, liCount++) {
+  for (let i = 0, liCount = 1; i < TOTAL_PAGES_AMOUNT; i++, liCount++) {
     const li = document.createElement('li');
 
     if (page === i) {
-      li.classList.add('active-page');
+      setActivePage(li, page);
     }
 
     li.innerHTML = `<a id="${i}" href="#">${i + 1}</a>`;
@@ -43,13 +54,13 @@ function createPaginationPages(page: number) {
       // amount of li === 5 means that the next page after the current is created and we want to insert '...' after that
       // i = totalPages will not render the last page if we are on 26 page or below
       // i = totalPages - 2 will render extra page before the last page; i = totalPages - 1 works fine for the tail of pagination
-    } else if (liCount === 5 && i < totalPages - 2) {
+    } else if (liCount === 5 && i < TOTAL_PAGES_AMOUNT - 3) {
       pagination.insertAdjacentHTML('beforeend', '<li><a class="cursor-def">...</a></li>');
-      i = totalPages - 1;
+      i = TOTAL_PAGES_AMOUNT - 2;
     }
   }
 
-  if (page === totalPages) {
+  if (page === TOTAL_PAGES_AMOUNT - 1) {
     arrowRight.classList.add('disabled');
   }
 
@@ -62,9 +73,13 @@ function renderPagination(page: number) {
   main.append(pagination);
 }
 
-export default function initPagination() {
+export function initPagination() {
   const page = sessionStorage.getItem('page') ?? 0;
   renderPagination(+page);
+}
+
+export function removePagination() {
+  pagination.remove();
 }
 
 function togglePage() {
@@ -83,18 +98,21 @@ pagination.addEventListener('click', (e) => {
   ) {
     curPage--;
     togglePage();
+    removeLearnedPage(main);
   } else if (
-    (el.classList.contains('arrow-right') && curPage !== totalPages) ||
-    (el.classList.contains('next') && curPage !== totalPages)
+    (el.classList.contains('arrow-right') && curPage !== TOTAL_PAGES_AMOUNT) ||
+    (el.classList.contains('next') && curPage !== TOTAL_PAGES_AMOUNT)
   ) {
     curPage++;
     togglePage();
+    removeLearnedPage(main);
   } else {
     const id = el.getAttribute('id');
 
     if (id && +id !== curPage) {
       curPage = +id;
       togglePage();
+      removeLearnedPage(main);
     }
   }
 });

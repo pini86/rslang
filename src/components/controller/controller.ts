@@ -121,6 +121,9 @@ export default class Controller {
     Controller.toggleHeaderMenu('close');
     this.setActiveMenuItem(btn);
     this.removePanels();
+    if (page !== 'Ebook') {
+      document.querySelector('main')?.classList.remove('learned-page');
+    }
     document.onkeyup = null;
   }
 
@@ -134,8 +137,12 @@ export default class Controller {
 
   // eslint-disable-next-line class-methods-use-this
   removePanels(): void {
+    const gamePanel = document.querySelector('.game-panel');
     const levels = document.querySelector('.textbook-levels');
     const pagination = document.querySelector('.pagination');
+    if (gamePanel) {
+      gamePanel.remove();
+    }
     if (levels) {
       levels.remove();
     }

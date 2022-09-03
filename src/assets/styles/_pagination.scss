@@ -11,6 +11,13 @@
     background-color: $font-color;
     color: $bg-color;
   }
+
+  li.active-page.pagination-learned-page a {
+    transform: scale(0.85);
+    box-shadow: 0 0 15px $accent-green-color;
+    border: 1px solid $accent-green-color;
+    border-radius: 5px;
+  }
 }
 
 @media (min-width: 1090px) {

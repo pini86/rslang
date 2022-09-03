@@ -7,6 +7,8 @@ import {
   IUser,
   IUserWord,
   IWord,
+  IAggregatedObj,
+  IGetUserWord,
 } from '../interfaces/interfaces';
 
 enum StatusCodes {
@@ -183,10 +185,10 @@ class API {
   };
 
   /** Get all user words */
-  getAllUserWords = async (id = this.userId): Promise<IUserWord[]> | never => {
+  getAllUserWords = async (id = this.userId): Promise<IGetUserWord[]> | never => {
     const url = `${this.users}/${id}/words`;
     return axiosAuth
-      .get<IUserWord[]>(url)
+      .get<IGetUserWord[]>(url)
       .then((response) => response.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.PAYMENT_REQUIRED) {
@@ -268,15 +270,34 @@ class API {
       });
   };
 
+  /** Gets all words with matched difficulty */
+  getAggregatedDifficulties = async (
+    filter = 'hard',
+    id = this.userId,
+  ): Promise<IWord[]> | never => {
+    const url = `${this.users}/${id}/aggregatedWords?filter={"userWord.difficulty":"${filter}"}`;
+    return axiosAuth
+      .get<[IAggregatedObj]>(url)
+      .then((response) => response.data[0].paginatedResults)
+      .catch((err: AxiosError) => {
+        if (err.response?.status === StatusCodes.OK) {
+          throw new Error(StatusMessages.OK);
+        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
+          throw new Error(StatusMessages.INVALID_TOKEN);
+        }
+        throw err;
+      });
+  };
+
   /** Gets all user aggregated words */
   getAllAggregatedUserWords = async (
-    id = this.userId,
     group = '0',
     page = '0',
     wordsPerPage = '20',
-    filter = ''
+    filter = '',
+    id = this.userId,
   ): Promise<IWord[]> | never => {
-    const url = `${this.users}/${id}/aggregatedWords?&group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
+    const url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
     return axiosAuth
       .get<[{ paginatedResults: IWord[] }]>(url)
       .then((response) => response.data[0].paginatedResults)
