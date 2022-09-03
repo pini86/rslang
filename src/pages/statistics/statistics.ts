@@ -2,6 +2,7 @@
 import Controller from '../../components/controller/controller';
 import Main from '../main/main';
 import api from '../../api/api';
+import { ISettings } from '../../interfaces/interfaces';
 
 export default class Statistics {
   mainContent!: HTMLElement;
@@ -155,6 +156,7 @@ export default class Statistics {
         });
       })
       .then(() => {
+        this.getSavedStatistics();
         const wave = document.querySelector('#statistic_circle-wave') as HTMLElement;
 
         wave.animate(
@@ -165,5 +167,123 @@ export default class Statistics {
           }
         );
       });
+  }
+
+  private static async getSavedStatistics(): Promise<void> {
+    const savedStatistics = await api.getSettings();
+    if (savedStatistics) {
+      const keysArray = Object.keys((savedStatistics as ISettings).optional.dayStats);
+      const statisticsPage = document.querySelector('.statistics__auth') as HTMLElement;
+
+      if (keysArray.length) {
+        const statArray = Object.entries((savedStatistics as ISettings).optional.dayStats);
+        const miniStatArray = Object.entries((savedStatistics as ISettings).optional.dayLearnWords);
+        statArray.forEach(([key, value]) => {
+          if (key !== 'start') {
+            const totalWords =
+              value.optional.audiocall.correctWords +
+              value.optional.audiocall.incorrectWords +
+              value.optional.sprint.correctWords +
+              value.optional.sprint.incorrectWords;
+            const totalCorrect =
+              value.optional.audiocall.correctWords + value.optional.sprint.correctWords;
+            const sprintPercent = Math.round(
+              (value.optional.sprint.correctWords * 100) /
+                (value.optional.sprint.correctWords + value.optional.sprint.incorrectWords)
+            );
+            const audiocallPercent = Math.floor(
+              (value.optional.audiocall.correctWords * 100) /
+                (value.optional.audiocall.correctWords + value.optional.audiocall.incorrectWords)
+            );
+            statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика за ${key}</h2>
+       <div class="statistics__auth__wrapper">
+  <div class="statistics__auth__column1">
+    <div class="statistics__auth__card__new">
+      <p id="new-words" class="statistics__auth__words__value">${
+        value.optional.audiocall.newWords + value.optional.sprint.newWords
+      }</p>
+      <p class="statistics__auth__words__text">новых слов</p>
+    </div>
+    <div class="statistics__auth__card__learn">
+      <div class="statistics__auth__learn__wrapper">
+      <p id="learn-words" class="statistics__auth__words__value">${value.learnedWords}</p>
+      <p class="statistics__auth__words__text">слов изучено в мини-играх</p>
+      </div>
+      <div class="statistics__auth__learn__wrapper">
+      <p id="learn-words-ebook-prev" class="statistics__auth__words__value" data-day="${key}">0</p>
+      <p class="statistics__auth__words__text">слов изучено в учебнике</p>
+      </div>
+    </div>
+    <div class="statistics__auth__card__percent">
+      <div id="statistic_circle" class="sprint__statistics__circle">
+        <div id="statistic_circle-wave" class="sprint__statistic__wave" data-total="${Math.round(
+          (totalCorrect * 100) / totalWords
+        )}"></div>
+        <div id="statistic_circle-percent" class="sprint__statistic_percent">${Math.round(
+          (totalCorrect * 100) / totalWords
+        )}%</div>
+      </div>
+      <p class="statistics__auth__words__text">правильных ответов</p>
+    </div>
+  </div>
+  <div class="statistics__auth__column2">
+    <div class="statistics__auth__card__audio">
+      <div class="statistics__auth__card__audio__wraper">
+        <div></div>
+        <p>Аудиовызов</p>
+      </div>
+    <p class="game__text"><span id="audio-new-words" class="game__value">${
+      value.optional.audiocall.newWords
+    }</span>  новых слов</p>
+    <p   class="game__text"><span  id="audio-correct-words" class="game__value">${
+      Number.isNaN(audiocallPercent) ? 0 : audiocallPercent
+    }</span>  % правильных ответов</p>
+    <p  class="game__text"><span id="audio-in-row"  class="game__value">${
+      value.optional.audiocall.streak
+    }</span>  cамая длинная серия<BR> правильных ответов</p>
+    </div> 
+    <div class="statistics__auth__card__sprint">
+      <div class="statistics__auth__card__sprint__wraper">
+        <div></div>
+        <p>Спринт</p>
+      </div>
+      <p class="game__text"><span id="sprint-new-words"  class="game__value">${
+        value.optional.sprint.newWords
+      }</span>  новых слов</p>
+      <p  class="game__text"><span id="sprint-correct-words" class="game__value">${
+        Number.isNaN(sprintPercent) ? 0 : sprintPercent
+      }</span>  % правильных ответов</p>
+      <p class="game__text"><span id="sprint-in-row"  class="game__value">${
+        value.optional.sprint.streak
+      }</span>  cамая длинная серия<BR> правильных ответов</p>
+    </div>          
+  </div>
+</div>   `;
+          }
+
+          const learnedWords = document.querySelectorAll('#learn-words-ebook-prev');
+
+          learnedWords.forEach((words) => {
+            miniStatArray.forEach(([keyMini, valueMini]) => {
+              if (keyMini === (words as HTMLElement).dataset.day) {
+                (words as HTMLElement).innerHTML = valueMini.toString();
+              }
+            });
+          });
+        });
+      }
+
+      const waves = document.querySelectorAll('#statistic_circle-wave');
+
+      waves.forEach((wave) => {
+        wave.animate(
+          [{ top: '100%' }, { top: `${100 - +((wave as HTMLElement).dataset.total as string)}%` }],
+          {
+            duration: 2000,
+            fill: 'forwards',
+          }
+        );
+      });
+    }
   }
 }

@@ -64,7 +64,7 @@ export default class SprintResult {
       this.changeStatistics();
     }
 
-    streakSection.innerHTML = `Максимальное количество <br>верных ответов подряд: ${this.sprintResult.sprintStatData.maxStreak.toString()}`;
+    streakSection.innerHTML = `Максимальное количество верных ответов подряд: ${this.sprintResult.sprintStatData.maxStreak.toString()}`;
     scoreSection.innerHTML = `Общий счет за игру: ${this.sprintResult.sprintScore}`;
     rightSection.innerHTML = `Правильных ответов: ${this.sprintResult.sprintStatData.correctWords.length}`;
     wrongSection.innerHTML = `Ошибок: ${this.sprintResult.sprintStatData.incorrectWords.length}`;

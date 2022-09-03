@@ -4,6 +4,7 @@ import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
 import Main from '../../pages/main/main';
 import Controller, { EPages } from '../controller/controller';
+import setStatistics from '../utils/setStatistics';
 
 type RegisterFields = IUser;
 
@@ -43,6 +44,7 @@ export default function activateRegister() {
           Controller.setActiveMenuItem(mainBtn);
           Controller.currentPage = EPages.main;
           Controller.setSessionStorage();
+          setStatistics();
         });
       });
     }

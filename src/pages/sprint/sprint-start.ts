@@ -19,7 +19,7 @@ export default class SprintStart {
     this.authObj = getAuthentification();
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
     this.mainContent.innerHTML = SprintStart.getHTML();
-    this.selectDiff = this.setDifficultyListeners();
+    this.selectDiff = SprintStart.setDifficultyListeners();
   }
 
   private static getHTML(): string {
@@ -44,47 +44,37 @@ export default class SprintStart {
       `;
   }
 
-  private setDifficultyListeners(): void {
+  private static setDifficultyListeners(): void {
     const buttonsContainer = document.querySelector('.sprint__difficulty') as HTMLElement;
     buttonsContainer.addEventListener('click', (btn) => {
       if ((btn.target as HTMLElement).classList.contains('btn')) {
         (btn.target as HTMLElement).classList.add('select');
         setTimeout(() => {
           (btn.target as HTMLElement).classList.remove('select');
-          this.startSprintGame(+((btn.target as HTMLElement).id.slice(4) as string));
+          SprintStart.startSprintGame(+((btn.target as HTMLElement).id.slice(4) as string));
         }, 200);
       }
     });
     document.onkeyup = (btn) => {
       if (+btn.key >= 1 && +btn.key <= 6) {
-        this.startSprintGame(+(btn.key as string) - 1);
+        SprintStart.startSprintGame(+(btn.key as string) - 1);
       }
     };
   }
 
-  private async setWordsArray(group: number): Promise<void> {
+  private static async setWordsArray(group: number): Promise<void> {
     try {
       const page = getRandomNumber(30);
-      if (!Controller.isLoggedIn) {
-        const response = await API.getWords(group, page);
-        SprintStart.sprintWordsArray = response as IWord[];
-      } else {
-        const response = await API.getAllAggregatedUserWords(
-          (this.authObj as IUserTokens).userId,
-          '0',
-          `${page}`,
-          '20'
-        );
-        SprintStart.sprintWordsArray = response as IWord[];
-      }
+      const response = await API.getWords(group, page);
+      SprintStart.sprintWordsArray = response as IWord[];
     } catch (err) {
       throw new Error(err as string);
     }
   }
 
-  private async startSprintGame(group: number): Promise<void> {
+  private static async startSprintGame(group: number): Promise<void> {
     try {
-      this.setWordsArray(group).then(() => {
+      SprintStart.setWordsArray(group).then(() => {
         const view = new SprintGame(SprintStart.sprintWordsArray);
       });
     } catch (err) {

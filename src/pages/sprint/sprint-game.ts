@@ -15,6 +15,8 @@ import api from '../../api/api';
 import getRandomNumber from '../../components/utils/getRandomNumber';
 import getAuthentification from '../../components/utils/getAuthentification';
 import Controller from '../../components/controller/controller';
+import { SPRINT_TIMER } from '../../constants/constants';
+
 
 export default class SprintGame {
   start: void;
@@ -44,7 +46,7 @@ export default class SprintGame {
         learnedWords: 0,
         maxStreak: 0,
       },
-      sprintTimer: 59,
+      sprintTimer: SPRINT_TIMER,
       sprintScore: '0',
       sprintWordsArray,
     };
@@ -98,7 +100,7 @@ export default class SprintGame {
       maxStreak: 0,
     };
     this.viewChanged = false;
-    this.sprint.sprintTimer = 59;
+    this.sprint.sprintTimer = SPRINT_TIMER;
     this.streak = 0;
     this.sprint.sprintScore = '0';
     this.index = 0;
