@@ -4,7 +4,12 @@ import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
-import { getUserWordIds, provideDifficulty, updateWordDifficulty, checkLearnedPage } from '../../pages/ebook/helpers';
+import {
+  getUserWordIds,
+  provideDifficulty,
+  updateWordDifficulty,
+  checkLearnedPage,
+} from '../../pages/ebook/helpers';
 
 const { baseUrl } = api;
 const main = document.querySelector('main') as HTMLElement;
@@ -137,14 +142,13 @@ function getIdGetCard(el: HTMLElement) {
   return {
     id,
     card,
-  }
+  };
 }
 
 container.addEventListener('click', async (e) => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
     await soundHandler(el);
-
   } else if (el.classList.contains('btn-hard')) {
     el.classList.add('disabled');
     const { id, card } = getIdGetCard(el);
@@ -159,7 +163,6 @@ container.addEventListener('click', async (e) => {
         btnEasy.textContent = 'Изучено';
       }
     }
-
   } else if (el.classList.contains('btn-to-learn')) {
     const { id, card } = getIdGetCard(el);
     const response = await updateWordDifficulty(id, 'normal');
@@ -171,7 +174,6 @@ container.addEventListener('click', async (e) => {
       state.easyCount--;
       main.classList.remove('learned-page');
     }
-
   } else if (el.classList.contains('btn-learned')) {
     const { id, card } = getIdGetCard(el);
     const response = await updateWordDifficulty(id, 'easy');
@@ -185,12 +187,16 @@ container.addEventListener('click', async (e) => {
       state.easyCount++;
       checkLearnedPage(main);
     }
-
   } else if (el.classList.contains('btn-hard-remove')) {
     const { id, card } = getIdGetCard(el);
     const response = await api.updateUserWord(id, provideDifficulty('normal', id));
     if (response) {
-      card.remove();
+      const parent = card.parentElement as HTMLElement;
+      parent.remove();
+      if (!container.children.length) {
+        container.innerHTML =
+          '<h5 class="center-align">Сложные слова отсутствуют в вашем словаре.</h5>';
+      }
     }
   }
 });
