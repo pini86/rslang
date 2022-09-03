@@ -1,14 +1,14 @@
-#textbook {
-  position: relative;
-  padding-top: 20px;
-  background-color: $bg-color;
-  font-family: $main-font;
+.main.learned-page {
+  background: linear-gradient(rgba(255, 255, 255, 0) .9em, rgb(0, 85, 42) 1em) 0 0,
+  linear-gradient(90deg, rgba(255,255,255, 0) .9em, rgb(0, 88, 42) 1em) 0 0;
+  background-size: 1em 1em;
 }
 
 .col.card-wrapper {
   margin: 0 auto;
   padding: 0;
   border-radius: 10px;
+  transition: all .35s;
 }
 
 .card {
@@ -75,6 +75,18 @@
   &-example {
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
   }
+}
+
+.easy {
+  transform: scale(0.95);
+  opacity: 0.9;
+  box-shadow: 0 0 20px $accent-green-color;
+}
+
+.hard {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px $accent-red-color;
+  border: 2px solid $accent-red-color;
 }
 
 @media (min-width: 1090px) {

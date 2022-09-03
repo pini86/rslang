@@ -1,11 +1,14 @@
+import { Difficulty } from '../../interfaces/interfaces';
 import api from '../../api/api';
-import cardLevels from '../../pages/ebook/card-Levels';
+import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
+import { getUserWordIds, provideDifficulty, updateWordDifficulty, checkLearnedPage } from '../../pages/ebook/helpers';
 
 const { baseUrl } = api;
-const container = document.querySelector('main .container') as HTMLElement;
+const main = document.querySelector('main') as HTMLElement;
+const container = main.querySelector('.container') as HTMLElement;
 let { curPage, curGroup } = state;
 
 function generateCard(
@@ -18,11 +21,23 @@ function generateCard(
   textExample: string,
   textTranslate: string,
   meaning: string,
-  meaningTranslate: string
+  meaningTranslate: string,
+  difficulty: Difficulty
 ) {
+  const btnHard =
+    difficulty === 'hard'
+      ? `<button id="${id}" class="btn ${cardLevels[group].color} btn-hard disabled">В трудные</button>`
+      : `<button id="${id}" class="btn ${cardLevels[group].color} btn-hard">В трудные</button>`;
+  const btnLearned =
+    difficulty === 'easy'
+      ? `<button id="${id}" class="btn ${cardLevels[group].color} btn-to-learn">Из изученных</button>`
+      : `<button id="${id}" class="btn ${cardLevels[group].color} btn-learned">Изучено</button>`;
+
+  const userButtons = state.isAuth ? `${btnHard} ${btnLearned}` : '';
+
   return `
     <div class="row d-flex">
-      <div class="col d-flex m10 s12 white card-wrapper">
+      <div id="${id}" class="col d-flex m10 s12 white card-wrapper ${difficulty}">
         <div class="col image-wrapper">
           <div class="card">
             <div class="card-image z-depth-3">
@@ -50,8 +65,7 @@ function generateCard(
             <button id="${id}" class="btn ${cardLevels[group].color} btn-listen">
               <i id="${id}" class="material-icons">volume_up</i>
             </button>
-            <button id="${id}" class="btn ${cardLevels[group].color} btn-hard">В трудные</button>
-            <button id="${id}" class="btn ${cardLevels[group].color} btn-learned">Изучено</button>
+            ${userButtons}
           </div>
         </div>
       </div>
@@ -68,10 +82,14 @@ export default async function renderCards(group?: number, page?: number) {
     curGroup = group;
   }
 
+  state.isAuth = localStorage.getItem('tokenData');
+  state.easyCount = 0;
   const words = await api.getWords(group ?? curGroup, page ?? curPage);
+  const userWords = state.isAuth ? await getUserWordIds(words) : [];
 
   let cardsToRender = '';
   words.forEach((w) => {
+    let difficulty: Difficulty = 'normal';
     const {
       id,
       image,
@@ -84,6 +102,14 @@ export default async function renderCards(group?: number, page?: number) {
       textMeaningTranslate,
     } = w;
 
+    const idIndex = state.userWordIds.indexOf(id);
+    if (idIndex !== -1) {
+      difficulty = userWords[idIndex].difficulty;
+      if (difficulty === 'easy') {
+        state.easyCount++;
+      }
+    }
+
     cardsToRender += generateCard(
       group ?? curGroup,
       id,
@@ -94,18 +120,63 @@ export default async function renderCards(group?: number, page?: number) {
       textExample,
       textExampleTranslate,
       textMeaning,
-      textMeaningTranslate
+      textMeaningTranslate,
+      difficulty
     );
   });
 
-  if (words) {
+  if (cardsToRender) {
     container.innerHTML = cardsToRender;
+  }
+  checkLearnedPage(main);
+}
+
+function getIdGetCard(el: HTMLElement) {
+  const id = el.getAttribute('id') as string;
+  const card = container.querySelector(`[id='${id}'].card-wrapper`) as HTMLElement;
+  return {
+    id,
+    card,
   }
 }
 
 container.addEventListener('click', async (e) => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
-    soundHandler(el);
+    await soundHandler(el);
+
+  } else if (el.classList.contains('btn-hard')) {
+    el.classList.add('disabled');
+    const { id, card } = getIdGetCard(el);
+    card.classList.add('hard');
+    card.classList.remove('easy');
+    await updateWordDifficulty(id, 'hard');
+
+  } else if (el.classList.contains('btn-to-learn')) {
+    el.classList.add('btn-learned');
+    el.classList.remove('btn-to-learn');
+    el.textContent = 'Изучено';
+    const { id, card } = getIdGetCard(el);
+    card.classList.remove('easy');
+    state.easyCount--;
+    main.classList.remove('learned-page');
+    await updateWordDifficulty(id, 'normal');
+
+  } else if (el.classList.contains('btn-learned')) {
+    el.classList.add('btn-to-learn');
+    el.classList.remove('btn-learned');
+    el.textContent = 'Из изученных';
+    const { id, card } = getIdGetCard(el);
+    card.classList.add('easy');
+    card.classList.remove('hard');
+    card.querySelector('.btn-hard')?.classList.remove('disabled');
+    state.easyCount++;
+    checkLearnedPage(main);
+    await updateWordDifficulty(id, 'easy');
+
+  } else if (el.classList.contains('btn-hard-remove')) {
+    const { id, card } = getIdGetCard(el);
+    card.remove();
+    await api.updateUserWord(id, provideDifficulty('normal', id));
   }
 });
