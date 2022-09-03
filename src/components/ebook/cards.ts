@@ -150,6 +150,12 @@ container.addEventListener('click', async (e) => {
     const { id, card } = getIdGetCard(el);
     card.classList.add('hard');
     card.classList.remove('easy');
+    const btnEasy = el.nextElementSibling as HTMLElement;
+    if (btnEasy.classList.contains('btn-to-learn')) {
+      btnEasy.classList.remove('btn-to-learn');
+      btnEasy.classList.add('btn-learned');
+      btnEasy.textContent = 'Изучено';
+    }
     await updateWordDifficulty(id, 'hard');
 
   } else if (el.classList.contains('btn-to-learn')) {
