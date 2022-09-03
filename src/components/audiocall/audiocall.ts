@@ -35,6 +35,8 @@ export default class AudioCall {
 
   private streak = 0;
 
+  private maxStreak = 0;
+
   static isAudioPlaying = false;
 
   static audio: HTMLAudioElement;
@@ -98,7 +100,7 @@ export default class AudioCall {
     playBtn.addEventListener('click', () => {
       playAudio();
     });
-    
+
     const wrongAudio = new Audio('../../assets/sounds/bad.mp3');
     const correctAudio = new Audio('../../assets/sounds/good.mp3');
 
@@ -128,6 +130,9 @@ export default class AudioCall {
           this.correctWords.push(mainWord);
           correctAudio.play();
           this.streak += 1;
+          if (this.streak > this.maxStreak) {
+            this.maxStreak = this.streak;
+          }
         }
 
         wordsContainer.removeEventListener('click', wordsMouseListener);
@@ -160,6 +165,9 @@ export default class AudioCall {
           this.correctWords.push(mainWord);
           correctAudio.play();
           this.streak += 1;
+          if (this.streak > this.maxStreak) {
+            this.maxStreak = this.streak;
+          }
         }
         document.removeEventListener('keydown', wordsKeyboardListener);
         this.activateContinueBtn();
@@ -180,7 +188,9 @@ export default class AudioCall {
     this.checkIfGameFinished();
     pauseAudio();
     const continueBtn = document.querySelector('.audiocall__continue-btn') as HTMLElement;
-    continueBtn.removeEventListener('click', this.clickListenerContinueBtn);
+    if (continueBtn) {
+      continueBtn.removeEventListener('click', this.clickListenerContinueBtn);
+    }
   };
 
   keyboardListenerContinueBtn = (keyEvent: KeyboardEvent) => {
@@ -196,8 +206,53 @@ export default class AudioCall {
       this.round += 1;
       this.playRound();
     } else {
+      AudioCall.changeStatistics(
+        this.wrongWords,
+        this.correctWords,
+        this.gameWords,
+        this.maxStreak
+      );
       this.currentView = new ResultsMode();
       ResultsMode.showResults(this.wrongWords, this.correctWords, this.gameWords);
     }
   };
+
+  private static async changeStatistics(
+    wrongWords: IWord[],
+    correctWords: IWord[],
+    gameWords: IWord[],
+    streak: number
+  ): Promise<void> {
+    let statistic = await api.getStatistics();
+
+    if (!statistic) {
+      statistic = {
+        learnedWords: gameWords.length,
+        optional: {
+          audiocall: {
+            correctWords: correctWords.length,
+            incorrectWords: wrongWords.length,
+            streak,
+            newWords: gameWords.length,
+          },
+          sprint: {
+            correctWords: 0,
+            incorrectWords: 0,
+            streak: 0,
+            newWords: +0,
+          },
+        },
+      };
+    } else {
+      delete statistic.id;
+      statistic.learnedWords += gameWords.length;
+      statistic.optional.audiocall.correctWords += correctWords.length;
+      statistic.optional.audiocall.incorrectWords += wrongWords.length;
+      if (statistic.optional.audiocall.streak < streak) {
+        statistic.optional.audiocall.streak = streak;
+      }
+      statistic.optional.audiocall.newWords += gameWords.length;
+    }
+    api.upsertStatistics(statistic);
+  }
 }
