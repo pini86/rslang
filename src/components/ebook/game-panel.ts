@@ -1,7 +1,28 @@
+import api from '../../api/api';
 import { WORDS_PER_PAGE } from '../../constants/constants';
+import Audiocall from '../../pages/audiocall/audiocall';
 import state from '../../pages/ebook/state';
+import Controller from '../controller/controller';
 
 const main = document.querySelector('main') as HTMLElement;
+
+function activateGameBtns() {
+  const btnAudiocall = document.querySelector('.btn-audiocall') as HTMLElement;
+  const btnSprint = document.querySelector('.btn-sprint') as HTMLElement;
+  btnAudiocall.addEventListener('click', () => {
+    const page: number = +(sessionStorage.getItem('page') || '0');
+    const group: number = +(sessionStorage.getItem('group') || '0');
+
+    api.getWords(group, page).then((words) => {
+      const audiocallBtn = document.getElementById('audiocall') as HTMLElement;
+      Controller.removePanels();
+      Controller.setActiveMenuItem(audiocallBtn);
+      const view = new Audiocall(words);
+    });
+  });
+  btnSprint.addEventListener('click', () => {
+  });
+}
 
 export default function createGamePanel() {
   const gamePanel = document.createElement('ul');
@@ -14,6 +35,7 @@ export default function createGamePanel() {
     <button class="btn cyan darken-1 btn-sprint ${isActive}">
       <i class="material-icons">directions_run</i>
     </button>
-  `
+  `;
   main.prepend(gamePanel);
+  activateGameBtns();
 }

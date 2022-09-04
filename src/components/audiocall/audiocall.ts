@@ -39,35 +39,33 @@ export default class AudioCall {
 
   static audio: HTMLAudioElement;
 
-  initGame(): void {
-    this.currentView = new StartMode();
-    const selectedLevel = getUserSelectedLevel();
-    const startAudiocallBtn = document.querySelector('.audiocall__start-btn') as HTMLButtonElement;
-
-    startAudiocallBtn.addEventListener('click', () => {
-      api.getWords(selectedLevel, getRandomNumber(0, 30)).then((words) => {
-        this.gameWords = [...words];
-        shuffleArray(this.gameWords);
-        this.currentView = new RoundMode();
-        this.playRound();
+  initGame(wordsFromEbook?: IWord[]): void {
+    // game launched from ebook
+    if (wordsFromEbook) {
+      this.currentView = new StartFromEbookMode();
+      const startAudiocallBtn = document.querySelector('.audiocall__start-btn') as HTMLButtonElement;
+  
+      startAudiocallBtn.addEventListener('click', () => {
+          this.gameWords = [...wordsFromEbook];
+          shuffleArray(this.gameWords);
+          this.currentView = new RoundMode();
+          this.playRound();
       });
-    });
-  }
-
-  initGameFromEbook() {
-    this.currentView = new StartFromEbookMode();
-    const startAudiocallBtn = document.querySelector('.audiocall__start-btn') as HTMLButtonElement;
-
-    startAudiocallBtn.addEventListener('click', () => {
-      const page = sessionStorage.getItem('page') || '0';
-      const group = sessionStorage.getItem('group') || '0';
-      api.getWords(+page, +group).then((words) => {
-        this.gameWords = [...words];
-        shuffleArray(this.gameWords);
-        this.currentView = new RoundMode();
-        this.playRound();
+    } else {
+      // default launch
+      this.currentView = new StartMode();
+      const selectedLevel = getUserSelectedLevel();
+      const startAudiocallBtn = document.querySelector('.audiocall__start-btn') as HTMLButtonElement;
+  
+      startAudiocallBtn.addEventListener('click', () => {
+        api.getWords(selectedLevel, getRandomNumber(0, 30)).then((words) => {
+          this.gameWords = [...words];
+          shuffleArray(this.gameWords);
+          this.currentView = new RoundMode();
+          this.playRound();
+        });
       });
-    });
+    }
   }
 
   async playRound(): Promise<void> {
@@ -98,7 +96,7 @@ export default class AudioCall {
     playBtn.addEventListener('click', () => {
       playAudio();
     });
-    
+
     const wrongAudio = new Audio('../../assets/sounds/bad.mp3');
     const correctAudio = new Audio('../../assets/sounds/good.mp3');
 
