@@ -135,6 +135,7 @@ export default async function renderCards(group?: number, page?: number) {
   if (cardsToRender) {
     container.innerHTML = cardsToRender;
   }
+
   checkLearnedPage(main);
 }
 
@@ -151,6 +152,7 @@ container.addEventListener('click', async (e) => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
     await soundHandler(el);
+
   } else if (el.classList.contains('btn-hard')) {
     el.classList.add('disabled');
     const { id, card } = getIdGetCard(el);
@@ -163,7 +165,9 @@ container.addEventListener('click', async (e) => {
         btnEasy.classList.remove('btn-to-learn');
         btnEasy.classList.add('btn-learned');
         btnEasy.textContent = 'Изучено';
+        state.easyCount--;
       }
+      checkLearnedPage(main);
     }
   } else if (el.classList.contains('btn-to-learn')) {
     const { id, card } = getIdGetCard(el);
@@ -175,6 +179,7 @@ container.addEventListener('click', async (e) => {
       card.classList.remove('easy');
       state.easyCount--;
       main.classList.remove('learned-page');
+      checkLearnedPage(main);
     }
   } else if (el.classList.contains('btn-learned')) {
     const { id, card } = getIdGetCard(el);
