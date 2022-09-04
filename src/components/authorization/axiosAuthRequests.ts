@@ -2,7 +2,8 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 import jwt from 'jsonwebtoken';
 import api, { StatusCodes } from '../../api/api';
 import { IUserTokens } from '../../interfaces/interfaces';
-import Controller from '../controller/controller';
+import Authorization from '../../pages/authorization/authorization';
+import Controller, { EPages } from '../controller/controller';
 import saveToken from './saveToStorage';
 import { hideUserLoggedMode } from './userLoggedMode';
 
@@ -39,7 +40,8 @@ axiosAuth.interceptors.response.use(
         const decodedToken = jwt.decode(token);
         if (decodedToken) {
           // update tokens if user is logged in
-        await api.getNewIUserTokens(refreshToken, userId)
+          await api
+            .getNewIUserTokens(refreshToken, userId)
             .then((newTokenData: IUserTokens) => {
               if (tokenData) {
                 tokenData.token = newTokenData.token;
@@ -48,11 +50,15 @@ axiosAuth.interceptors.response.use(
               }
             })
             .catch((err: AxiosError) => {
-                // if refreshToken expired
+              // if refreshToken expired
               if (err.response?.status === StatusCodes.FORBIDDEN || StatusCodes.UNAUTHORIZED) {
                 localStorage.clear();
                 hideUserLoggedMode();
                 Controller.isLoggedIn = false;
+                const authBtn = document.getElementById('authorization') as HTMLElement;
+                Controller.currentPage = EPages.auth;
+                Controller.setActiveMenuItem(authBtn);
+                const view = new Authorization();
               }
             });
         }
