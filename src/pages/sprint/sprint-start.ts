@@ -15,14 +15,23 @@ export default class SprintStart {
 
   authObj: IUserTokens | null;
 
-  constructor() {
+  constructor(wordsFromEbook? :IWord[]) {
     this.authObj = getAuthentification();
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
-    this.mainContent.innerHTML = SprintStart.getHTML();
-    this.selectDiff = this.setDifficultyListeners();
+    if (wordsFromEbook) {
+      // game started from ebook
+      this.mainContent.innerHTML = SprintStart.getHTMLEbookStart();
+        const startSprintBtn = document.querySelector('.sprint__start-btn') as HTMLButtonElement;
+        startSprintBtn.addEventListener('click', () => {
+          const view = new SprintGame(wordsFromEbook);
+        });
+    } else {
+      this.mainContent.innerHTML = SprintStart.getDefaultHTML();
+      this.selectDiff = this.setDifficultyListeners();
+    }
   }
 
-  private static getHTML(): string {
+  private static getDefaultHTML(): string {
     return `
     <div class="sprint__start">
       <h2 class="sprint-title">Мини-игра "Спринт"</h2>
@@ -41,6 +50,19 @@ export default class SprintStart {
         <button class="btn" id="diff4">5</button>
         <button class="btn" id="diff5">6</button>
       </div>
+      `;
+  }
+
+  private static getHTMLEbookStart(): string {
+    return `
+    <div class="sprint__start">
+      <h2 class="sprint-title">Мини-игра "Спринт"</h2>
+      <div class="sprint__start__icon"></div>
+      <p>Игра на время. Вам необходимо правильно перевести как можно больше слов за 1 минуту.</p>
+      <p>За каждый правильный ответ начисляются баллы.</p>
+      <p>Игра начнется со словами из выбранной страницы словаря</p>
+      <button class="sprint__start-btn waves-effect waves-light btn">начать</button>
+    </div>
       `;
   }
 
