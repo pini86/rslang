@@ -5,6 +5,7 @@ import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
 import { getUserWordIds, provideDifficulty, updateWordDifficulty, checkLearnedPage } from '../../pages/ebook/helpers';
+import setLearnedWordsEbook from "../utils/setLearnedWordsEbook";
 
 const { baseUrl } = api;
 const main = document.querySelector('main') as HTMLElement;
@@ -159,6 +160,7 @@ container.addEventListener('click', async (e) => {
     const { id, card } = getIdGetCard(el);
     card.classList.remove('easy');
     state.easyCount--;
+    setLearnedWordsEbook();
     main.classList.remove('learned-page');
     await updateWordDifficulty(id, 'normal');
 
@@ -171,6 +173,7 @@ container.addEventListener('click', async (e) => {
     card.classList.remove('hard');
     card.querySelector('.btn-hard')?.classList.remove('disabled');
     state.easyCount++;
+    setLearnedWordsEbook();
     checkLearnedPage(main);
     await updateWordDifficulty(id, 'easy');
 
