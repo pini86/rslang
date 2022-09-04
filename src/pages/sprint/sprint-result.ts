@@ -114,7 +114,7 @@ export default class SprintResult {
       };
     } else {
       delete statistic.id;
-      statistic.learnedWords += this.sprintResult.sprintStatData.learnedWords;
+      statistic.learnedWords += this.sprintResult.sprintStatData.correctWords.length;
       statistic.optional.sprint.correctWords +=
         this.sprintResult.sprintStatData.correctWords.length;
       statistic.optional.sprint.incorrectWords +=

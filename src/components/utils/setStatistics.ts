@@ -21,11 +21,7 @@ export default async function setStatistics() {
       },
     },
   };
- /*  const currDateString = currentDate.toLocaleDateString('ru-RU', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }); */
+
   const newSettings: ISettings = {
     wordsPerDay: 1,
     optional: {
@@ -53,82 +49,48 @@ export default async function setStatistics() {
     },
   };
 
-  const statisticsUser = await api.getStatistics()
-  .catch(() => {
-    api.upsertStatistics(statisticsNew);
-    api.upsertSettings(newSettings);
-  });
+  await api
+    .getStatistics()
+    .then(async (statisticsUserData) => {
+      await api.getSettings().then(async (settingUser) => {
+        if (!localStorage.getItem('dateRSLang')) {
+          localStorage.setItem('dateRSLang', currentDate.getTime().toString());
+        } else {
+          const savedDate = +(localStorage.getItem('dateRSLang') as string);
 
-  await api.getSettings().then((settingUser)=>{
-    if (!localStorage.getItem('dateRSLang')) {
-      localStorage.setItem('dateRSLang', currentDate.getTime().toString());
-    } else {
-      const savedDate = +(localStorage.getItem('dateRSLang') as string);
-      console.log(currentDate.getTime(),savedDate )
-      if (currentDate.getTime() - savedDate > 86400000) {
-        console.log('пора менять сетинг', settingUser, statisticsUser);
-        if (settingUser) {
-          settingUser.optional.dayLearnWords[
-            `${new Date(savedDate).toLocaleDateString('ru-RU', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}`
-          ] = settingUser.optional.learnedWords;
-          settingUser.optional.learnedWords = 0;
-          delete settingUser.id;
-          if (statisticsUser) {
-            settingUser.optional.dayStats[
-              `${new Date(savedDate).toLocaleDateString('ru-RU', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              })}`
-            ] = statisticsUser;
+          if (
+            currentDate.getTime() > savedDate &&
+            new Date().getDate() > new Date(+savedDate).getDate()
+          ) {
+            if (settingUser) {
+              settingUser.optional.dayLearnWords[
+                `${new Date(savedDate).toLocaleDateString('ru-RU', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}`
+              ] = settingUser.optional.learnedWords;
+              settingUser.optional.learnedWords = 0;
+              delete settingUser.id;
+              if (statisticsUserData) {
+                settingUser.optional.dayStats[
+                  `${new Date(savedDate).toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}`
+                ] = statisticsUserData;
+              }
+              await api.upsertSettings(settingUser);
+            }
+            localStorage.setItem('dateRSLang', currentDate.getTime().toString());
+            await api.upsertStatistics(statisticsNew);
           }
-          api.upsertSettings(settingUser);
         }
-        localStorage.setItem('dateRSLang', currentDate.getTime().toString());
-        api.upsertStatistics(statisticsNew);
-      }
-    }
-  });
-
-  console.log('statisticsUser');
- /*  if (!statisticsUser) {
-    console.log(statisticsUser);
-    await api.upsertStatistics(statisticsNew);
-    await api.upsertSettings(newSettings);
-  } */
-
- /*  if (!localStorage.getItem('dateRSLang')) {
-    localStorage.setItem('dateRSLang', currentDate.getTime().toString());
-  } else {
-    const savedDate = +(localStorage.getItem('dateRSLang') as string);
-    if (currentDate.getTime() - savedDate > 86400000) {
-      if (settingUser) {
-        settingUser.optional.dayLearnWords[
-          `${new Date(savedDate).toLocaleDateString('ru-RU', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })}`
-        ] = settingUser.optional.learnedWords;
-        settingUser.optional.learnedWords = 0;
-        delete settingUser.id;
-        if (statisticsUser) {
-          settingUser.optional.dayStats[
-            `${new Date(savedDate).toLocaleDateString('ru-RU', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}`
-          ] = statisticsUser;
-        }
-        await api.upsertSettings(settingUser);
-      }
-      localStorage.setItem('dateRSLang', currentDate.getTime().toString());
-      await api.upsertStatistics(statisticsNew);
-    }
-  } */
+      });
+    })
+    .catch(() => {
+      api.upsertStatistics(statisticsNew);
+      api.upsertSettings(newSettings);
+    });
 }

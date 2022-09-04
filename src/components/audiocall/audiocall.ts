@@ -245,7 +245,7 @@ export default class AudioCall {
       };
     } else {
       delete statistic.id;
-      statistic.learnedWords += gameWords.length;
+      statistic.learnedWords += correctWords.length;
       statistic.optional.audiocall.correctWords += correctWords.length;
       statistic.optional.audiocall.incorrectWords += wrongWords.length;
       if (statistic.optional.audiocall.streak < streak) {

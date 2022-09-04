@@ -41,11 +41,14 @@ export default class Statistics {
   private static getHTMLWithAuth(): string {
     return `
     <div class="statistics__auth">
-      <h2 class="statistics__auth__header"> Cтатистика за ${new Date().toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      })}</h2>
+      <h2 class="statistics__auth__header"> Cтатистика за сегодня ( ${new Date().toLocaleDateString(
+        'ru-RU',
+        {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }
+      )} )</h2>
       <div class="statistics__auth__wrapper">
         <div class="statistics__auth__column1">
           <div class="statistics__auth__card__new">
@@ -59,7 +62,7 @@ export default class Statistics {
             </div>
             <div class="statistics__auth__learn__wrapper">
             <p id="learn-words-ebook" class="statistics__auth__words__value">0</p>
-            <p class="statistics__auth__words__text">слов изучено в учебнике</p>
+            <p class="statistics__auth__words__text">всего слов изучено в учебнике</p>
             </div>
           </div>
           <div class="statistics__auth__card__percent">
@@ -146,8 +149,8 @@ export default class Statistics {
           animateElementProgress.dataset.total = Math.round(totalPercent).toString();
         }
       })
-      .then(() => {
-        api.getSettings().then((data) => {
+      .then(async () => {
+        await api.getSettings().then((data) => {
           if (data) {
             learnWordsEbook.innerHTML = data.optional.learnedWords.toString();
           } else {
@@ -175,9 +178,11 @@ export default class Statistics {
       const keysArray = Object.keys((savedStatistics as ISettings).optional.dayStats);
       const statisticsPage = document.querySelector('.statistics__auth') as HTMLElement;
 
-      if (keysArray.length) {
+      if (keysArray.length > 1) {
         const statArray = Object.entries((savedStatistics as ISettings).optional.dayStats);
         const miniStatArray = Object.entries((savedStatistics as ISettings).optional.dayLearnWords);
+
+        statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Сохранённая статистика : </h2>`;
         statArray.forEach(([key, value]) => {
           if (key !== 'start') {
             const totalWords =
@@ -211,7 +216,7 @@ export default class Statistics {
       </div>
       <div class="statistics__auth__learn__wrapper">
       <p id="learn-words-ebook-prev" class="statistics__auth__words__value" data-day="${key}">0</p>
-      <p class="statistics__auth__words__text">слов изучено в учебнике</p>
+      <p class="statistics__auth__words__text">всего слов изучено в учебнике</p>
       </div>
     </div>
     <div class="statistics__auth__card__percent">
@@ -219,9 +224,9 @@ export default class Statistics {
         <div id="statistic_circle-wave" class="sprint__statistics__wave" data-total="${Math.round(
           (totalCorrect * 100) / totalWords
         )}"></div>
-        <div id="statistic_circle-percent" class="sprint__statistics__percent">${Math.round(
-          (totalCorrect * 100) / totalWords
-        ) || '0'}%</div>
+        <div id="statistic_circle-percent" class="sprint__statistics__percent">${
+          Math.round((totalCorrect * 100) / totalWords) || '0'
+        }%</div>
       </div>
       <p class="statistics__auth__words__text">правильных ответов</p>
     </div>
