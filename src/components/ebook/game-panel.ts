@@ -29,6 +29,11 @@ function activateGameBtns() {
     const sprintBtn = document.getElementById('sprint') as HTMLElement;
       Controller.removePanels();
       Controller.setActiveMenuItem(sprintBtn);
+      words.map((word)=>{
+      // eslint-disable-next-line no-param-reassign, no-underscore-dangle
+        word._id = word.id; 
+        return word;
+      })
       const view = new SprintStart(words);
     });
   });
