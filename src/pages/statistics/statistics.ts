@@ -1,8 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
+import { Chart, registerables } from 'chart.js';
 import Controller from '../../components/controller/controller';
 import Main from '../main/main';
 import api from '../../api/api';
 import { ISettings } from '../../interfaces/interfaces';
+
+Chart.register(...registerables);
 
 export default class Statistics {
   mainContent!: HTMLElement;
@@ -181,10 +185,14 @@ export default class Statistics {
       if (keysArray.length > 1) {
         const statArray = Object.entries((savedStatistics as ISettings).optional.dayStats);
         const miniStatArray = Object.entries((savedStatistics as ISettings).optional.dayLearnWords);
+        const countNewWordsDays: number[] = [];
 
         statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Сохранённая статистика : </h2>`;
         statArray.forEach(([key, value]) => {
           if (key !== 'start') {
+            countNewWordsDays.push(
+              value.optional.audiocall.newWords + value.optional.sprint.newWords
+            );
             const totalWords =
               value.optional.audiocall.correctWords +
               value.optional.audiocall.incorrectWords +
@@ -289,6 +297,32 @@ export default class Statistics {
           }
         );
       });
+
+      statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика в графиках </h2>
+      <div>
+       <canvas id="myChart"></canvas>
+      </div>`;
+      const labels = keysArray;
+
+      const data = {
+        labels,
+        datasets: [
+          {
+            label: 'My First dataset',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+          },
+        ],
+      };
+
+      const config = {
+        type: 'line',
+        data,
+        options: {},
+      };
+
+      const myChart = new Chart(document.getElementById('myChart'), config);
     }
   }
 }
