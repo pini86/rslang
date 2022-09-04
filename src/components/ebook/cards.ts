@@ -107,11 +107,13 @@ export default async function renderCards(group?: number, page?: number) {
       textMeaningTranslate,
     } = w;
 
-    const idIndex = state.userWordIds.indexOf(id);
-    if (idIndex !== -1) {
-      difficulty = userWords[idIndex].difficulty;
-      if (difficulty === 'easy') {
-        state.easyCount++;
+    if (state.isAuth) {
+      const idIndex = state.userWordIds.indexOf(id);
+      if (idIndex !== -1) {
+        difficulty = userWords[idIndex].difficulty;
+        if (difficulty === 'easy') {
+          state.easyCount++;
+        }
       }
     }
 
