@@ -1,3 +1,5 @@
+import Controller from "../controller/controller";
+
 export function showUserLoggedMode(name: string): void {
   const greetText = document.querySelector('.authorization__greet') as HTMLSpanElement;
   const logout = document.querySelector('.authorization__logout') as HTMLElement;
@@ -19,6 +21,7 @@ export function showUserAuthentification() {
   let tokenData;
   if (localStorage.getItem('tokenData')) {
     tokenData = JSON.parse(localStorage.getItem('tokenData') || '');
+    Controller.isLoggedIn = true;
   }
   if (tokenData) {
     const { name } = tokenData;

@@ -9,8 +9,9 @@ import Header from '../../pages/header/header';
 import Footer from '../../pages/footer/footer';
 import { showUserAuthentification } from '../authorization/userLoggedMode';
 import { activateAuthentification } from '../contentLoaded/dom';
+import SprintGame from '../../pages/sprint/sprint-game';
 
-enum EPages {
+export enum EPages {
   auth = 'Auth',
   main = 'Main',
   ebook = 'Ebook',
@@ -22,9 +23,9 @@ enum EPages {
 export default class Controller {
   static isLoggedIn = false;
 
-  private currentPage = EPages.main;
+  static currentPage = EPages.main;
 
-  keyStorage = 'currentPage';
+  static keyStorage = 'currentPage';
 
   header = new Header();
 
@@ -44,6 +45,8 @@ export default class Controller {
     const authBtn = document.getElementById('authorization') as HTMLElement;
     const statisticsBtn = document.getElementById('statistics') as HTMLElement;
     const iconMenu = document.getElementById('icon-menu') as HTMLElement;
+
+    showUserAuthentification();
 
     iconMenu.addEventListener('click', () => {
       if (iconMenu.classList.contains('icon-menu--active')) {
@@ -80,34 +83,33 @@ export default class Controller {
       this.addBtnListener(EPages.statistics, new Statistics(), statisticsBtn)
     );
 
-    this.checkSessionStorage();
+    Controller.checkSessionStorage();
 
-    switch (this.currentPage) {
+    switch (Controller.currentPage) {
       case 'Auth':
-        this.setActiveMenuItem(authBtn);
+        Controller.setActiveMenuItem(authBtn);
         this.mainView = new Authorization();
         break;
       case 'Ebook':
-        this.setActiveMenuItem(ebookBtn);
+        Controller.setActiveMenuItem(ebookBtn);
         this.mainView = new Ebook();
         initEbook();
         break;
       case 'Audiocall':
-        this.setActiveMenuItem(audiocallBtn);
+        Controller.setActiveMenuItem(audiocallBtn);
         this.mainView = new Audiocall();
         break;
       case 'Sprint':
-        this.setActiveMenuItem(sprintBtn);
+        Controller.setActiveMenuItem(sprintBtn);
         this.mainView = new Sprint();
         break;
       case 'Statistics':
-        this.setActiveMenuItem(statisticsBtn);
+        Controller.setActiveMenuItem(statisticsBtn);
         this.mainView = new Statistics();
         break;
       default:
-        this.setActiveMenuItem(mainBtn);
+        Controller.setActiveMenuItem(mainBtn);
     }
-    showUserAuthentification();
   }
 
   addBtnListener(
@@ -115,11 +117,13 @@ export default class Controller {
     PageClass: Main | Ebook | Audiocall | Sprint | Statistics | Authorization,
     btn: HTMLElement
   ): void {
-    if (this.currentPage === page) return;
-    this.currentPage = page;
+    clearTimeout(SprintGame.sprintTimerId1);
+    clearTimeout(SprintGame.sprintTimerId2);
+    if (Controller.currentPage === page) return;
+    Controller.currentPage = page;
     this.mainView = PageClass;
     Controller.toggleHeaderMenu('close');
-    this.setActiveMenuItem(btn);
+    Controller.setActiveMenuItem(btn);
     this.removePanels();
     if (page !== 'Ebook') {
       document.querySelector('main')?.classList.remove('learned-page');
@@ -127,7 +131,7 @@ export default class Controller {
     document.onkeyup = null;
   }
 
-  setActiveMenuItem(menuItem: HTMLElement): void {
+  static setActiveMenuItem(menuItem: HTMLElement): void {
     const bodyMenu = document.querySelector('.body-menu') as HTMLElement;
     const menuItems = [...bodyMenu.children] as HTMLElement[];
     menuItems.forEach((li) => li.classList.remove('active'));
@@ -175,14 +179,14 @@ export default class Controller {
     }
   }
 
-  checkSessionStorage(): void {
+  static checkSessionStorage(): void {
     const getKey = sessionStorage.getItem(this.keyStorage) as EPages;
     if (getKey) {
       this.currentPage = getKey;
     }
   }
 
-  setSessionStorage(): void {
+  static setSessionStorage(): void {
     sessionStorage.setItem(this.keyStorage, this.currentPage);
   }
 }

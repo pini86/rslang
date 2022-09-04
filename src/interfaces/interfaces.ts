@@ -72,8 +72,13 @@ interface IStatisticsOptional {
 }
 
 export interface ISettings {
+  id?: string;
   wordsPerDay: number;
-  optional: object;
+  optional: {
+    learnedWords: number;
+    dayStats: { [key: string]: IUserStatistics };
+    dayLearnWords: { [key: string]: object | number };
+  };
 }
 
 export interface ISprintWord {

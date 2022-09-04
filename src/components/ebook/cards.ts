@@ -10,6 +10,7 @@ import {
   updateWordDifficulty,
   checkLearnedPage,
 } from '../../pages/ebook/helpers';
+import setLearnedWordsEbook from "../utils/setLearnedWordsEbook";
 
 const { baseUrl } = api;
 const main = document.querySelector('main') as HTMLElement;
