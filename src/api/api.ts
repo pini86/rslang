@@ -38,7 +38,7 @@ export enum StatusMessages {
 }
 
 class API {
-  baseUrl = 'http://localhost:3000';
+  baseUrl = 'https:rs-lang-rsschool-task.herokuapp.com';
 
   token: string = API.initializeToken();
 
