@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
-import { Chart, registerables } from 'chart.js';
+import { Chart, ChartConfiguration, ChartItem, registerables } from 'chart.js';
 import Controller from '../../components/controller/controller';
 import Main from '../main/main';
 import api from '../../api/api';
@@ -177,6 +177,9 @@ export default class Statistics {
   }
 
   private static async getSavedStatistics(): Promise<void> {
+    const countNewWordsDays: number[] = [];
+    const countAllLearnedWordsDays: number[] = [];
+
     const savedStatistics = await api.getSettings();
     if (savedStatistics) {
       const keysArray = Object.keys((savedStatistics as ISettings).optional.dayStats);
@@ -185,7 +188,6 @@ export default class Statistics {
       if (keysArray.length > 1) {
         const statArray = Object.entries((savedStatistics as ISettings).optional.dayStats);
         const miniStatArray = Object.entries((savedStatistics as ISettings).optional.dayLearnWords);
-        const countNewWordsDays: number[] = [];
 
         statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Сохранённая статистика : </h2>`;
         statArray.forEach(([key, value]) => {
@@ -208,6 +210,7 @@ export default class Statistics {
               (value.optional.audiocall.correctWords * 100) /
                 (value.optional.audiocall.correctWords + value.optional.audiocall.incorrectWords)
             );
+            countAllLearnedWordsDays.push(value.learnedWords);
             statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика за ${key}</h2>
        <div class="statistics__auth__wrapper">
   <div class="statistics__auth__column1">
@@ -284,6 +287,10 @@ export default class Statistics {
             });
           });
         });
+
+        for (let i = 0; i < miniStatArray.length - 1; i++) {
+          countAllLearnedWordsDays[i] += Number(miniStatArray[i + 1][1]);
+        }
       }
 
       const waves = document.querySelectorAll('#statistic_circle-wave');
@@ -301,28 +308,93 @@ export default class Statistics {
       statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика в графиках </h2>
       <div>
        <canvas id="myChart"></canvas>
-      </div>`;
+      </div>
+      <div>
+      <canvas id="myChart2"></canvas>
+     </div>`;
+
+      keysArray.shift();
       const labels = keysArray;
 
-      const data = {
+      let data = {
         labels,
         datasets: [
           {
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
+            label: 'Новых слов в день',
+            backgroundColor: 'rgb(153, 255, 153)',
             borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
+            data: countNewWordsDays,
+          },
+        ],
+      };
+      const config = {
+        type: 'bar',
+        data,
+        options: {
+          layout: {
+            padding: {
+              top: 50,
+              bottom: 50,
+            },
+          },
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: 'rgb(255, 255, 255)',
+                font: {
+                  size: 18,
+                },
+              },
+            },
+          },
+        },
+      };
+
+      const myChart = new Chart(
+        document.getElementById('myChart') as ChartItem,
+        config as ChartConfiguration
+      );
+
+      data = {
+        labels,
+        datasets: [
+          {
+            label: 'Общее количество изученных слов',
+            backgroundColor: 'rgb(153, 153, 255)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: countAllLearnedWordsDays,
           },
         ],
       };
 
-      const config = {
-        type: 'line',
+      const config2 = {
+        type: 'bar',
         data,
-        options: {},
+        options: {
+          layout: {
+            padding: {
+              top: 50,
+              bottom: 50,
+            },
+          },
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: 'rgb(255, 255, 255)',
+                font: {
+                  size: 18,
+                },
+              },
+            },
+          },
+        },
       };
-
-      const myChart = new Chart(document.getElementById('myChart'), config);
+      const myChart2 = new Chart(
+        document.getElementById('myChart2') as ChartItem,
+        config2 as ChartConfiguration
+      );
     }
   }
 }
