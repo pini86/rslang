@@ -298,14 +298,12 @@ class API {
     group = '0',
     page = '0',
     wordsPerPage = '20',
-    filter = '',
+    filter = ''
   ): Promise<IWord[]> | never => {
     const url = `${this.users}/${id}/aggregatedWords?&group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
-    return axios
-      .get<IWord[]>(url, {
-        headers: { Authorization: `Bearer ${this.token}` },
-      })
-      .then((response) => response.data)
+    return axiosAuth
+      .get<[{ paginatedResults: IWord[] }]>(url)
+      .then((response) => response.data[0].paginatedResults)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
