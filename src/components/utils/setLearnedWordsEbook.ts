@@ -14,36 +14,5 @@ export default function setLearnedWordsEbook(): void {
       data.optional.learnedWords = state.easyCount;
       api.upsertSettings(data);
     }
-  }).catch(() => {
-    const currDate = new Date().toLocaleDateString('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-    const newSettings: ISettings = {
-      wordsPerDay: 1,
-      optional: {
-        learnedWords: state.easyCount,
-        dayStats: { currDate: {
-           learnedWords: 0,
-           optional: {
-             sprint: {
-               correctWords: 0,
-               incorrectWords: 0,
-               streak: 0,
-               newWords: 0
-             },
-             audiocall: {
-              correctWords: 0,
-              incorrectWords: 0,
-              streak: 0,
-              newWords: 0
-             }
-           }
-        }},
-        dayLearnWords: {currDate: 0},
-      },
-    };
-    api.upsertSettings(newSettings);
-});
+  });
 }

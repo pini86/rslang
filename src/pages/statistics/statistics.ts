@@ -216,12 +216,12 @@ export default class Statistics {
     </div>
     <div class="statistics__auth__card__percent">
       <div id="statistic_circle" class="sprint__statistics__circle">
-        <div id="statistic_circle-wave" class="sprint__statistic__wave" data-total="${Math.round(
+        <div id="statistic_circle-wave" class="sprint__statistics__wave" data-total="${Math.round(
           (totalCorrect * 100) / totalWords
         )}"></div>
-        <div id="statistic_circle-percent" class="sprint__statistic_percent">${Math.round(
+        <div id="statistic_circle-percent" class="sprint__statistics__percent">${Math.round(
           (totalCorrect * 100) / totalWords
-        )}%</div>
+        ) || '0'}%</div>
       </div>
       <p class="statistics__auth__words__text">правильных ответов</p>
     </div>

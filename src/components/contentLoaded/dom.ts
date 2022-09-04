@@ -19,7 +19,7 @@ export function activateAuthentification(): void {
 export function activateLogOut(): void {
   const logout = document.querySelector('.authorization__logout') as HTMLElement;
   logout.addEventListener('click', (event) => {
-    localStorage.clear();
+    localStorage.removeItem('tokenData');
     event.stopPropagation();
     hideUserLoggedMode();
     Controller.isLoggedIn = false;

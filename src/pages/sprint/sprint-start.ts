@@ -70,10 +70,11 @@ export default class SprintStart {
         SprintStart.sprintWordsArray = response as IWord[];
       } else {
         const response = await API.getAllAggregatedUserWords(
-          (this.authObj as IUserTokens).userId,
           '0',
           `${page}`,
-          '20'
+          '20',
+          '',
+          (this.authObj as IUserTokens).userId
         );
         SprintStart.sprintWordsArray = response as IWord[];
       }
@@ -92,3 +93,5 @@ export default class SprintStart {
     }
   }
 }
+// https://rs-lang-rsschool-task.herokuapp.com/users/63072d3b6c68a900168c3f50/aggregatedWords?&group=0&page=26&wordsPerPage=20&filter=
+// https://rs-lang-rsschool-task.herokuapp.com/users/63072d3b6c68a900168c3f50/aggregatedWords?group=63072d3b6c68a900168c3f50&page=0&wordsPerPage=22&filter={"userWord.difficulty":"20"}

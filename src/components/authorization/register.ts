@@ -35,6 +35,7 @@ export default function activateRegister() {
 
       await api.createNewUser(registerFields).then(() => {
         api.signIn(email, password).then((tokenData) => {
+          setStatistics();
           saveToken(tokenData);
           showUserLoggedMode(tokenData.name);
           const view = new Main();
@@ -44,7 +45,7 @@ export default function activateRegister() {
           Controller.setActiveMenuItem(mainBtn);
           Controller.currentPage = EPages.main;
           Controller.setSessionStorage();
-          setStatistics();
+         
         });
       });
     }

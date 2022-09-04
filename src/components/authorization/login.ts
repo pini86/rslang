@@ -23,6 +23,7 @@ export default function activateLogin() {
       const loginFields: LoginFields = getLoginFields(emailInput, passwordInput);
 
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
+        setStatistics();
         saveToken(tokenData);
         showUserLoggedMode(tokenData.name);
         const view = new Main();
@@ -32,7 +33,7 @@ export default function activateLogin() {
         Controller.setActiveMenuItem(mainBtn);
         Controller.currentPage = EPages.main;
         Controller.setSessionStorage();
-        setStatistics();
+        
       });
     }
   });
