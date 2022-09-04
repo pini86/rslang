@@ -170,11 +170,11 @@ export default class Controller {
   static checkSessionStorage(): void {
     const getKey = sessionStorage.getItem(this.keyStorage) as EPages;
     if (getKey) {
-      this.currentPage = getKey;
+      Controller.currentPage = getKey;
     }
   }
 
   static setSessionStorage(): void {
-    sessionStorage.setItem(this.keyStorage, this.currentPage);
+    sessionStorage.setItem(Controller.keyStorage, Controller.currentPage);
   }
 }

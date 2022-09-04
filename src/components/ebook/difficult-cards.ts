@@ -4,7 +4,6 @@ import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import preloader from './preloader';
 
-const { baseUrl } = api;
 const container = document.querySelector('main .container') as HTMLElement;
 const group = cardLevels.length - 1;
 
@@ -26,7 +25,7 @@ function generateHardCard(
         <div class="col image-wrapper">
           <div class="card">
             <div class="card-image z-depth-3">
-              <img src=${baseUrl}/${image}>
+              <img src=${api.baseUrl}/${image}>
               <div class="card-title">
                 <div>
                   <span class="word">${word}</span>

@@ -42,8 +42,8 @@ export default function activateRegister() {
           const mainBtn = document.getElementById('main') as HTMLElement;
 
           Controller.isLoggedIn = true;
-          Controller.setActiveMenuItem(mainBtn);
           Controller.currentPage = EPages.main;
+          Controller.setActiveMenuItem(mainBtn);
           Controller.setSessionStorage();
          
         });
