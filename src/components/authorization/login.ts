@@ -3,7 +3,8 @@ import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
 import Main from '../../pages/main/main';
-import Controller from '../controller/controller';
+import Controller, { EPages } from '../controller/controller';
+import setStatistics from '../utils/setStatistics';
 
 type LoginFields = Pick<IUser, 'email' | 'password'>;
 
@@ -17,13 +18,22 @@ export default function activateLogin() {
   loginBtn.addEventListener('click', async () => {
     const emailInput = document.querySelector('#email-log') as HTMLInputElement;
     const passwordInput = (document.querySelector('#password-log') as HTMLInputElement);
+    
     if (emailInput.checkValidity() && passwordInput.checkValidity()) {
       const loginFields: LoginFields = getLoginFields(emailInput, passwordInput);
+
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
+        setStatistics();
         saveToken(tokenData);
         showUserLoggedMode(tokenData.name);
         const view = new Main();
+        const mainBtn = document.getElementById('main') as HTMLElement;
+
         Controller.isLoggedIn = true;
+        Controller.setActiveMenuItem(mainBtn);
+        Controller.currentPage = EPages.main;
+        Controller.setSessionStorage();
+        
       });
     }
   });

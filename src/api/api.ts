@@ -278,13 +278,13 @@ class API {
 
   /** Gets all user aggregated words */
   getAllAggregatedUserWords = async (
+    id = this.userId,
     group = '0',
     page = '0',
     wordsPerPage = '20',
-    filter = '',
-    id = this.userId,
+    filter = ''
   ): Promise<IWord[]> | never => {
-    const url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
+    const url = `${this.users}/${id}/aggregatedWords?&group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
     return axiosAuth
       .get<[{ paginatedResults: IWord[] }]>(url)
       .then((response) => response?.data[0].paginatedResults)
