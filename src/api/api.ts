@@ -274,11 +274,14 @@ class API {
   getAggregatedDifficulties = async (
     group = '0',
     page = '0',
-    wordsPerPage = '3600',
+    wordsPerPage = '20',
     filter = 'hard',
     id = this.userId,
   ): Promise<IWord[]> | never => {
-    const url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
+    let url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
+    if (group === 'all') {
+      url = `${this.users}/${id}/aggregatedWords?filter={"userWord.difficulty":"${filter}"}`;
+    }
     return axiosAuth
       .get<[IAggregatedObj]>(url)
       .then((response) => response.data[0].paginatedResults)

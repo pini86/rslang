@@ -63,7 +63,7 @@ export default async function renderDifficultCards() {
 
   state.isAuth = localStorage.getItem('tokenData');
   state.curGroup = group;
-  const words = state.isAuth ? await api.getAggregatedDifficulties() : [];
+  const words = state.isAuth ? await api.getAggregatedDifficulties('all') : [];
   const wordIds = words.map(word => word.userWord?.optional.wordId) as string[];
 
   let cardsToRender = '';
