@@ -3,6 +3,7 @@ import { WORDS_PER_PAGE } from '../../constants/constants';
 import Audiocall from '../../pages/audiocall/audiocall';
 import state from '../../pages/ebook/state';
 import Sprint from '../../pages/sprint/sprint';
+import SprintStart from '../../pages/sprint/sprint-start';
 import Controller from '../controller/controller';
 
 const main = document.querySelector('main') as HTMLElement;
@@ -28,7 +29,7 @@ function activateGameBtns() {
     const sprintBtn = document.getElementById('sprint') as HTMLElement;
       Controller.removePanels();
       Controller.setActiveMenuItem(sprintBtn);
-      const view = new Sprint(words);
+      const view = new SprintStart(words);
     });
   });
 }

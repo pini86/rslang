@@ -9,6 +9,7 @@ import Header from '../../pages/header/header';
 import Footer from '../../pages/footer/footer';
 import { showUserAuthentification } from '../authorization/userLoggedMode';
 import { activateAuthentification } from '../contentLoaded/dom';
+import SprintGame from '../../pages/sprint/sprint-game';
 
 export enum EPages {
   auth = 'Auth',
@@ -116,6 +117,8 @@ export default class Controller {
     PageClass: Main | Ebook | Audiocall | Sprint | Statistics | Authorization,
     btn: HTMLElement
   ): void {
+    clearTimeout(SprintGame.sprintTimerId1);
+    clearTimeout(SprintGame.sprintTimerId2);
     if (Controller.currentPage === page) return;
     Controller.currentPage = page;
     this.mainView = PageClass;

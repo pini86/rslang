@@ -4,10 +4,14 @@ import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
 import Main from '../../pages/main/main';
 import Controller, { EPages } from '../controller/controller';
+import setStatistics from '../utils/setStatistics';
 
 type LoginFields = Pick<IUser, 'email' | 'password'>;
 
-const getLoginFields = (emailInput: HTMLInputElement, passwordInput: HTMLInputElement): LoginFields => ({
+const getLoginFields = (
+  emailInput: HTMLInputElement,
+  passwordInput: HTMLInputElement
+): LoginFields => ({
   email: emailInput.value,
   password: passwordInput.value,
 });
@@ -22,6 +26,7 @@ export default function activateLogin() {
       const loginFields: LoginFields = getLoginFields(emailInput, passwordInput);
 
       await api.signIn(loginFields.email, loginFields.password).then((tokenData) => {
+        setStatistics();
         saveToken(tokenData);
         showUserLoggedMode(tokenData.name);
         const view = new Main();
@@ -31,6 +36,10 @@ export default function activateLogin() {
         Controller.setActiveMenuItem(mainBtn);
         Controller.currentPage = EPages.main;
         Controller.setSessionStorage();
+        Controller.setActiveMenuItem(mainBtn);
+        Controller.currentPage = EPages.main;
+        Controller.setSessionStorage();
+        
       });
     }
   });

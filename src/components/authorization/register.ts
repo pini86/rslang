@@ -4,6 +4,7 @@ import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
 import Main from '../../pages/main/main';
 import Controller, { EPages } from '../controller/controller';
+import setStatistics from '../utils/setStatistics';
 
 type RegisterFields = IUser;
 
@@ -34,6 +35,7 @@ export default function activateRegister() {
 
       await api.createNewUser(registerFields).then(() => {
         api.signIn(email, password).then((tokenData) => {
+          setStatistics();
           saveToken(tokenData);
           showUserLoggedMode(tokenData.name);
           const view = new Main();
@@ -43,6 +45,7 @@ export default function activateRegister() {
           Controller.setActiveMenuItem(mainBtn);
           Controller.currentPage = EPages.main;
           Controller.setSessionStorage();
+         
         });
       });
     }
