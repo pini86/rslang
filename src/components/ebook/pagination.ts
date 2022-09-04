@@ -14,7 +14,7 @@ async function setActivePage(el: HTMLElement, page: number) {
   el.classList.add('active-page');
   el.classList.remove('pagination-learned-page');
   if (state.isAuth) {
-    const easyCount = (await api.getAllAggregatedUserWords(`${state.curGroup}`, `${page}`, `${WORDS_PER_PAGE}`, 'easy')).length;
+    const easyCount = (await api.getAggregatedDifficulties(`${state.curGroup}`, `${page}`, `${WORDS_PER_PAGE}`, 'easy')).length;
     if (easyCount === WORDS_PER_PAGE) {
       el.classList.add('pagination-learned-page');
     }

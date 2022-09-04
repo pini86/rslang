@@ -272,10 +272,13 @@ class API {
 
   /** Gets all words with matched difficulty */
   getAggregatedDifficulties = async (
+    group = '0',
+    page = '0',
+    wordsPerPage = '3600',
     filter = 'hard',
     id = this.userId,
   ): Promise<IWord[]> | never => {
-    const url = `${this.users}/${id}/aggregatedWords?filter={"userWord.difficulty":"${filter}"}`;
+    const url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
     return axiosAuth
       .get<[IAggregatedObj]>(url)
       .then((response) => response.data[0].paginatedResults)
@@ -291,16 +294,18 @@ class API {
 
   /** Gets all user aggregated words */
   getAllAggregatedUserWords = async (
+    id = this.userId,
     group = '0',
     page = '0',
     wordsPerPage = '20',
     filter = '',
-    id = this.userId,
   ): Promise<IWord[]> | never => {
-    const url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
-    return axiosAuth
-      .get<[{ paginatedResults: IWord[] }]>(url)
-      .then((response) => response.data[0].paginatedResults)
+    const url = `${this.users}/${id}/aggregatedWords?&group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
+    return axios
+      .get<IWord[]>(url, {
+        headers: { Authorization: `Bearer ${this.token}` },
+      })
+      .then((response) => response.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
