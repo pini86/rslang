@@ -10,11 +10,11 @@
   padding: 0 15px;
 }
 
-#body-menu {
+/* #body-menu {
   @include resolution(big-mobile) {
     transform: translateX(-120%);
   }
-}
+} */
 
 .nav-wrapper ul.row {
   margin-bottom: 0;
@@ -27,11 +27,11 @@
 
   .container {
     @include resolution(desktop) {
-      width: calc(100vw - 200px)
+      font-size: 0.875rem;
     }
 
-    @include resolution(tablet) {
-      width: 100vw;
+    @media (max-width: 1168px) {
+      font-size: 0.75rem;
     }
   }
 
@@ -41,10 +41,6 @@
 
     &-wrapper {
       display: flex;
-
-      @include resolution(tablet) {
-        transform: scale(.8);
-      }
     }
   }
 
@@ -97,7 +93,7 @@
       z-index: 10;
       transform: translate(-100%, 0);
       transition: all 0.5s;
-      background: #071a2f;
+      background: $bg-color;
       z-index: 4000;
 
       li {
@@ -132,6 +128,10 @@
   cursor: pointer;
   z-index: 5000;
 
+  @include resolution(mobile) {
+    top: 20px;
+  }
+
   span {
     transition: all 0.5s;
     top: 8px;
@@ -139,6 +139,11 @@
     position: absolute;
     width: 100%;
     height: 2px;
+
+    @include resolution(mobile) {
+      height: 1px;
+    }
+
     background-color: #fff;
 
     &:first-child {
@@ -241,6 +246,9 @@
     .card__icon {
       font-size: 60px;
       color: black;
+      @include resolution(mobile-horizontal){
+        font-size: 34px;
+      }
     }
   }
 }
@@ -295,7 +303,7 @@
 .team__tasks {
   display: flex;
   justify-content: space-around;
-
+gap: 10px;
   @include resolution(desktop) {
     flex-wrap: wrap;
     justify-content: center;
@@ -304,10 +312,23 @@
   .team__task {
     display: block;
     padding: 2%;
-    margin: 2%;
-
-    @include resolution(desktop) {
-      width: 120px;
+    width: 160px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 68px;
+    @include resolution(big-desktop) {
+      width: 115px;
+      font-size: 0.875rem;
+    }
+    @include resolution(tablet) {
+      height: 50px;
+    }
+    @include resolution(big-mobile) {
+      width: 100px;
+      height: 35px;
+      font-size: 0.8rem;
     }
   }
 
@@ -319,8 +340,8 @@
 .team__name {
   color: $font-color;
 
-  @include resolution(mobile) {
-    font-size: 0.8rem;
+  @include resolution(mobile-horizontal) {
+    font-size: 0.875rem;
   }
 }
 
