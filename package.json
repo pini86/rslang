@@ -30,6 +30,7 @@
     "util": "^0.12.4"
   },
   "devDependencies": {
+    "@types/chart.js": "^2.9.37",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/materializecss__materialize": "^1.1.0",
     "@types/node": "^18.7.1",
