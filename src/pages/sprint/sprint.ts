@@ -7,6 +7,6 @@ export default class Sprint {
   sprintView = new SprintStart();
 
   constructor() {
-    this.sprintView = new SprintStart();
+      this.sprintView = new SprintStart();
   }
 }

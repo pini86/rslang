@@ -12,7 +12,6 @@ import {
 } from '../../pages/ebook/helpers';
 import setLearnedWordsEbook from '../utils/setLearnedWordsEbook';
 
-const { baseUrl } = api;
 const main = document.querySelector('main') as HTMLElement;
 const container = main.querySelector('.container') as HTMLElement;
 let { curPage, curGroup } = state;
@@ -47,7 +46,7 @@ function generateCard(
         <div class="col image-wrapper">
           <div class="card">
             <div class="card-image z-depth-3">
-              <img src=${baseUrl}/${image}>
+              <img src=${api.baseUrl}/${image}>
               <div class="card-title">
                 <div>
                   <span class="word">${word}</span>
@@ -207,3 +206,4 @@ container.addEventListener('click', async (e) => {
     }
   }
 });
+
