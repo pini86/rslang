@@ -84,7 +84,7 @@ export default class Statistics {
               <p>Аудиовызов</p>
             </div>
           <p class="game__text"><span id="audio-new-words" class="game__value">0</span>  новых слов</p>
-          <p   class="game__text"><span  id="audio-correct-words" class="game__value">0</span>  % правильных ответов</p>
+          <p   class="game__text"><span  id="audio-correct-words" class="game__value">0%</span>   правильных ответов</p>
           <p  class="game__text"><span id="audio-in-row"  class="game__value">0</span>  cамая длинная серия<BR> правильных ответов</p>
           </div> 
           <div class="statistics__auth__card__sprint">
@@ -93,7 +93,7 @@ export default class Statistics {
               <p>Спринт</p>
             </div>
             <p class="game__text"><span id="sprint-new-words"  class="game__value">0</span>  новых слов</p>
-            <p  class="game__text"><span id="sprint-correct-words" class="game__value">0</span>  % правильных ответов</p>
+            <p  class="game__text"><span id="sprint-correct-words" class="game__value">0%</span>   правильных ответов</p>
             <p class="game__text"><span id="sprint-in-row"  class="game__value">0</span>  cамая длинная серия<BR> правильных ответов</p>
           </div>          
         </div>
@@ -253,7 +253,7 @@ export default class Statistics {
     }</span>  новых слов</p>
     <p   class="game__text"><span  id="audio-correct-words" class="game__value">${
       Number.isNaN(audiocallPercent) ? 0 : audiocallPercent
-    }</span>  % правильных ответов</p>
+    }%</span>   правильных ответов</p>
     <p  class="game__text"><span id="audio-in-row"  class="game__value">${
       value.optional.audiocall.streak
     }</span>  cамая длинная серия<BR> правильных ответов</p>
@@ -268,7 +268,7 @@ export default class Statistics {
       }</span>  новых слов</p>
       <p  class="game__text"><span id="sprint-correct-words" class="game__value">${
         Number.isNaN(sprintPercent) ? 0 : sprintPercent
-      }</span>  % правильных ответов</p>
+      }%</span>   правильных ответов</p>
       <p class="game__text"><span id="sprint-in-row"  class="game__value">${
         value.optional.sprint.streak
       }</span>  cамая длинная серия<BR> правильных ответов</p>
@@ -304,8 +304,8 @@ export default class Statistics {
 
         keysArray.shift();
         const labels = keysArray;
-        const backColorGreen = 'rgb(153, 255, 153)';
-        const backColorPlumb = 'rgb(153, 153, 255)';
+        const backColorGreen = 'rgb(24, 133, 147)';
+        const backColorPlumb = 'rgb(83, 163, 174)';
         const bordColor = 'rgb(255, 99, 132)';
         const whiteColor = 'rgb(255, 255, 255)';
         let data = {

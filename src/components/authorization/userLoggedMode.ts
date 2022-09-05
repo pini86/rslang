@@ -1,5 +1,5 @@
-import Main from "../../pages/main/main";
-import Controller, { EPages } from "../controller/controller";
+import Main from '../../pages/main/main';
+import Controller, { EPages } from '../controller/controller';
 
 export function showUserLoggedMode(name: string): void {
   const greetText = document.querySelector('.authorization__greet') as HTMLSpanElement;

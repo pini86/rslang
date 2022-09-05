@@ -15,16 +15,16 @@ export default class SprintStart {
 
   authObj: IUserTokens | null;
 
-  constructor(wordsFromEbook? :IWord[]) {
+  constructor(wordsFromEbook?: IWord[]) {
     this.authObj = getAuthentification();
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
     if (wordsFromEbook) {
       // game started from ebook
       this.mainContent.innerHTML = SprintStart.getHTMLEbookStart();
-        const startSprintBtn = document.querySelector('.sprint__start-btn') as HTMLButtonElement;
-        startSprintBtn.addEventListener('click', () => {
-          const view = new SprintGame(wordsFromEbook);
-        });
+      const startSprintBtn = document.querySelector('.sprint__start-btn') as HTMLButtonElement;
+      startSprintBtn.addEventListener('click', () => {
+        const view = new SprintGame(wordsFromEbook);
+      });
     } else {
       this.mainContent.innerHTML = SprintStart.getDefaultHTML();
       this.selectDiff = this.setDifficultyListeners();
@@ -34,22 +34,31 @@ export default class SprintStart {
   private static getDefaultHTML(): string {
     return `
     <div class="sprint__start">
-      <h2 class="sprint-title">Мини-игра "Спринт"</h2>
-      <div class="sprint__start__icon"></div>
-      <p>Игра на время. Вам необходимо правильно перевести как можно больше слов за 1 минуту.</p>
+      <h5 class="sprint-title">Мини-игра "Спринт"</h5>
+      <p>Твоя задача: перевести как можно больше слов за 1 минуту.</з>
       <p>За каждый правильный ответ начисляются баллы.</p>
-      <p></p>
-      <p>Выберите уровень сложности:</p>
-      <p> от 1 - легкий, до 6 - сложный</p>
-      <p></p>
-      <div class="sprint__difficulty">
-        <button class="btn" id="diff0">1</button>
-        <button class="btn" id="diff1">2</button>
-        <button class="btn" id="diff2">3</button>
-        <button class="btn" id="diff3">4</button>
-        <button class="btn" id="diff4">5</button>
-        <button class="btn" id="diff5">6</button>
-      </div>
+      <h5>Выбери уровень сложности:</h5>
+      <ul class="collection audiocall__levels sprint__difficulty">
+      <li class="collection-item">
+        <button class="audiocall__level btn green lighten-1 active" id="diff0">A1</button>
+      </li>
+      <li class="collection-item">
+        <button class="audiocall__level btn light-green darken-3" id="diff1">A2</button>
+      </li>
+      <li class="collection-item">
+        <button class="audiocall__level btn cyan darken-1" id="diff2">B1</button>
+      </li>
+      <li class="collection-item">
+        <button class="audiocall__level btn teal darken-2" id="diff3">B2</button>
+      </li>
+      <li class="collection-item">
+        <button class="audiocall__level btn orange" id="diff4">C1</button>
+      </li>
+      <li class="collection-item">
+      <button class="audiocall__level btn pink lighten-3" id="diff5">C2</button>
+      </li>
+    </ul>
+      <p class="audiocall__start-header">Используй мышку или стрелки на клавиатуре</p>
       `;
   }
 

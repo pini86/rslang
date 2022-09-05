@@ -1,7 +1,5 @@
 import api from '../../api/api';
-import { WORDS_PER_PAGE } from '../../constants/constants';
 import Audiocall from '../../pages/audiocall/audiocall';
-import state from '../../pages/ebook/state';
 import SprintStart from '../../pages/sprint/sprint-start';
 import Controller from '../controller/controller';
 
@@ -38,7 +36,7 @@ function activateGameBtns() {
       });
     } else {
       api.getWords(+group, +page).then((words) => {
-      const view = new SprintStart(words);
+        const view = new SprintStart(words);
       });
     }
   });
@@ -47,12 +45,11 @@ function activateGameBtns() {
 export default function createGamePanel() {
   const gamePanel = document.createElement('ul');
   gamePanel.classList.add('collection', 'game-panel');
-  const isActive = state.easyCount === WORDS_PER_PAGE ? 'disabled' : '';
   gamePanel.innerHTML = `
-    <button class="btn cyan darken-1 btn-audiocall ${isActive}">
+    <button class="btn cyan darken-1 btn-audiocall">
       <i class="material-icons">music_note</i>
     </button>
-    <button class="btn cyan darken-1 btn-sprint ${isActive}">
+    <button class="btn cyan darken-1 btn-sprint">
       <i class="material-icons">directions_run</i>
     </button>
   `;

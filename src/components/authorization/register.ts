@@ -45,7 +45,6 @@ export default function activateRegister() {
           Controller.currentPage = EPages.main;
           Controller.setActiveMenuItem(mainBtn);
           Controller.setSessionStorage();
-         
         });
       });
     }

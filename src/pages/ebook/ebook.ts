@@ -18,7 +18,7 @@ export class Ebook {
 export function initEbook() {
   createDiffPanel();
   createGamePanel();
-  if (state.curGroup !== PANEL_LEVELS_AMOUNT) {
+  if (state.curGroup !== PANEL_LEVELS_AMOUNT - 1) {
     renderCards();
     initPagination();
   } else {

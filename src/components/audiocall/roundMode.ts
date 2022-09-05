@@ -1,4 +1,4 @@
-export default class RoundMode{
+export default class RoundMode {
   gameContent!: HTMLElement;
 
   constructor() {

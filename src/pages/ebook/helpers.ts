@@ -1,6 +1,7 @@
 import { IWord, Difficulty } from '../../interfaces/interfaces';
 import { WORDS_PER_PAGE } from '../../constants/constants';
 import api from '../../api/api';
+import Controller from '../../components/controller/controller';
 import state from './state';
 
 export async function getUserWordIds(words: IWord[]) {
@@ -31,6 +32,9 @@ export async function updateWordDifficulty(id: string, difficulty: Difficulty) {
 export function checkLearnedPage(main: HTMLElement) {
   if (state.easyCount === WORDS_PER_PAGE) {
     main.classList.add('learned-page');
+    Controller.toggleGameActivation(false);
+  } else {
+    Controller.toggleGameActivation();
   }
 }
 

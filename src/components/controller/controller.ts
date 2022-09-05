@@ -154,6 +154,18 @@ export default class Controller {
     }
   }
 
+  static toggleGameActivation(activate = true) {
+    const audiocall = document.querySelector('.btn-audiocall') as HTMLElement;
+    const sprint = document.querySelector('.btn-sprint') as HTMLElement;
+    if (activate) {
+      audiocall.classList.remove('disabled');
+      sprint.classList.remove('disabled');
+    } else {
+      audiocall.classList.add('disabled');
+      sprint.classList.add('disabled');
+    }
+  }
+
   static toggleHeaderMenu(action: string): void {
     const iconMenu = document.getElementById('icon-menu') as HTMLElement;
     const bodyMenu = document.getElementById('body-menu') as HTMLElement;

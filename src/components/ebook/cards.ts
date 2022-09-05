@@ -4,8 +4,13 @@ import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
-import { getUserWordIds, provideDifficulty, updateWordDifficulty, checkLearnedPage } from '../../pages/ebook/helpers';
-import setLearnedWordsEbook from "../utils/setLearnedWordsEbook";
+import {
+  getUserWordIds,
+  provideDifficulty,
+  updateWordDifficulty,
+  checkLearnedPage,
+} from '../../pages/ebook/helpers';
+import setLearnedWordsEbook from '../utils/setLearnedWordsEbook';
 
 const main = document.querySelector('main') as HTMLElement;
 const container = main.querySelector('.container') as HTMLElement;
@@ -130,6 +135,7 @@ export default async function renderCards(group?: number, page?: number) {
   if (cardsToRender) {
     container.innerHTML = cardsToRender;
   }
+
   checkLearnedPage(main);
 }
 
@@ -158,7 +164,9 @@ container.addEventListener('click', async (e) => {
         btnEasy.classList.remove('btn-to-learn');
         btnEasy.classList.add('btn-learned');
         btnEasy.textContent = 'Изучено';
+        state.easyCount--;
       }
+      checkLearnedPage(main);
     }
   } else if (el.classList.contains('btn-to-learn')) {
     const { id, card } = getIdGetCard(el);
@@ -167,7 +175,6 @@ container.addEventListener('click', async (e) => {
     setLearnedWordsEbook();
     main.classList.remove('learned-page');
     await updateWordDifficulty(id, 'normal');
-
   } else if (el.classList.contains('btn-learned')) {
     const { id, card } = getIdGetCard(el);
     card.classList.add('easy');
@@ -177,7 +184,6 @@ container.addEventListener('click', async (e) => {
     setLearnedWordsEbook();
     checkLearnedPage(main);
     await updateWordDifficulty(id, 'easy');
-
   } else if (el.classList.contains('btn-hard-remove')) {
     const { id, card } = getIdGetCard(el);
     const response = await api.updateUserWord(id, provideDifficulty('normal', id));

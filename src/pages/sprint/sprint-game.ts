@@ -85,8 +85,8 @@ export default class SprintGame {
           <div class="sprint__transcription" id="sprint-translation"></div>
         </div>
         <div class="sprint__answer__wrapper">
-          <button class="sprint__wrong-answer" id="sprint-wrong">НЕТ</button>
-          <button class="sprint__right-answer" id="sprint-right">ДА</button>
+          <button class="sprint__wrong-answer red" id="sprint-wrong">НЕТ</button>
+          <button class="sprint__right-answer green" id="sprint-right">ДА</button>
         </div>
       </div>`;
   }
@@ -110,9 +110,7 @@ export default class SprintGame {
   }
 
   private sortWords(): IWord[] {
-    return [...this.sprint.sprintWordsArray].sort(() =>
-      SprintGame.createRandomNumber()
-    );
+    return [...this.sprint.sprintWordsArray].sort(() => SprintGame.createRandomNumber());
   }
 
   private createQuestionsArray(): Array<ISprintWord> {
