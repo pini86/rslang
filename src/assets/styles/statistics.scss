@@ -10,7 +10,7 @@
   box-sizing: border-box;
   background-color: $font-color;
   border-radius: 10px;
-  color: #000;
+  color: $bg-color;
   @include flex-column;
   justify-content: space-between;
   align-items: center;
@@ -62,7 +62,7 @@
     display: flex;
     justify-content: center;
     column-gap: 10px;
-    color: #000;
+    color: $bg-color;
 
     @include resolution(big-mobile) {
       flex-direction: column;
@@ -116,7 +116,6 @@
     height: 170px;
     flex-flow: column;
     justify-content: space-between;
-    border: 3px solid $accent-yellow-color;
   }
 
   &__learn__wrapper {
@@ -131,21 +130,18 @@
     margin-left: 20px;
   }
 
-  &__card__new {
-    border: 3px solid $accent-pink-color;
-  }
+
 
   &__card__percent {
     flex-direction: column;
     padding-top: 12%;
     height: 200px;
     row-gap: 20px;
-    border: 3px solid $accent-red-color;
   }
   &__words__value {
     font-size: 70px;
     font-weight: 500;
-    color: rgb(5, 97, 97);
+    color: $accent-blue-color;
     margin: 0;
     font-size: 32px;
 
@@ -173,7 +169,6 @@
     border-radius: 10px;
     background-color: $font-color;
     @include flex-column;
-    border: 3px solid rgb(136, 191, 176);
     justify-content: flex-start;
     column-gap: 20px;
     align-items: flex-start;
@@ -196,7 +191,7 @@
       }
 
       p {
-        color: $accent-red-color;
+        color: $accent-blue-color;
         font-size: 24px;
         font-weight: 500;
 
@@ -224,7 +219,7 @@
       }
 
       p {
-        color: rgb(242, 166, 99);
+        color: $accent-blue-color;
         font-size: 24px;
         font-weight: 500;
 
@@ -237,7 +232,7 @@
 }
 
 .game__value {
-  color: rgb(5, 97, 97);
+  color: $accent-blue-color;
   font-size: 22px;
   font-weight: 500;
 

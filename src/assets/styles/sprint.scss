@@ -1,41 +1,32 @@
-$white: #fff;
-$blue: royalblue;
-$darkblue: darkblue;
-$grey: grey;
-$black: black;
+@use 'variables' as *;
+@use 'mixins' as *;
 
 /* Sprint start */
 .sprint__start {
-  width: 50%;
-  margin: 0 auto;
-  margin-top: 10%;
   display: flex;
   flex-direction: column;
+  text-align: center;
   padding: 30px;
   box-sizing: border-box;
-  background-color: royalblue;
   border-radius: 10px;
   align-items: center;
   row-gap: 15px;
-  color: white;
+  color: $font-color;
 
-  &__icon {
-    min-width: 64px;
-    min-height: 64px;
-    background-image: url('../icons/gamepad.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  .collection {
+    border-radius: 20px;
   }
 
   & h2 {
     font-size: 20px;
     text-align: center;
     margin: 0 0 20px 0;
+
     @media (max-height: 580px) {
       margin: 0;
     }
   }
+
   & p {
     margin: 0;
     text-align: center;
@@ -46,18 +37,22 @@ $black: black;
       transform: scale(0.9);
       background: rgb(142, 142, 189);
     }
+
     &.select {
       transform: scale(1.1);
     }
   }
+
   @media (max-width: 646px) {
     width: 80%;
   }
+
   @media (max-height: 580px) {
     row-gap: 5px;
     padding: 5px;
     margin: 0 auto;
   }
+
   @media (max-width: 400px) {
     width: 98%;
     padding: 50px 10px 20px 10px;
@@ -77,9 +72,9 @@ $black: black;
   &__word__wrapper {
     width: 50%;
     height: 20%;
-    border: solid 2px white;
-    background-color: royalblue;
-    color: white;
+    border: solid 2px $font-color;
+    background-color: $bg-color;
+    color: $font-color;
     border-radius: 20px;
     display: flex;
     flex-flow: column;
@@ -112,28 +107,23 @@ $black: black;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
-    font-weight: 600;
-    color: white;
-    height: 50%;
-    width: 35%;
+    color: $font-color;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  &__wrong-answer {
-    background-color: red;
+  &__wrong-answer,
+  &__right-answer {
+    font-family: $main-font;
   }
 
-  &__right-answer {
-    background-color: green;
-  }
+
 
   &__timer {
-    background-image: url('../icons/alarm-clock.svg');
     width: 100px;
     height: 100px;
-    border: white solid 2px;
+    border: $font-color solid 2px;
     border-radius: 50%;
     margin-bottom: 20px;
     display: flex;
@@ -165,15 +155,11 @@ $black: black;
     align-items: center;
   }
 
-  &__streak {
-    font-style: italic;
-  }
-
   &__current-count,
   &__score {
     color: rgba($color: #fff, $alpha: 0.3);
     animation: glow 5s;
-    border: 2px solid white;
+    border: 2px solid $font-color;
     border-radius: 50px;
   }
 
@@ -192,33 +178,24 @@ $black: black;
     }
   }
 
-  .str0,
-  .str1,
-  .str2,
-  .str3,
-  .str4 {
-    font-size: 50px;
-    text-shadow: 0 0 4px rgb(255, 255, 255);
-  }
-
   .str0 {
-    color: rgb(0, 163, 68);
+    color: $accent-blue-color;
   }
 
   .str1 {
-    color: rgb(0, 247, 255);
+    color: $accent-yellow-color;
   }
 
   .str2 {
-    color: rgb(255, 0, 221);
+    color: $accent-pink-color;
   }
 
   .str3 {
-    color: rgb(255, 0, 0);
+    color: $accent-red-color;
   }
 
   .str4 {
-    color: rgb(208, 255, 0);
+    color: $accent-green-color;
   }
 }
 
@@ -227,7 +204,7 @@ $black: black;
   width: 80%;
   height: 75vh;
   margin: 0 auto;
-  background-color: $white;
+  background-color: $font-color;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -243,7 +220,7 @@ $black: black;
     flex-direction: column;
     align-items: center;
     row-gap: 20px;
-    background-color: $white;
+    background-color: $font-color;
     border-radius: 10px;
   }
 
@@ -261,7 +238,7 @@ $black: black;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    background-color: $white;
+    background-color: $font-color;
     border-radius: 10px;
   }
 
@@ -287,8 +264,8 @@ $black: black;
     position: relative;
     overflow: hidden;
     border-radius: 50%;
-    border: 2px solid $darkblue;
-    background-color: $grey;
+    border: 2px solid $accent-blue-color;
+    background-color: $font-color;
   }
 
   &__wave {
@@ -297,7 +274,7 @@ $black: black;
     height: 150%;
     left: -31%;
     top: 101%;
-    background-color: $blue;
+    background-color: $accent-blue-color;
     border-radius: 45%;
     animation: wave 5s linear infinite;
   }
@@ -327,18 +304,19 @@ $black: black;
     width: 5rem;
     height: 2rem;
     margin: 5px;
-    background-color: $blue;
+    background-color: $accent-blue-color;
     border-radius: 5px;
     align-self: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: $font-color;
     cursor: pointer;
   }
 
   &__result__words {
     width: 100%;
+    padding: 0 5%;
     height: auto;
     display: flex;
     flex-flow: column;
@@ -359,10 +337,12 @@ $black: black;
     .property_word {
       display: flex;
       width: 20%;
+
       &_tr {
         display: flex;
         width: 20%;
       }
+
       &_lang {
         display: flex;
         width: 30%;
@@ -374,9 +354,6 @@ $black: black;
     width: 1rem;
     height: 1rem;
     border: none;
-    background-image: url('../icons/play.png');
-    background-size: contain;
-    background-repeat: no-repeat;
     cursor: pointer;
   }
 
@@ -386,10 +363,10 @@ $black: black;
     padding: 10px 15px;
     cursor: pointer;
     font-size: 14px;
-    color: $black;
+    color: $bg-color;
     font-weight: 600;
-    background: $blue;
-    color: $white;
+    background: $accent-blue-color;
+    color: $font-color;
     width: 8rem;
   }
 
@@ -436,6 +413,7 @@ $black: black;
     &__streak {
       width: 25%;
       height: 130%;
+      font-size: 1rem;
     }
 
     &__timer {
@@ -480,10 +458,12 @@ $black: black;
       font-size: 50px;
     }
   }
+
   .sprint__statistics {
     &__stat__wrapper {
       width: 95%;
     }
+
     &__words {
       font-size: 12px;
     }
@@ -492,6 +472,7 @@ $black: black;
 
 @media (max-width: 420px) {
   .sprint {
+
     &__count__wrapper,
     &__word__wrapper,
     &__answer__wrapper {
@@ -511,5 +492,33 @@ $black: black;
     &__score {
       font-size: 20px;
     }
+  }
+}
+
+.sprint__levels {
+  display: flex;
+  justify-content: center;
+}
+
+.sprint__statistics__result__words::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sprint__statistics__result__words::-webkit-scrollbar-track {
+  background: $font-color;
+}
+
+.sprint__statistics__result__words::-webkit-scrollbar-thumb {
+  background-color: $accent-blue-color;
+  border-radius: 5px;
+}
+.property_word,
+.property_word_lang{
+  font-size: 0.9rem;
+  @include resolution(big-mobile){
+    font-size: 0.8rem;
+  }
+  @include resolution(mobile){
+    font-size: 0.7rem;
   }
 }

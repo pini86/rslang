@@ -4,6 +4,8 @@ export default class StartMode {
   constructor() {
     this.gameContent = document.querySelector('main div.container') as HTMLElement;
     this.gameContent.innerHTML = `<div class="audiocall"><div class="audiocall__wrapper">
+    <h5>Мини-игра "Аудиовызов"</h5>
+    <p>Твоя задача: выбрать правильный перевод произнесенного слова</p>
     <h5 class="audiocall__start-header">Выбери уровень, чтобы начать игру</h5>
 
     <ul class="collection audiocall__levels">

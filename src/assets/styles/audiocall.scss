@@ -39,10 +39,10 @@
     @include flex-column;
     align-items: center;
     justify-content: space-around;
-    gap: 5vh;
+    gap: 2vh;
     overflow-y: hidden;
     @include resolution(desktop) {
-      gap: 3vh;
+      gap: 1vh;
     }
   }
 

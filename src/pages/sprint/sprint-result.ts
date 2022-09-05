@@ -131,14 +131,13 @@ export default class SprintResult {
     if (arrayWords.length === 0) return;
     const wordsSection = document.getElementById('sprint-result-stat') as HTMLElement;
 
-    wordsSection.innerHTML += valid ? '<h2>Правильные ответы</h2>' : '<h2>Неправильные ответы</h2>';
+    wordsSection.innerHTML += valid ? '<h5>Правильные ответы</h5>' : '<h5>Неправильные ответы</h5>';
     arrayWords.forEach((elem) => {
       wordsSection.innerHTML += `<div class="sprint__statistics__words">
-        <button class="sprint__statistics__audio" id="${
+        <span class="sprint__statistics__audio" id="${
           !Controller.isLoggedIn ? (elem as IWordData).id : (elem as IWord)._id
-        }"></button>
+        }"><i class="material-icons">volume_up</i></span>
         <div class="property_word">${elem.word}</div>
-        <div class="property_word_tr">${elem.transcription}</div>
         <div class="property_word_lang">${elem.wordTranslate}</div>
         <div id="check-answer" class="check__answer ${valid ? `valid` : `novalid`}"> 
         </div>`;
