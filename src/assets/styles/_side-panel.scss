@@ -26,6 +26,7 @@
     padding: 0;
     line-height: 40px;
     border-radius: 100%;
+
     &:hover {
       opacity: 0.8;
       box-shadow: 0 0 6px $bg-color;
@@ -50,7 +51,7 @@
 }
 
 .level-active {
-  transform:scale(1.2);
+  transform: scale(1.2);
 }
 
 @media (max-width: 1023px) {
@@ -64,6 +65,7 @@
 }
 
 @media (max-width: 767px) {
+
   .game-panel,
   .textbook-levels {
     display: flex;
@@ -75,6 +77,7 @@
 }
 
 @media (max-width: 640px) {
+
   .game-panel .collection-item,
   .textbook-levels .collection-item {
     padding: 7px;
@@ -86,9 +89,4 @@
       font-size: 12px;
     }
   }
-
-  // .collection img {
-  //   margin-top: 8px;
-  //   left: 17px;
-  // }
 }

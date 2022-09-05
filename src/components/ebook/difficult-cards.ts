@@ -4,7 +4,6 @@ import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import preloader from './preloader';
 
-const { baseUrl } = api;
 const container = document.querySelector('main .container') as HTMLElement;
 const group = cardLevels.length - 1;
 
@@ -26,7 +25,7 @@ function generateHardCard(
         <div class="col image-wrapper">
           <div class="card">
             <div class="card-image z-depth-3">
-              <img src=${baseUrl}/${image}>
+              <img src=${api.baseUrl}/${image}>
               <div class="card-title">
                 <div>
                   <span class="word">${word}</span>
@@ -64,7 +63,7 @@ export default async function renderDifficultCards() {
   state.isAuth = localStorage.getItem('tokenData');
   state.curGroup = group;
   const words = state.isAuth ? await api.getAggregatedDifficulties('all') : [];
-  const wordIds = words.map(word => word.userWord?.optional.wordId) as string[];
+  const wordIds = words.map((word) => word.userWord?.optional.wordId) as string[];
 
   let cardsToRender = '';
   words.forEach((w, i) => {
@@ -96,8 +95,10 @@ export default async function renderDifficultCards() {
   if (cardsToRender) {
     container.innerHTML = cardsToRender;
   } else if (!cardsToRender && !state.isAuth) {
-    container.innerHTML = '<h5 class="center-align">Авторизуйтесь чтобы добавлять сюда сложные слова.</h5>';
+    container.innerHTML =
+      '<h5 class="center-align">Авторизуйтесь чтобы добавлять сюда сложные слова.</h5>';
   } else if (!cardsToRender) {
-    container.innerHTML = '<h5 class="center-align">Сложные слова отсутствуют в вашем словаре.</h5>';
+    container.innerHTML =
+      '<h5 class="center-align">Сложные слова отсутствуют в вашем словаре.</h5>';
   }
 }

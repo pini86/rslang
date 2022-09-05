@@ -1,6 +1,6 @@
 .main.learned-page {
   background: linear-gradient(rgba(255, 255, 255, 0) .9em, rgb(0, 85, 42) 1em) 0 0,
-  linear-gradient(90deg, rgba(255,255,255, 0) .9em, rgb(0, 88, 42) 1em) 0 0;
+    linear-gradient(90deg, rgba(255, 255, 255, 0) .9em, rgb(0, 88, 42) 1em) 0 0;
   background-size: 1em 1em;
 }
 
@@ -29,11 +29,9 @@
 
   &-title {
     width: 400px;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 1) 100%
-    );
+    background: linear-gradient(180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 1) 100%);
 
     .translation {
       font-size: 20px;
@@ -46,7 +44,7 @@
     padding: 20px 20px 20px 0;
     font-size: 15px;
 
-    > :first-child > :first-child {
+    > :first-child> :first-child {
       margin: 0;
     }
   }
@@ -70,6 +68,7 @@
 }
 
 .content {
+
   &-translation,
   &-phrase {
     margin: 5px 0;
@@ -92,6 +91,7 @@
 
 @media (min-width: 1090px) {
   .card {
+
     &,
     &-image img {
       max-width: 400px;
@@ -127,6 +127,7 @@
   }
 
   .card {
+
     &,
     &-image img {
       height: 250px;

@@ -1,4 +1,4 @@
-export default class Main{
+export default class Main {
   mainContent!: HTMLElement;
 
   constructor() {
@@ -54,13 +54,13 @@ export default class Main{
           <img src="https://avatars.githubusercontent.com/u/94520585?v=4" alt="Developer's avatar" class="team__img" />
         </div>
         <h5>
-          <a class="team__name" href="https://github.com/pini86">@pini86</a>
+          <a class="team__name" href="https://github.com/pini86">@pini86 – team leader</a>
         </h5>
         <div class="team__tasks">
-          <span class="team__task yellow">Аудиовызов</span>
+          <span class="team__task yellow">Развертывание бэкэнда</span>
           <span class="team__task pink lighten-3">Спринт</span>
-          <span class="team__task cyan darken">Учебник</span>
-          <span class="team__task red darken-1">Верстка</span>
+          <span class="team__task cyan darken">Статистика</span>
+          <span class="team__task red darken-1">Прогресс обучения</span>
         </div>
       </div>
       <div class="team__card card-blue">
@@ -71,10 +71,10 @@ export default class Main{
           <a class="team__name" href="https://github.com/user0k">@user0k</a>
         </h5>
         <div class="team__tasks">
-          <span class="team__task cyan darken">Аудиовызов</span>
-          <span class="team__task red darken-1">Спринт</span>
-          <span class="team__task pink lighten-3">Учебник</span>
-          <span class="team__task yellow">Верстка</span>
+          <span class="team__task cyan darken">Электронный учебник</span>
+          <span class="team__task red darken-1">Список слов</span>
+          <span class="team__task pink lighten-3">Сложные слова</span>
+          <span class="team__task yellow">Изученные слова</span>
         </div>
       </div>
       <div class="team__card card-pink">
@@ -85,10 +85,10 @@ export default class Main{
           <a class="team__name" href="https://github.com/natashapridanova">@natashapridanova</a>
         </h5>
         <div class="team__tasks">
-          <span class="team__task red darken-1">Аудиовызов</span>
-          <span class="team__task yellow">Спринт</span>
-          <span class="team__task cyan darken">Учебник</span>
-          <span class="team__task pink lighten-3">Верстка</span>
+          <span class="team__task red darken-1">Авторизация</span>
+          <span class="team__task yellow">Аудиовызов</span>
+          <span class="team__task cyan darken">Главная страница</span>
+          <span class="team__task pink lighten-3">Запуск игр учебника</span>
         </div>
       </div>
     </div>

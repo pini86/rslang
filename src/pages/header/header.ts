@@ -17,11 +17,11 @@ export default class Header {
           <li class="nav__link" id="audiocall">Аудиовызов</li>
           <li class="nav__link" id="sprint">Спринт</li>
           <li class="nav__link" id="statistics">Статистика</li>
-        </ul>
-        <button id="authorization" class="authorization">
-          <span class="authorization__greet">Войти</span><i class="material-icons authorization__icon">account_box</i>
-          <span class="authorization__logout">Выйти</span></a>
-        </button>
+          </ul>
+          <button id="authorization" class="authorization">
+            <span class="authorization__greet">Войти</span><i class="material-icons authorization__icon">account_box</i>
+            <span class="authorization__logout">Выйти</span></a>
+          </button>
       </div>
     </nav>
   </div>`;

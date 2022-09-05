@@ -7,7 +7,6 @@ import {
   IUserWord,
   IUserTokens,
   ISprintResult,
-  Difficulty,
 } from '../../interfaces/interfaces';
 import SprintResult from './sprint-result';
 import api from '../../api/api';
@@ -86,8 +85,8 @@ export default class SprintGame {
           <div class="sprint__transcription" id="sprint-translation"></div>
         </div>
         <div class="sprint__answer__wrapper">
-          <button class="sprint__wrong-answer" id="sprint-wrong">НЕТ</button>
-          <button class="sprint__right-answer" id="sprint-right">ДА</button>
+          <button class="sprint__wrong-answer red" id="sprint-wrong">НЕТ</button>
+          <button class="sprint__right-answer green" id="sprint-right">ДА</button>
         </div>
       </div>`;
   }
@@ -111,9 +110,7 @@ export default class SprintGame {
   }
 
   private sortWords(): IWord[] {
-    return [...this.sprint.sprintWordsArray].sort((firstWord, secondWord) =>
-      SprintGame.createRandomNumber()
-    );
+    return [...this.sprint.sprintWordsArray].sort(() => SprintGame.createRandomNumber());
   }
 
   private createQuestionsArray(): Array<ISprintWord> {
@@ -236,13 +233,16 @@ export default class SprintGame {
         (this.authObj as IUserTokens).userId
       );
     } else {
+      const userWordOptional = (word as IWord).userWord as IUserWord;
       if (
-        (word as IWord).userWord?.optional.totalCorrectCount === 0 &&
-        (word as IWord).userWord?.optional.totalIncorrectCount === 0
+        Boolean((word as IWord).userWord?.optional.totalCorrectCount) === false &&
+        Boolean((word as IWord).userWord?.optional.totalIncorrectCount) === false
       ) {
         this.sprint.sprintNewWords++;
+        userWordOptional.optional.totalIncorrectCount = 0;
+        userWordOptional.optional.totalCorrectCount = 0;
       }
-      const userWordOptional = (word as IWord).userWord as IUserWord;
+
       (userWordOptional.optional.correctCount as number)++;
       (userWordOptional.optional.totalCorrectCount as number)++;
       if (
@@ -257,6 +257,9 @@ export default class SprintGame {
       ) {
         this.sprint.sprintStatData.learnedWords++;
         userWordOptional.difficulty = 'easy';
+      }
+      if (Boolean(userWordOptional.optional.correctCount) === false) {
+        userWordOptional.optional.correctCount = 0;
       }
       api.updateUserWord(
         (word as IWord)._id as string,
@@ -283,16 +286,22 @@ export default class SprintGame {
         (this.authObj as IUserTokens).userId
       );
     } else {
+      const userWordOptional = (word as IWord).userWord as IUserWord;
       if (
-        (word as IWord).userWord?.optional.totalCorrectCount === 0 &&
-        (word as IWord).userWord?.optional.totalIncorrectCount === 0
+        Boolean((word as IWord).userWord?.optional.totalCorrectCount) === false &&
+        Boolean((word as IWord).userWord?.optional.totalIncorrectCount) === false
       ) {
         this.sprint.sprintNewWords++;
+        userWordOptional.optional.totalIncorrectCount = 0;
+        userWordOptional.optional.totalCorrectCount = 0;
       }
-      const userWordOptional = (word as IWord).userWord as IUserWord;
+
       (userWordOptional.optional.totalIncorrectCount as number)++;
       if (userWordOptional.difficulty === 'easy') {
         userWordOptional.difficulty = 'normal';
+        userWordOptional.optional.correctCount = 0;
+      }
+      if (Boolean(userWordOptional.optional.correctCount) === false) {
         userWordOptional.optional.correctCount = 0;
       }
       api.updateUserWord(
