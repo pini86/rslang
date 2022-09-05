@@ -296,22 +296,25 @@ export default class Statistics {
       {
         statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика в графиках </h2>
       <div>
-       <canvas id="myChart"></canvas>
+       <canvas id="chartNewWordsDay"></canvas>
       </div>
       <div>
-      <canvas id="myChart2"></canvas>
+      <canvas id="chartLearnedWords"></canvas>
      </div>`;
 
         keysArray.shift();
         const labels = keysArray;
-
+        const backColorGreen = 'rgb(153, 255, 153)';
+        const backColorPlumb = 'rgb(153, 153, 255)';
+        const bordColor = 'rgb(255, 99, 132)';
+        const whiteColor = 'rgb(255, 255, 255)';
         let data = {
           labels,
           datasets: [
             {
               label: 'Новых слов в день',
-              backgroundColor: 'rgb(153, 255, 153)',
-              borderColor: 'rgb(255, 99, 132)',
+              backgroundColor: backColorGreen,
+              borderColor: bordColor,
               data: countNewWordsDays,
             },
           ],
@@ -330,7 +333,7 @@ export default class Statistics {
               legend: {
                 display: true,
                 labels: {
-                  color: 'rgb(255, 255, 255)',
+                  color: whiteColor,
                   font: {
                     size: 18,
                   },
@@ -340,8 +343,8 @@ export default class Statistics {
           },
         };
 
-        const myChart = new Chart(
-          document.getElementById('myChart') as ChartItem,
+        const chartNewWordsDay = new Chart(
+          document.getElementById('chartNewWordsDay') as ChartItem,
           config as ChartConfiguration
         );
 
@@ -350,8 +353,8 @@ export default class Statistics {
           datasets: [
             {
               label: 'Общее количество изученных слов',
-              backgroundColor: 'rgb(153, 153, 255)',
-              borderColor: 'rgb(255, 99, 132)',
+              backgroundColor: backColorPlumb,
+              borderColor: bordColor,
               data: countAllLearnedWordsDays,
             },
           ],
@@ -371,7 +374,7 @@ export default class Statistics {
               legend: {
                 display: true,
                 labels: {
-                  color: 'rgb(255, 255, 255)',
+                  color: whiteColor,
                   font: {
                     size: 18,
                   },
@@ -380,8 +383,8 @@ export default class Statistics {
             },
           },
         };
-        const myChart2 = new Chart(
-          document.getElementById('myChart2') as ChartItem,
+        const chartLearnedWords = new Chart(
+          document.getElementById('chartLearnedWords') as ChartItem,
           config2 as ChartConfiguration
         );
       }
