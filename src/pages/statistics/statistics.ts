@@ -71,7 +71,7 @@ export default class Statistics {
           </div>
           <div class="statistics__auth__card__percent">
             <div id="statistic_circle" class="sprint__statistics__circle">
-              <div id="statistic_circle-wave" class="sprint__statistics__wave"></div>
+              <div id="statistic_circle-wave" class="sprint__statistics__wave" data-total=""></div>
               <div id="statistic_circle-percent" class="sprint__statistics__percent">0%</div>
             </div>
             <p class="statistics__auth__words__text">правильных ответов</p>
@@ -152,6 +152,15 @@ export default class Statistics {
           textStatisticProgress.innerText = `${Math.round(totalPercent)}%`;
           animateElementProgress.dataset.total = Math.round(totalPercent).toString();
         }
+        const wave = document.querySelector('.sprint__statistics__wave') as HTMLElement;
+
+        wave.animate(
+          [{ top: '100%' }, { top: `${100 - +((wave as HTMLElement).dataset.total as string)}%` }],
+          {
+            duration: 2000,
+            fill: 'forwards',
+          }
+        );
       })
       .then(async () => {
         await api.getSettings().then((data) => {
@@ -163,8 +172,7 @@ export default class Statistics {
         });
       })
       .then(() => {
-        this.getSavedStatistics();
-        const wave = document.querySelector('#statistic_circle-wave') as HTMLElement;
+        const wave = document.querySelector('.sprint__statistics__wave') as HTMLElement;
 
         wave.animate(
           [{ top: '100%' }, { top: `${100 - +((wave as HTMLElement).dataset.total as string)}%` }],
@@ -173,6 +181,7 @@ export default class Statistics {
             fill: 'forwards',
           }
         );
+        this.getSavedStatistics();
       });
   }
 
@@ -293,19 +302,8 @@ export default class Statistics {
         }
       }
 
-      const waves = document.querySelectorAll('#statistic_circle-wave');
-
-      waves.forEach((wave) => {
-        wave.animate(
-          [{ top: '100%' }, { top: `${100 - +((wave as HTMLElement).dataset.total as string)}%` }],
-          {
-            duration: 2000,
-            fill: 'forwards',
-          }
-        );
-      });
-
-      statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика в графиках </h2>
+      {
+        statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика в графиках </h2>
       <div>
        <canvas id="myChart"></canvas>
       </div>
@@ -313,88 +311,101 @@ export default class Statistics {
       <canvas id="myChart2"></canvas>
      </div>`;
 
-      keysArray.shift();
-      const labels = keysArray;
+        keysArray.shift();
+        const labels = keysArray;
 
-      let data = {
-        labels,
-        datasets: [
-          {
-            label: 'Новых слов в день',
-            backgroundColor: 'rgb(153, 255, 153)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: countNewWordsDays,
-          },
-        ],
-      };
-      const config = {
-        type: 'bar',
-        data,
-        options: {
-          layout: {
-            padding: {
-              top: 50,
-              bottom: 50,
+        let data = {
+          labels,
+          datasets: [
+            {
+              label: 'Новых слов в день',
+              backgroundColor: 'rgb(153, 255, 153)',
+              borderColor: 'rgb(255, 99, 132)',
+              data: countNewWordsDays,
             },
-          },
-          plugins: {
-            legend: {
-              display: true,
-              labels: {
-                color: 'rgb(255, 255, 255)',
-                font: {
-                  size: 18,
+          ],
+        };
+        const config = {
+          type: 'bar',
+          data,
+          options: {
+            layout: {
+              padding: {
+                top: 50,
+                bottom: 50,
+              },
+            },
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  color: 'rgb(255, 255, 255)',
+                  font: {
+                    size: 18,
+                  },
                 },
               },
             },
           },
-        },
-      };
+        };
 
-      const myChart = new Chart(
-        document.getElementById('myChart') as ChartItem,
-        config as ChartConfiguration
-      );
+        const myChart = new Chart(
+          document.getElementById('myChart') as ChartItem,
+          config as ChartConfiguration
+        );
 
-      data = {
-        labels,
-        datasets: [
-          {
-            label: 'Общее количество изученных слов',
-            backgroundColor: 'rgb(153, 153, 255)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: countAllLearnedWordsDays,
-          },
-        ],
-      };
-
-      const config2 = {
-        type: 'bar',
-        data,
-        options: {
-          layout: {
-            padding: {
-              top: 50,
-              bottom: 50,
+        data = {
+          labels,
+          datasets: [
+            {
+              label: 'Общее количество изученных слов',
+              backgroundColor: 'rgb(153, 153, 255)',
+              borderColor: 'rgb(255, 99, 132)',
+              data: countAllLearnedWordsDays,
             },
-          },
-          plugins: {
-            legend: {
-              display: true,
-              labels: {
-                color: 'rgb(255, 255, 255)',
-                font: {
-                  size: 18,
+          ],
+        };
+
+        const config2 = {
+          type: 'bar',
+          data,
+          options: {
+            layout: {
+              padding: {
+                top: 50,
+                bottom: 50,
+              },
+            },
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  color: 'rgb(255, 255, 255)',
+                  font: {
+                    size: 18,
+                  },
                 },
               },
             },
           },
-        },
-      };
-      const myChart2 = new Chart(
-        document.getElementById('myChart2') as ChartItem,
-        config2 as ChartConfiguration
-      );
+        };
+        const myChart2 = new Chart(
+          document.getElementById('myChart2') as ChartItem,
+          config2 as ChartConfiguration
+        );
+      }
+
+      const waves = document.querySelectorAll('#statistic_circle-wave');
+
+      waves.forEach((wave) => {
+        wave.animate(
+          [{ top: '100%' }, { top: `${+((wave as HTMLElement).dataset.total as string)}%` }],
+          {
+            duration: 2000,
+            fill: 'forwards',
+          }
+        );
+      });
     }
   }
 }
