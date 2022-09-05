@@ -1,8 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
+import { Chart, ChartConfiguration, ChartItem, registerables } from 'chart.js';
 import Controller from '../../components/controller/controller';
 import Main from '../main/main';
 import api from '../../api/api';
 import { ISettings } from '../../interfaces/interfaces';
+
+Chart.register(...registerables);
 
 export default class Statistics {
   mainContent!: HTMLElement;
@@ -67,7 +71,7 @@ export default class Statistics {
           </div>
           <div class="statistics__auth__card__percent">
             <div id="statistic_circle" class="sprint__statistics__circle">
-              <div id="statistic_circle-wave" class="sprint__statistics__wave"></div>
+              <div id="statistic_circle-wave" class="sprint__statistics__wave" data-total=""></div>
               <div id="statistic_circle-percent" class="sprint__statistics__percent">0%</div>
             </div>
             <p class="statistics__auth__words__text">правильных ответов</p>
@@ -159,8 +163,7 @@ export default class Statistics {
         });
       })
       .then(() => {
-        this.getSavedStatistics();
-        const wave = document.querySelector('#statistic_circle-wave') as HTMLElement;
+        const wave = document.querySelector('.sprint__statistics__wave') as HTMLElement;
 
         wave.animate(
           [{ top: '100%' }, { top: `${100 - +((wave as HTMLElement).dataset.total as string)}%` }],
@@ -169,10 +172,14 @@ export default class Statistics {
             fill: 'forwards',
           }
         );
+        this.getSavedStatistics();
       });
   }
 
   private static async getSavedStatistics(): Promise<void> {
+    const countNewWordsDays: number[] = [];
+    const countAllLearnedWordsDays: number[] = [];
+
     const savedStatistics = await api.getSettings();
     if (savedStatistics) {
       const keysArray = Object.keys((savedStatistics as ISettings).optional.dayStats);
@@ -185,6 +192,9 @@ export default class Statistics {
         statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Сохранённая статистика : </h2>`;
         statArray.forEach(([key, value]) => {
           if (key !== 'start') {
+            countNewWordsDays.push(
+              value.optional.audiocall.newWords + value.optional.sprint.newWords
+            );
             const totalWords =
               value.optional.audiocall.correctWords +
               value.optional.audiocall.incorrectWords +
@@ -200,6 +210,7 @@ export default class Statistics {
               (value.optional.audiocall.correctWords * 100) /
                 (value.optional.audiocall.correctWords + value.optional.audiocall.incorrectWords)
             );
+            countAllLearnedWordsDays.push(value.learnedWords);
             statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика за ${key}</h2>
        <div class="statistics__auth__wrapper">
   <div class="statistics__auth__column1">
@@ -276,6 +287,106 @@ export default class Statistics {
             });
           });
         });
+
+        for (let i = 0; i < miniStatArray.length - 1; i++) {
+          countAllLearnedWordsDays[i] += Number(miniStatArray[i + 1][1]);
+        }
+      }
+
+      {
+        statisticsPage.innerHTML += `<h2 class="statistics__auth__header"> Cтатистика в графиках </h2>
+      <div>
+       <canvas id="chartNewWordsDay"></canvas>
+      </div>
+      <div>
+      <canvas id="chartLearnedWords"></canvas>
+     </div>`;
+
+        keysArray.shift();
+        const labels = keysArray;
+        const backColorGreen = 'rgb(153, 255, 153)';
+        const backColorPlumb = 'rgb(153, 153, 255)';
+        const bordColor = 'rgb(255, 99, 132)';
+        const whiteColor = 'rgb(255, 255, 255)';
+        let data = {
+          labels,
+          datasets: [
+            {
+              label: 'Новых слов в день',
+              backgroundColor: backColorGreen,
+              borderColor: bordColor,
+              data: countNewWordsDays,
+            },
+          ],
+        };
+        const config = {
+          type: 'bar',
+          data,
+          options: {
+            layout: {
+              padding: {
+                top: 50,
+                bottom: 50,
+              },
+            },
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  color: whiteColor,
+                  font: {
+                    size: 18,
+                  },
+                },
+              },
+            },
+          },
+        };
+
+        const chartNewWordsDay = new Chart(
+          document.getElementById('chartNewWordsDay') as ChartItem,
+          config as ChartConfiguration
+        );
+
+        data = {
+          labels,
+          datasets: [
+            {
+              label: 'Общее количество изученных слов',
+              backgroundColor: backColorPlumb,
+              borderColor: bordColor,
+              data: countAllLearnedWordsDays,
+            },
+          ],
+        };
+
+        const config2 = {
+          type: 'bar',
+          data,
+          options: {
+            layout: {
+              padding: {
+                top: 50,
+                bottom: 50,
+              },
+            },
+            plugins: {
+              legend: {
+                display: true,
+                labels: {
+                  color: whiteColor,
+                  font: {
+                    size: 18,
+                  },
+                },
+              },
+            },
+          },
+        };
+        const chartLearnedWords = new Chart(
+          document.getElementById('chartLearnedWords') as ChartItem,
+          config2 as ChartConfiguration
+        );
       }
 
       const waves = document.querySelectorAll('#statistic_circle-wave');
