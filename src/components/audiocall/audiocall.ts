@@ -108,11 +108,11 @@ export default class AudioCall {
 
     const wordsMouseListener = (event: MouseEvent): void => {
       const target = event.target as HTMLElement;
-      image.style.display = 'block';
       if (
         target.classList.contains('audiocall__word') ||
         (target.parentNode as HTMLElement).classList.contains('audiocall__word')
       ) {
+        image.style.display = 'block';
         showGameStyles(mainWord);
 
         const selectedWord = (
@@ -138,13 +138,13 @@ export default class AudioCall {
         wordsContainer.removeEventListener('click', wordsMouseListener);
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         document.removeEventListener('keydown', wordsKeyboardListener);
-        document.removeEventListener('keydown', this.keyboardListenerContinueBtn);
         this.activateContinueBtn();
       }
     };
     const wordsKeyboardListener = (event: KeyboardEvent): void => {
       const keys: string[] = ['1', '2', '3', '4', '5'];
       if (keys.includes(event.key)) {
+        image.style.display = 'block';
         showGameStyles(mainWord);
 
         const numbers: HTMLElement[] = Array.from(
@@ -170,6 +170,7 @@ export default class AudioCall {
           }
         }
         document.removeEventListener('keydown', wordsKeyboardListener);
+        wordsContainer.removeEventListener('click', wordsMouseListener);
         this.activateContinueBtn();
       }
     };
@@ -191,14 +192,15 @@ export default class AudioCall {
     if (continueBtn) {
       continueBtn.removeEventListener('click', this.clickListenerContinueBtn);
     }
+    document.removeEventListener('keydown', this.keyboardListenerContinueBtn);
   };
 
   keyboardListenerContinueBtn = (keyEvent: KeyboardEvent) => {
     if (keyEvent.key === ' ') {
       this.checkIfGameFinished();
       pauseAudio();
+      document.removeEventListener('keydown', this.keyboardListenerContinueBtn);
     }
-    document.removeEventListener('keydown', this.keyboardListenerContinueBtn);
   };
 
   checkIfGameFinished = (): void => {
