@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios';
+import Axios, { AxiosError } from 'axios';
+import { setupCache, AxiosCacheInstance } from 'axios-cache-interceptor';
 import axiosAuth from '../components/authorization/axiosAuthRequests';
 import {
   IUserTokens,
@@ -10,6 +11,9 @@ import {
   IAggregatedObj,
   IGetUserWord,
 } from '../interfaces/interfaces';
+
+// same object, but with updated typings.
+const axios: AxiosCacheInstance = setupCache(Axios);
 
 export enum StatusCodes {
   OK = 200,
