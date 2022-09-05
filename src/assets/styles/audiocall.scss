@@ -35,7 +35,6 @@
 
   @include flex-column;
   justify-content: center;
-
   &__wrapper {
     @include flex-column;
     align-items: center;
@@ -160,7 +159,11 @@
   }
 
   &__word-image {
-    height: 300px;
+    height: 20vw;
+    max-height: 250px;
+    @include resolution(mobile) {
+      height: 30vw;
+      }
     display: none;
     @include resolution(desktop) {
       height: 200px;

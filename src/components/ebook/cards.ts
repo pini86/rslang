@@ -4,15 +4,9 @@ import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
-import {
-  getUserWordIds,
-  provideDifficulty,
-  updateWordDifficulty,
-  checkLearnedPage,
-} from '../../pages/ebook/helpers';
+import { getUserWordIds, provideDifficulty, updateWordDifficulty, checkLearnedPage } from '../../pages/ebook/helpers';
 import setLearnedWordsEbook from "../utils/setLearnedWordsEbook";
 
-const { baseUrl } = api;
 const main = document.querySelector('main') as HTMLElement;
 const container = main.querySelector('.container') as HTMLElement;
 let { curPage, curGroup } = state;
@@ -47,7 +41,7 @@ function generateCard(
         <div class="col image-wrapper">
           <div class="card">
             <div class="card-image z-depth-3">
-              <img src=${baseUrl}/${image}>
+              <img src=${api.baseUrl}/${image}>
               <div class="card-title">
                 <div>
                   <span class="word">${word}</span>
@@ -172,29 +166,22 @@ container.addEventListener('click', async (e) => {
     }
   } else if (el.classList.contains('btn-to-learn')) {
     const { id, card } = getIdGetCard(el);
-    const response = await updateWordDifficulty(id, 'normal');
-    if (response) {
-      el.classList.add('btn-learned');
-      el.classList.remove('btn-to-learn');
-      el.textContent = 'Изучено';
-      card.classList.remove('easy');
-      state.easyCount--;
-      main.classList.remove('learned-page');
-      checkLearnedPage(main);
-    }
+    card.classList.remove('easy');
+    state.easyCount--;
+    setLearnedWordsEbook();
+    main.classList.remove('learned-page');
+    await updateWordDifficulty(id, 'normal');
+
   } else if (el.classList.contains('btn-learned')) {
     const { id, card } = getIdGetCard(el);
-    const response = await updateWordDifficulty(id, 'easy');
-    if (response) {
-      el.classList.add('btn-to-learn');
-      el.classList.remove('btn-learned');
-      el.textContent = 'Из изученных';
-      card.classList.add('easy');
-      card.classList.remove('hard');
-      card.querySelector('.btn-hard')?.classList.remove('disabled');
-      state.easyCount++;
-      checkLearnedPage(main);
-    }
+    card.classList.add('easy');
+    card.classList.remove('hard');
+    card.querySelector('.btn-hard')?.classList.remove('disabled');
+    state.easyCount++;
+    setLearnedWordsEbook();
+    checkLearnedPage(main);
+    await updateWordDifficulty(id, 'easy');
+
   } else if (el.classList.contains('btn-hard-remove')) {
     const { id, card } = getIdGetCard(el);
     const response = await api.updateUserWord(id, provideDifficulty('normal', id));
