@@ -29,7 +29,6 @@ export function colorIncorrectElement(el: HTMLElement): void {
 export function disableBtnStyles(btns: NodeListOf<HTMLElement>) {
   btns.forEach((elem) => {
     const btn = elem;
-    btn.classList.remove('waves-light', 'waves-effect');
     btn.style.cursor = 'auto';
   });
 }

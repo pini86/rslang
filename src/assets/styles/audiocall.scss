@@ -5,7 +5,6 @@
 
   @include flex-column;
   justify-content: center;
-
   &__wrapper {
     @include flex-column;
     align-items: center;
@@ -95,7 +94,11 @@
   }
 
   &__word-image {
-    height: 100px;
+    height: 20vw;
+    max-height: 250px;
+    @include resolution(mobile) {
+      height: 30vw;
+      }
     display: none;
   }
 }
