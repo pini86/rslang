@@ -10,6 +10,12 @@
   padding: 0 15px;
 }
 
+#body-menu {
+  @include resolution(big-mobile) {
+    transform: translateX(-120%);
+  }
+}
+
 .nav-wrapper ul.row {
   margin-bottom: 0;
 }
@@ -19,12 +25,26 @@
   background-color: $bg-color;
   color: $font-color;
 
+  .container {
+    @include resolution(desktop) {
+      width: calc(100vw - 200px)
+    }
+
+    @include resolution(tablet) {
+      width: 100vw;
+    }
+  }
+
   .nav {
     background-color: $bg-color;
     color: $font-color;
 
     &-wrapper {
       display: flex;
+
+      @include resolution(tablet) {
+        transform: scale(.8);
+      }
     }
   }
 
