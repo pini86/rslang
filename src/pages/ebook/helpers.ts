@@ -25,7 +25,9 @@ export async function updateWordDifficulty(id: string, difficulty: Difficulty) {
     return response;
   }
 
-  const response = await api.createUserWord(id, provideDifficulty(difficulty, id));
+  const response = await api
+    .createUserWord(id, provideDifficulty(difficulty, id))
+    .then(() => state.userWordIds.push(id));
   return response;
 }
 

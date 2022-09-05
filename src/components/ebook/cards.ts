@@ -10,7 +10,7 @@ import {
   updateWordDifficulty,
   checkLearnedPage,
 } from '../../pages/ebook/helpers';
-import setLearnedWordsEbook from "../utils/setLearnedWordsEbook";
+import setLearnedWordsEbook from '../utils/setLearnedWordsEbook';
 
 const { baseUrl } = api;
 const main = document.querySelector('main') as HTMLElement;
@@ -153,14 +153,13 @@ container.addEventListener('click', async (e) => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
     await soundHandler(el);
-
   } else if (el.classList.contains('btn-hard')) {
-    el.classList.add('disabled');
     const { id, card } = getIdGetCard(el);
     const response = await updateWordDifficulty(id, 'hard');
     if (response) {
       card.classList.add('hard');
       card.classList.remove('easy');
+      el.classList.add('disabled');
       const btnEasy = el.nextElementSibling as HTMLElement;
       if (btnEasy.classList.contains('btn-to-learn')) {
         btnEasy.classList.remove('btn-to-learn');
