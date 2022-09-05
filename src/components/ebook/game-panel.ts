@@ -2,7 +2,6 @@ import api from '../../api/api';
 import { WORDS_PER_PAGE } from '../../constants/constants';
 import Audiocall from '../../pages/audiocall/audiocall';
 import state from '../../pages/ebook/state';
-import Sprint from '../../pages/sprint/sprint';
 import SprintStart from '../../pages/sprint/sprint-start';
 import Controller from '../controller/controller';
 
@@ -12,25 +11,36 @@ function activateGameBtns() {
   const btnAudiocall = document.querySelector('.btn-audiocall') as HTMLElement;
   const btnSprint = document.querySelector('.btn-sprint') as HTMLElement;
   btnAudiocall.addEventListener('click', () => {
-    const page: number = +(sessionStorage.getItem('page') || '0');
-    const group: number = +(sessionStorage.getItem('group') || '0');
-
-    api.getWords(group, page).then((words) => {
-      const audiocallBtn = document.getElementById('audiocall') as HTMLElement;
-      Controller.removePanels();
-      Controller.setActiveMenuItem(audiocallBtn);
-      const view = new Audiocall(words);
-    });
+    const page: string = sessionStorage.getItem('page') || '0';
+    const group: string = sessionStorage.getItem('group') || '0';
+    const audiocallBtn = document.getElementById('audiocall') as HTMLElement;
+    Controller.removePanels();
+    Controller.setActiveMenuItem(audiocallBtn);
+    if (Controller.isLoggedIn) {
+      api.getAllAggregatedUserWords(api.userId, group, page, '20').then((words) => {
+        const view = new Audiocall(words);
+      });
+    } else {
+      api.getWords(+group, +page).then((words) => {
+        const view = new Audiocall(words);
+      });
+    }
   });
   btnSprint.addEventListener('click', () => {
     const page = sessionStorage.getItem('page') || '0';
     const group = sessionStorage.getItem('group') || '0';
-    api.getAllAggregatedUserWords(api.userId, group, page, '20').then((words) => {
-      const sprintBtn = document.getElementById('sprint') as HTMLElement;
-      Controller.removePanels();
-      Controller.setActiveMenuItem(sprintBtn);
+    const sprintBtn = document.getElementById('sprint') as HTMLElement;
+    Controller.removePanels();
+    Controller.setActiveMenuItem(sprintBtn);
+    if (Controller.isLoggedIn) {
+      api.getAllAggregatedUserWords(api.userId, group, page, '20').then((words) => {
+        const view = new Audiocall(words);
+      });
+    } else {
+      api.getWords(+group, +page).then((words) => {
       const view = new SprintStart(words);
-    });
+      });
+    }
   });
 }
 

@@ -7,7 +7,6 @@ import {
   IUserWord,
   IUserTokens,
   ISprintResult,
-  Difficulty,
 } from '../../interfaces/interfaces';
 import SprintResult from './sprint-result';
 import api from '../../api/api';
@@ -111,7 +110,7 @@ export default class SprintGame {
   }
 
   private sortWords(): IWord[] {
-    return [...this.sprint.sprintWordsArray].sort((firstWord, secondWord) =>
+    return [...this.sprint.sprintWordsArray].sort(() =>
       SprintGame.createRandomNumber()
     );
   }
