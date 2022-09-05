@@ -5,7 +5,6 @@
   width: 50%;
   height: 45vh;
   margin: 0 auto;
-  margin-top: 10%;
   padding: 30px;
   box-sizing: border-box;
   background-color: $font-color;
@@ -116,7 +115,6 @@
 
   &__card__learn {
     display: flex;
-    padding: 12px;
     height: 170px;
     flex-flow: column;
     justify-content: space-between;
@@ -125,7 +123,6 @@
   &__learn__wrapper {
     display: flex;
     flex-flow: row;
-    justify-content: center;
     align-items: center;
     width: 100%;
   }
@@ -254,3 +251,13 @@
     font-size: 16px;
   }
 }
+
+@include resolution(mobile){
+  .statistics__auth p {
+    font-size: 0.7rem;
+  }
+  .statistics__auth__card__new, .statistics__auth__card__learn, .statistics__auth__card__percent, .statistics__auth__card__audio, .statistics__auth__card__sprint{
+    height: auto;
+  }
+}
+

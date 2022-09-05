@@ -58,6 +58,7 @@ axiosAuth.interceptors.response.use(
                 const authBtn = document.getElementById('authorization') as HTMLElement;
                 Controller.currentPage = EPages.auth;
                 Controller.setActiveMenuItem(authBtn);
+                Controller.removePanels();
                 const view = new Authorization();
               }
             });

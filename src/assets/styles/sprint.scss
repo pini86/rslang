@@ -157,7 +157,7 @@
 
   &__current-count,
   &__score {
-    color: rgba($color: #fff, $alpha: 0.3);
+    color: $font-color;
     animation: glow 5s;
     border: 2px solid $font-color;
     border-radius: 50px;
@@ -351,8 +351,6 @@
   }
 
   &__audio {
-    width: 1rem;
-    height: 1rem;
     border: none;
     cursor: pointer;
   }
@@ -456,6 +454,9 @@
     .str3,
     .str4 {
       font-size: 50px;
+      @include resolution(tablet){
+        font-size: 20px;
+      }
     }
   }
 
@@ -512,7 +513,9 @@
   background-color: $accent-blue-color;
   border-radius: 5px;
 }
-
+.sprint__statistics__result{
+  text-align: center;
+}
 .property_word,
 .property_word_lang {
   font-size: 0.9rem;
