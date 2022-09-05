@@ -19,6 +19,7 @@
     .btn {
       padding: 0;
       border-radius: 100%;
+
       &:hover {
         opacity: 0.8;
         box-shadow: 0 0 6px $bg-color;
@@ -35,12 +36,14 @@
 
   @include flex-column;
   justify-content: center;
+
   &__wrapper {
     @include flex-column;
     align-items: center;
     justify-content: space-around;
     gap: 2vh;
     overflow-y: hidden;
+
     @include resolution(desktop) {
       gap: 1vh;
     }
@@ -48,6 +51,7 @@
 
   &__start-header {
     font-size: 2 rem;
+
     @include resolution(big-mobile) {
       font-size: 1.2rem;
     }
@@ -82,6 +86,7 @@
 
   .audiocall__level.active {
     border: 5px solid $font-color;
+
     @include resolution(big-mobile) {
       border: 3px solid $font-color;
     }
@@ -161,10 +166,13 @@
   &__word-image {
     height: 20vw;
     max-height: 250px;
+
     @include resolution(mobile) {
       height: 30vw;
-      }
+    }
+
     display: none;
+
     @include resolution(desktop) {
       height: 200px;
     }

@@ -9,7 +9,11 @@ export default async function soundHadler(el: HTMLElement) {
 
   const id = el.getAttribute('id') as string;
   const { audio, audioExample, audioMeaning } = await api.getWord(id);
-  const audioLinks = [`${baseUrl}/${audio}`, `${baseUrl}/${audioExample}`, `${baseUrl}/${audioMeaning}`];
+  const audioLinks = [
+    `${baseUrl}/${audio}`,
+    `${baseUrl}/${audioExample}`,
+    `${baseUrl}/${audioMeaning}`,
+  ];
   const audioChunk = new Audio(audioLinks[0]);
   state.audioChunk = audioChunk;
   audioChunk.play();

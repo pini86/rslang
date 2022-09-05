@@ -512,13 +512,16 @@
   background-color: $accent-blue-color;
   border-radius: 5px;
 }
+
 .property_word,
-.property_word_lang{
+.property_word_lang {
   font-size: 0.9rem;
-  @include resolution(big-mobile){
+
+  @include resolution(big-mobile) {
     font-size: 0.8rem;
   }
-  @include resolution(mobile){
+
+  @include resolution(mobile) {
     font-size: 0.7rem;
   }
 }

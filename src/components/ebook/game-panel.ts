@@ -1,7 +1,5 @@
 import api from '../../api/api';
-import { WORDS_PER_PAGE } from '../../constants/constants';
 import Audiocall from '../../pages/audiocall/audiocall';
-import state from '../../pages/ebook/state';
 import SprintStart from '../../pages/sprint/sprint-start';
 import Controller from '../controller/controller';
 
@@ -38,7 +36,7 @@ function activateGameBtns() {
       });
     } else {
       api.getWords(+group, +page).then((words) => {
-      const view = new SprintStart(words);
+        const view = new SprintStart(words);
       });
     }
   });

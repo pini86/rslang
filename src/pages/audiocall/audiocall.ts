@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
-import AudioCall from "../../components/audiocall/audiocall";
-import { IWord } from "../../interfaces/interfaces";
+import AudioCall from '../../components/audiocall/audiocall';
+import { IWord } from '../../interfaces/interfaces';
 
 export default class Audiocall {
   mainContent!: HTMLElement;
@@ -16,11 +16,11 @@ export default class Audiocall {
     <div class="audiocall__words"></div>
     </div>
   </div>`;
-  this.audiocall = new AudioCall();
-  if(wordsFromEbook){
-    this.audiocall.initGame(wordsFromEbook);
-  } else {
-    this.audiocall.initGame();
-  }
+    this.audiocall = new AudioCall();
+    if (wordsFromEbook) {
+      this.audiocall.initGame(wordsFromEbook);
+    } else {
+      this.audiocall.initGame();
+    }
   }
 }

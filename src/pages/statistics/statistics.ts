@@ -304,8 +304,8 @@ export default class Statistics {
 
         keysArray.shift();
         const labels = keysArray;
-        const backColorGreen = 'rgb(153, 255, 153)';
-        const backColorPlumb = 'rgb(153, 153, 255)';
+        const backColorGreen = 'rgb(24, 133, 147)';
+        const backColorPlumb = 'rgb(83, 163, 174)';
         const bordColor = 'rgb(255, 99, 132)';
         const whiteColor = 'rgb(255, 255, 255)';
         let data = {

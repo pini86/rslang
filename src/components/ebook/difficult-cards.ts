@@ -63,7 +63,7 @@ export default async function renderDifficultCards() {
   state.isAuth = localStorage.getItem('tokenData');
   state.curGroup = group;
   const words = state.isAuth ? await api.getAggregatedDifficulties('all') : [];
-  const wordIds = words.map(word => word.userWord?.optional.wordId) as string[];
+  const wordIds = words.map((word) => word.userWord?.optional.wordId) as string[];
 
   let cardsToRender = '';
   words.forEach((w, i) => {
@@ -95,8 +95,10 @@ export default async function renderDifficultCards() {
   if (cardsToRender) {
     container.innerHTML = cardsToRender;
   } else if (!cardsToRender && !state.isAuth) {
-    container.innerHTML = '<h5 class="center-align">Авторизуйтесь чтобы добавлять сюда сложные слова.</h5>';
+    container.innerHTML =
+      '<h5 class="center-align">Авторизуйтесь чтобы добавлять сюда сложные слова.</h5>';
   } else if (!cardsToRender) {
-    container.innerHTML = '<h5 class="center-align">Сложные слова отсутствуют в вашем словаре.</h5>';
+    container.innerHTML =
+      '<h5 class="center-align">Сложные слова отсутствуют в вашем словаре.</h5>';
   }
 }

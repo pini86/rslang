@@ -70,6 +70,7 @@
       row-gap: 15px;
     }
   }
+
   &__column1 {
     width: 45%;
     @include flex-column;
@@ -78,10 +79,12 @@
     @include resolution(tablet) {
       width: 38%;
     }
+
     @include resolution(big-mobile) {
       width: 100%;
     }
   }
+
   &__column2 {
     width: 45%;
     @include flex-column;
@@ -91,6 +94,7 @@
     @include resolution(tablet) {
       width: 58%;
     }
+
     @include resolution(big-mobile) {
       width: 100%;
     }
@@ -138,6 +142,7 @@
     height: 200px;
     row-gap: 20px;
   }
+
   &__words__value {
     font-size: 70px;
     font-weight: 500;
@@ -240,6 +245,7 @@
     font-size: 18px;
   }
 }
+
 .game__text {
   font-size: 18px;
   margin: 0;

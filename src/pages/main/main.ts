@@ -1,4 +1,4 @@
-export default class Main{
+export default class Main {
   mainContent!: HTMLElement;
 
   constructor() {

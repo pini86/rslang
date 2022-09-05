@@ -10,12 +10,6 @@
   padding: 0 15px;
 }
 
-/* #body-menu {
-  @include resolution(big-mobile) {
-    transform: translateX(-120%);
-  }
-} */
-
 .nav-wrapper ul.row {
   margin-bottom: 0;
 }
@@ -246,7 +240,8 @@
     .card__icon {
       font-size: 60px;
       color: black;
-      @include resolution(mobile-horizontal){
+
+      @include resolution(mobile-horizontal) {
         font-size: 34px;
       }
     }
@@ -303,7 +298,8 @@
 .team__tasks {
   display: flex;
   justify-content: space-around;
-gap: 10px;
+  gap: 10px;
+
   @include resolution(desktop) {
     flex-wrap: wrap;
     justify-content: center;
@@ -318,13 +314,16 @@ gap: 10px;
     justify-content: center;
     align-items: center;
     height: 68px;
+
     @include resolution(big-desktop) {
       width: 115px;
       font-size: 0.875rem;
     }
+
     @include resolution(tablet) {
       height: 50px;
     }
+
     @include resolution(big-mobile) {
       width: 100px;
       height: 35px;

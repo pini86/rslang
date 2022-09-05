@@ -1,5 +1,3 @@
-import axios from 'axios';
-import * as Materialize from '@materializecss/materialize';
 import './assets/styles/style.scss';
 import activateModals from './components/contentLoaded/materialize';
 import { activateAuthentification, activateLogOut } from './components/contentLoaded/dom';

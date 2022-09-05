@@ -4,8 +4,13 @@ import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
 import soundHandler from '../../pages/ebook/sound-handler';
 import preloader from './preloader';
-import { getUserWordIds, provideDifficulty, updateWordDifficulty, checkLearnedPage } from '../../pages/ebook/helpers';
-import setLearnedWordsEbook from "../utils/setLearnedWordsEbook";
+import {
+  getUserWordIds,
+  provideDifficulty,
+  updateWordDifficulty,
+  checkLearnedPage,
+} from '../../pages/ebook/helpers';
+import setLearnedWordsEbook from '../utils/setLearnedWordsEbook';
 
 const main = document.querySelector('main') as HTMLElement;
 const container = main.querySelector('.container') as HTMLElement;
@@ -147,7 +152,6 @@ container.addEventListener('click', async (e) => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
     await soundHandler(el);
-
   } else if (el.classList.contains('btn-hard')) {
     el.classList.add('disabled');
     const { id, card } = getIdGetCard(el);
@@ -171,7 +175,6 @@ container.addEventListener('click', async (e) => {
     setLearnedWordsEbook();
     main.classList.remove('learned-page');
     await updateWordDifficulty(id, 'normal');
-
   } else if (el.classList.contains('btn-learned')) {
     const { id, card } = getIdGetCard(el);
     card.classList.add('easy');
@@ -181,7 +184,6 @@ container.addEventListener('click', async (e) => {
     setLearnedWordsEbook();
     checkLearnedPage(main);
     await updateWordDifficulty(id, 'easy');
-
   } else if (el.classList.contains('btn-hard-remove')) {
     const { id, card } = getIdGetCard(el);
     const response = await api.updateUserWord(id, provideDifficulty('normal', id));

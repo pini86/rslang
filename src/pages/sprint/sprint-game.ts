@@ -110,9 +110,7 @@ export default class SprintGame {
   }
 
   private sortWords(): IWord[] {
-    return [...this.sprint.sprintWordsArray].sort(() =>
-      SprintGame.createRandomNumber()
-    );
+    return [...this.sprint.sprintWordsArray].sort(() => SprintGame.createRandomNumber());
   }
 
   private createQuestionsArray(): Array<ISprintWord> {

@@ -15,16 +15,16 @@ export default class SprintStart {
 
   authObj: IUserTokens | null;
 
-  constructor(wordsFromEbook? :IWord[]) {
+  constructor(wordsFromEbook?: IWord[]) {
     this.authObj = getAuthentification();
     this.mainContent = document.querySelector('main div.container') as HTMLElement;
     if (wordsFromEbook) {
       // game started from ebook
       this.mainContent.innerHTML = SprintStart.getHTMLEbookStart();
-        const startSprintBtn = document.querySelector('.sprint__start-btn') as HTMLButtonElement;
-        startSprintBtn.addEventListener('click', () => {
-          const view = new SprintGame(wordsFromEbook);
-        });
+      const startSprintBtn = document.querySelector('.sprint__start-btn') as HTMLButtonElement;
+      startSprintBtn.addEventListener('click', () => {
+        const view = new SprintGame(wordsFromEbook);
+      });
     } else {
       this.mainContent.innerHTML = SprintStart.getDefaultHTML();
       this.selectDiff = this.setDifficultyListeners();

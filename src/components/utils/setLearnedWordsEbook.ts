@@ -2,7 +2,6 @@
 import api from '../../api/api';
 import Controller from '../controller/controller';
 import state from '../../pages/ebook/state';
-import { ISettings } from '../../interfaces/interfaces';
 
 export default function setLearnedWordsEbook(): void {
   if (!Controller.isLoggedIn) {
