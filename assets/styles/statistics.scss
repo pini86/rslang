@@ -1,0 +1,263 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.statistics {
+  width: 50%;
+  height: 45vh;
+  margin: 0 auto;
+  padding: 30px;
+  box-sizing: border-box;
+  background-color: $font-color;
+  border-radius: 10px;
+  color: $bg-color;
+  @include flex-column;
+  justify-content: space-between;
+  align-items: center;
+  row-gap: 15px;
+
+  &__icon {
+    min-width: 64px;
+    min-height: 64px;
+    margin-bottom: 10%;
+    background-image: url('../icons/access.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &__message {
+    margin: 0;
+    text-align: center;
+  }
+
+  @include resolution(big-mobile) {
+    width: 80%;
+  }
+
+  @include resolution(mobile) {
+    width: 98%;
+    padding: 50px 10px 20px 10px;
+  }
+}
+
+.statistics__auth {
+  width: 98%;
+  margin: 0 auto;
+  @include flex-column;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: $font-color;
+
+  &__header {
+    align-self: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  &__wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    color: $bg-color;
+
+    @include resolution(big-mobile) {
+      flex-direction: column;
+      align-items: center;
+      row-gap: 15px;
+    }
+  }
+
+  &__column1 {
+    width: 45%;
+    @include flex-column;
+    row-gap: 10px;
+
+    @include resolution(tablet) {
+      width: 38%;
+    }
+
+    @include resolution(big-mobile) {
+      width: 100%;
+    }
+  }
+
+  &__column2 {
+    width: 45%;
+    @include flex-column;
+    align-items: flex-start;
+    row-gap: 10px;
+
+    @include resolution(tablet) {
+      width: 58%;
+    }
+
+    @include resolution(big-mobile) {
+      width: 100%;
+    }
+  }
+
+  &__card__new,
+  &__card__learn,
+  &__card__percent {
+    width: 100%;
+    height: 120px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: $font-color;
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    align-items: center;
+  }
+
+  &__card__learn {
+    display: flex;
+    height: 170px;
+    flex-flow: column;
+    justify-content: space-between;
+  }
+
+  &__learn__wrapper {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__learn__wrapper &__words__text {
+    margin-left: 20px;
+  }
+
+
+
+  &__card__percent {
+    flex-direction: column;
+    padding-top: 12%;
+    height: 200px;
+    row-gap: 20px;
+  }
+
+  &__words__value {
+    font-size: 70px;
+    font-weight: 500;
+    color: $accent-blue-color;
+    margin: 0;
+    font-size: 32px;
+
+    @include resolution(mobile) {
+      font-size: 40px;
+    }
+  }
+
+  &__words__text {
+    font-size: 20px;
+    font-weight: 500;
+    color: $bg-color;
+    margin: 0;
+
+    @include resolution(mobile) {
+      font-size: 18px;
+    }
+  }
+
+  &__card__audio,
+  &__card__sprint {
+    width: 100%;
+    height: 250px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: $font-color;
+    @include flex-column;
+    justify-content: flex-start;
+    column-gap: 20px;
+    align-items: flex-start;
+    box-sizing: border-box;
+    font-weight: 500;
+
+    &__wraper {
+      display: flex;
+      column-gap: 20px;
+      align-items: center;
+      margin-bottom: 10px;
+
+      div {
+        width: 50px;
+        height: 50px;
+        background-image: url('../icons/headphones.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      p {
+        color: $accent-blue-color;
+        font-size: 24px;
+        font-weight: 500;
+
+        @include resolution(mobile) {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  &__card__sprint {
+    &__wraper {
+      display: flex;
+      column-gap: 20px;
+      align-items: center;
+      margin-bottom: 10px;
+
+      div {
+        width: 50px;
+        height: 50px;
+        background-image: url('../icons/gamepad.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      p {
+        color: $accent-blue-color;
+        font-size: 24px;
+        font-weight: 500;
+
+        @include resolution(mobile) {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
+
+.game__value {
+  color: $accent-blue-color;
+  font-size: 22px;
+  font-weight: 500;
+
+  @include resolution(mobile) {
+    font-size: 18px;
+  }
+}
+
+.game__text {
+  font-size: 18px;
+  margin: 0;
+
+  @include resolution(mobile) {
+    font-size: 16px;
+  }
+}
+
+@include resolution(mobile){
+  .statistics__auth p {
+    font-size: 0.7rem;
+  }
+  .statistics__auth__card__new, .statistics__auth__card__learn, .statistics__auth__card__percent, .statistics__auth__card__audio, .statistics__auth__card__sprint{
+    height: auto;
+  }
+}
+

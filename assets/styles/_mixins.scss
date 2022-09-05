@@ -1,0 +1,56 @@
+@use 'variables' as *;
+
+@mixin card($color) {
+  border: 1px solid $color;
+  background-color: $bg-color;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin bg-svg-white($url) {
+  background-image: url($url);
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: invert(100%) sepia(0%) saturate(2%) hue-rotate(87deg) brightness(111%) contrast(101%);
+}
+
+@mixin resolution($breakpoint) {
+  @if $breakpoint==big-desktop {
+    @media (min-width: 1281px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint==desktop {
+    @media (max-width: 1280px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint==tablet {
+    @media (max-width: 1023px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint==big-mobile {
+    @media (max-width: 767px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint==mobile-horizontal {
+    @media (max-width: 640px) {
+      @content;
+    }
+  }
+
+  @if $breakpoint==mobile {
+    @media (max-width: 420px) {
+      @content;
+    }
+  }
+}
