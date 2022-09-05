@@ -34,7 +34,7 @@ function activateGameBtns() {
     Controller.setActiveMenuItem(sprintBtn);
     if (Controller.isLoggedIn) {
       api.getAllAggregatedUserWords(api.userId, group, page, '20').then((words) => {
-        const view = new Audiocall(words);
+        const view = new SprintStart(words);
       });
     } else {
       api.getWords(+group, +page).then((words) => {

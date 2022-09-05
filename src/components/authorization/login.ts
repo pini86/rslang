@@ -2,8 +2,7 @@ import { IUser } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import saveToken from './saveToStorage';
 import { showUserLoggedMode } from './userLoggedMode';
-import Main from '../../pages/main/main';
-import Controller, { EPages } from '../controller/controller';
+import Controller from '../controller/controller';
 import setStatistics from '../utils/setStatistics';
 
 type LoginFields = Pick<IUser, 'email' | 'password'>;
