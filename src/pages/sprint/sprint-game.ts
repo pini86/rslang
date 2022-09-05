@@ -7,14 +7,13 @@ import {
   IUserWord,
   IUserTokens,
   ISprintResult,
-  Difficulty
 } from '../../interfaces/interfaces';
-// eslint-disable-next-line import/no-cycle
 import SprintResult from './sprint-result';
 import api from '../../api/api';
 import getRandomNumber from '../../components/utils/getRandomNumber';
 import getAuthentification from '../../components/utils/getAuthentification';
 import Controller from '../../components/controller/controller';
+import { SPRINT_TIMER } from '../../constants/constants';
 
 export default class SprintGame {
   start: void;
@@ -29,11 +28,13 @@ export default class SprintGame {
 
   private streak: number;
 
-  private viewChanged: boolean;
-
   private index: number;
 
   sprint: ISprintResult;
+
+  static sprintTimerId1: NodeJS.Timeout;
+
+  static sprintTimerId2: NodeJS.Timeout;
 
   constructor(sprintWordsArray: IWord[]) {
     this.sprint = {
@@ -44,13 +45,12 @@ export default class SprintGame {
         learnedWords: 0,
         maxStreak: 0,
       },
-      sprintTimer: 59,
+      sprintTimer: SPRINT_TIMER,
       sprintScore: '0',
       sprintWordsArray,
     };
     this.sprintCorrectness = true;
     this.streak = 0;
-    this.viewChanged = false;
     this.index = 0;
     this.authObj = getAuthentification();
     this.sprintWordsArray = sprintWordsArray;
@@ -66,6 +66,8 @@ export default class SprintGame {
   }
 
   private stopSprint(): void {
+    clearTimeout(SprintGame.sprintTimerId1);
+    clearTimeout(SprintGame.sprintTimerId2);
     const view = new SprintResult(this.sprint);
   }
 
@@ -83,9 +85,9 @@ export default class SprintGame {
           <div class="sprint__transcription" id="sprint-translation"></div>
         </div>
         <div class="sprint__answer__wrapper">
-          <button class="sprint__wrong-answer" id="sprint-wrong">НЕТ</button>
-          <button class="sprint__right-answer" id="sprint-right">ДА</button>
-        </div>  
+          <button class="sprint__wrong-answer red" id="sprint-wrong">НЕТ</button>
+          <button class="sprint__right-answer green" id="sprint-right">ДА</button>
+        </div>
       </div>`;
   }
 
@@ -97,8 +99,7 @@ export default class SprintGame {
       learnedWords: 0,
       maxStreak: 0,
     };
-    this.viewChanged = false;
-    this.sprint.sprintTimer = 59;
+    this.sprint.sprintTimer = SPRINT_TIMER;
     this.streak = 0;
     this.sprint.sprintScore = '0';
     this.index = 0;
@@ -109,9 +110,7 @@ export default class SprintGame {
   }
 
   private sortWords(): IWord[] {
-    return [...this.sprint.sprintWordsArray].sort((firstWord, secondWord) =>
-      SprintGame.createRandomNumber()
-    );
+    return [...this.sprint.sprintWordsArray].sort(() => SprintGame.createRandomNumber());
   }
 
   private createQuestionsArray(): Array<ISprintWord> {
@@ -157,12 +156,6 @@ export default class SprintGame {
     const wordName = word.innerHTML;
     const correctWord = this.sprint.sprintWordsArray.find((elem) => elem.word === wordName);
 
-    if (Controller.isLoggedIn) {
-      this.updateCorrectUserWord(correctWord);
-    }
-    this.updateSprintStatData(correctWord);
-    rightAudio.play();
-
     switch (this.streak) {
       case 0:
       case 1:
@@ -197,6 +190,11 @@ export default class SprintGame {
         this.correctAnswerDisplay(multiply);
         break;
     }
+    if (Controller.isLoggedIn) {
+      this.updateCorrectUserWord(correctWord);
+    }
+    this.updateSprintStatData(correctWord);
+    rightAudio.play();
   }
 
   private countIncorrectAnswer(word: HTMLElement): void {
@@ -206,15 +204,12 @@ export default class SprintGame {
     wrongAudio.src = '../../assets/sounds/bad.mp3';
     const wordName = word.innerHTML;
     const incorrectWord = this.sprint.sprintWordsArray.find((elem) => elem.word === wordName);
+
     if (Controller.isLoggedIn) {
       this.updateIncorrectUserWord(incorrectWord);
     }
-    this.updateSprintStatData(
-      null,
-      incorrectWord,
-      this.sprint.sprintStatData.learnedWords,
-      this.streak
-    );
+
+    this.updateSprintStatData(null, incorrectWord, this.sprint.sprintStatData.learnedWords);
     this.streak = 0;
     wrongAudio.play();
     currentCount.innerHTML = '+0';
@@ -238,24 +233,33 @@ export default class SprintGame {
         (this.authObj as IUserTokens).userId
       );
     } else {
+      const userWordOptional = (word as IWord).userWord as IUserWord;
       if (
-        (word as IWord).userWord?.optional.totalCorrectCount === 0 &&
-        (word as IWord).userWord?.optional.totalIncorrectCount === 0
+        Boolean((word as IWord).userWord?.optional.totalCorrectCount) === false &&
+        Boolean((word as IWord).userWord?.optional.totalIncorrectCount) === false
       ) {
         this.sprint.sprintNewWords++;
+        userWordOptional.optional.totalIncorrectCount = 0;
+        userWordOptional.optional.totalCorrectCount = 0;
       }
-      const userWordOptional = (word as IWord).userWord as IUserWord;
-      userWordOptional.optional.correctCount++;
-      userWordOptional.optional.totalCorrectCount++;
-      if (userWordOptional.difficulty === 'normal' && userWordOptional.optional.correctCount >= 3) {
+
+      (userWordOptional.optional.correctCount as number)++;
+      (userWordOptional.optional.totalCorrectCount as number)++;
+      if (
+        userWordOptional.difficulty === 'normal' &&
+        (userWordOptional.optional.correctCount as number) >= 3
+      ) {
         this.sprint.sprintStatData.learnedWords++;
         userWordOptional.difficulty = 'easy';
       } else if (
         userWordOptional.difficulty === 'hard' &&
-        userWordOptional.optional.correctCount >= 5
+        (userWordOptional.optional.correctCount as number) >= 5
       ) {
         this.sprint.sprintStatData.learnedWords++;
         userWordOptional.difficulty = 'easy';
+      }
+      if (Boolean(userWordOptional.optional.correctCount) === false) {
+        userWordOptional.optional.correctCount = 0;
       }
       api.updateUserWord(
         (word as IWord)._id as string,
@@ -282,16 +286,22 @@ export default class SprintGame {
         (this.authObj as IUserTokens).userId
       );
     } else {
+      const userWordOptional = (word as IWord).userWord as IUserWord;
       if (
-        (word as IWord).userWord?.optional.totalCorrectCount === 0 &&
-        (word as IWord).userWord?.optional.totalIncorrectCount === 0
+        Boolean((word as IWord).userWord?.optional.totalCorrectCount) === false &&
+        Boolean((word as IWord).userWord?.optional.totalIncorrectCount) === false
       ) {
         this.sprint.sprintNewWords++;
+        userWordOptional.optional.totalIncorrectCount = 0;
+        userWordOptional.optional.totalCorrectCount = 0;
       }
-      const userWordOptional = (word as IWord).userWord as IUserWord;
-      userWordOptional.optional.totalIncorrectCount++;
+
+      (userWordOptional.optional.totalIncorrectCount as number)++;
       if (userWordOptional.difficulty === 'easy') {
         userWordOptional.difficulty = 'normal';
+        userWordOptional.optional.correctCount = 0;
+      }
+      if (Boolean(userWordOptional.optional.correctCount) === false) {
         userWordOptional.optional.correctCount = 0;
       }
       api.updateUserWord(
@@ -317,7 +327,7 @@ export default class SprintGame {
     const cloneCurrentCount = currentCount.cloneNode() as HTMLElement;
     const cloneScore = score.cloneNode() as HTMLElement;
     const baseScore = 50;
-    this.streak++;
+    this.streak += 1;
     cloneCurrentCount.innerHTML = `+${baseScore * multiply}`;
     currentCount.parentNode?.replaceChild(cloneCurrentCount, currentCount);
     cloneScore.innerHTML = (+score.innerHTML + baseScore * multiply).toString();
@@ -398,17 +408,14 @@ export default class SprintGame {
       this.stopSprint();
       return;
     }
-    if (this.viewChanged) {
-      return;
-    }
-    setTimeout(() => {
+    SprintGame.sprintTimerId2 = setTimeout(() => {
       this.setTimer(timer);
     }, 1000);
   }
 
   private startTimer(): void {
     const timer = document.getElementById('sprint-timer') as HTMLElement;
-    setTimeout(() => {
+    SprintGame.sprintTimerId1 = setTimeout(() => {
       this.setTimer(timer);
     }, 1000);
   }
@@ -416,8 +423,7 @@ export default class SprintGame {
   private updateSprintStatData(
     correctWord: IWordData | IWord | null = null,
     incorrectWord: IWordData | IWord | null = null,
-    learnedWord = 0,
-    streak = 0
+    learnedWord = 0
   ): void {
     if (correctWord) {
       this.sprint.sprintStatData.correctWords.push(correctWord as IWordData);
@@ -429,6 +435,8 @@ export default class SprintGame {
       this.sprint.sprintStatData.learnedWords = learnedWord;
     }
     this.sprint.sprintStatData.maxStreak =
-      streak > this.sprint.sprintStatData.maxStreak ? streak : this.sprint.sprintStatData.maxStreak;
+      this.streak > this.sprint.sprintStatData.maxStreak
+        ? this.streak
+        : this.sprint.sprintStatData.maxStreak;
   }
 }

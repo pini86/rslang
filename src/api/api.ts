@@ -8,12 +8,14 @@ import {
   IUser,
   IUserWord,
   IWord,
+  IAggregatedObj,
+  IGetUserWord,
 } from '../interfaces/interfaces';
 
 // same object, but with updated typings.
 const axios: AxiosCacheInstance = setupCache(Axios);
 
-enum StatusCodes {
+export enum StatusCodes {
   OK = 200,
   NO_CONTENT = 204,
   BAD_REQUEST = 400,
@@ -25,7 +27,7 @@ enum StatusCodes {
   UNPROCESSABLE_ENTITY = 422,
 }
 
-enum StatusMessages {
+export enum StatusMessages {
   OK = 'Successful operation',
   USER_DELETED = 'The user has been deleted',
   WORD_DELETED = 'The user word has been deleted',
@@ -81,7 +83,7 @@ class API {
     const url = `${this.words}?page=${page}&group=${group}`;
     return axios
       .get<IWord[]>(url)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         throw err;
       });
@@ -92,7 +94,7 @@ class API {
     const url = `${this.words}/${id}`;
     return axios
       .get<IWord>(url)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         throw err;
       });
@@ -103,7 +105,7 @@ class API {
     const url = this.users;
     return axios
       .post<IUser>(url, newUser)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.UNPROCESSABLE_ENTITY) {
           const toastMessage = err.response?.data as string;
@@ -122,11 +124,9 @@ class API {
     const url = `${this.users}/${id}`;
     return axiosAuth
       .get<IUser>(url)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
-        if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
-        } else if (err.response?.status === StatusCodes.NOT_FOUND) {
+        if (err.response?.status === StatusCodes.NOT_FOUND) {
           throw new Error(StatusMessages.USER_NOT_FOUND);
         }
         throw err;
@@ -145,12 +145,10 @@ class API {
         email,
         password,
       })
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.BAD_REQUEST) {
           throw new Error(StatusMessages.BAD_REQUEST);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         }
         throw err;
       });
@@ -165,19 +163,20 @@ class API {
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.NO_CONTENT) {
           throw new Error(StatusMessages.USER_DELETED);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         }
         throw err;
       });
   };
 
   /** Get new user tokens */
-  getNewIUserTokens = async (id = this.userId): Promise<IUserTokens> | never => {
+  getNewIUserTokens = async (refreshToken: string, id = this.userId): Promise<IUserTokens> | never => {
     const url = `${this.users}/${id}/tokens`;
-    return axiosAuth
-      .get<IUserTokens>(url)
-      .then((response) => response.data)
+    return axios
+      .get<IUserTokens>(url, {
+        headers: {
+          'Authorization': `Bearer ${refreshToken}`
+        }})
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.FORBIDDEN) {
           throw new Error(StatusMessages.INVALID_TOKEN);
@@ -187,14 +186,14 @@ class API {
   };
 
   /** Get all user words */
-  getAllUserWords = async (id = this.userId): Promise<IUserWord[]> | never => {
+  getAllUserWords = async (id = this.userId): Promise<IGetUserWord[]| never> => {
     const url = `${this.users}/${id}/words`;
     return axiosAuth
-      .get<IUserWord[]>(url)
-      .then((response) => response.data)
+      .get<IGetUserWord[]>(url)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.PAYMENT_REQUIRED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
+         throw new Error(StatusMessages.INVALID_TOKEN); 
         }
         throw err;
       });
@@ -209,12 +208,10 @@ class API {
     const url = `${this.users}/${id}/words/${wordId}`;
     return axiosAuth
       .post<IUserWord>(url, word)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.BAD_REQUEST) {
           throw new Error(StatusMessages.BAD_REQUEST);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         }
         throw err;
       });
@@ -225,11 +222,9 @@ class API {
     const url = `${this.users}/${id}/words/${wordId}`;
     return axiosAuth
       .get<IUserWord>(url)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
-        if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
-        } else if (err.response?.status === StatusCodes.NOT_FOUND) {
+      if (err.response?.status === StatusCodes.NOT_FOUND) {
           throw new Error(StatusMessages.WORD_NOT_FOUND);
         }
         throw err;
@@ -245,12 +240,10 @@ class API {
     const url = `${this.users}/${id}/words/${wordId}`;
     return axiosAuth
       .put<IUserWord>(url, word)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.BAD_REQUEST) {
           throw new Error(StatusMessages.BAD_REQUEST);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         }
         throw err;
       });
@@ -265,8 +258,29 @@ class API {
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.NO_CONTENT) {
           throw new Error(StatusMessages.WORD_DELETED);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
+        }
+        throw err;
+      });
+  };
+
+  /** Gets all words with matched difficulty */
+  getAggregatedDifficulties = async (
+    group = '0',
+    page = '0',
+    wordsPerPage = '20',
+    filter = 'hard',
+    id = this.userId,
+  ): Promise<IWord[]> | never => {
+    let url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
+    if (group === 'all') {
+      url = `${this.users}/${id}/aggregatedWords?filter={"userWord.difficulty":"${filter}"}`;
+    }
+    return axiosAuth
+      .get<[IAggregatedObj]>(url)
+      .then((response) => response?.data[0].paginatedResults)
+      .catch((err: AxiosError) => {
+        if (err.response?.status === StatusCodes.OK) {
+          throw new Error(StatusMessages.OK);
         }
         throw err;
       });
@@ -283,12 +297,10 @@ class API {
     const url = `${this.users}/${id}/aggregatedWords?&group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
     return axiosAuth
       .get<[{ paginatedResults: IWord[] }]>(url)
-      .then((response) => response.data[0].paginatedResults)
+      .then((response) => response?.data[0].paginatedResults)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         }
         throw err;
       });
@@ -299,12 +311,10 @@ class API {
     const url = `${this.users}/${id}/aggregatedWords/${wordId}`;
     return axiosAuth
       .get<IUserWord>(url)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         } else if (err.response?.status === StatusCodes.NOT_FOUND) {
           throw new Error(StatusMessages.WORD_NOT_FOUND);
         }
@@ -317,12 +327,10 @@ class API {
     const url = `${this.users}/${id}/statistics`;
     return axiosAuth
       .get<IUserStatistics>(url)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         } else if (err.response?.status === StatusCodes.NOT_FOUND) {
           throw new Error(StatusMessages.STATISTICS_NOT_FOUND);
         }
@@ -338,14 +346,12 @@ class API {
     const url = `${this.users}/${id}/statistics`;
     return axiosAuth
       .put<IUserStatistics>(url, statistic)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
         } else if (err.response?.status === StatusCodes.BAD_REQUEST) {
           throw new Error(StatusMessages.BAD_REQUEST);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         }
         throw err;
       });
@@ -356,12 +362,10 @@ class API {
     const url = `${this.users}/${id}/settings`;
     return axiosAuth
       .get<ISettings>(url)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         } else if (err.response?.status === StatusCodes.NOT_FOUND) {
           throw new Error(StatusMessages.SETTINGS_NOT_FOUND);
         }
@@ -374,14 +378,12 @@ class API {
     const url = `${this.users}/${id}/settings`;
     return axiosAuth
       .put<ISettings>(url, setting)
-      .then((response) => response.data)
+      .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.OK) {
           throw new Error(StatusMessages.OK);
         } else if (err.response?.status === StatusCodes.BAD_REQUEST) {
           throw new Error(StatusMessages.BAD_REQUEST);
-        } else if (err.response?.status === StatusCodes.UNAUTHORIZED) {
-          throw new Error(StatusMessages.INVALID_TOKEN);
         }
         throw err;
       });
@@ -396,9 +398,9 @@ class API {
         password,
       })
       .then((response) => {
-        this.token = response.data.token;
-        this.userId = response.data.userId;
-        return response.data;
+        this.token = response?.data.token;
+        this.userId = response?.data.userId;
+        return response?.data;
       })
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.FORBIDDEN) {

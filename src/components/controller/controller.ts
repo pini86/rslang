@@ -9,8 +9,9 @@ import Header from '../../pages/header/header';
 import Footer from '../../pages/footer/footer';
 import { showUserAuthentification } from '../authorization/userLoggedMode';
 import { activateAuthentification } from '../contentLoaded/dom';
+import SprintGame from '../../pages/sprint/sprint-game';
 
-enum EPages {
+export enum EPages {
   auth = 'Auth',
   main = 'Main',
   ebook = 'Ebook',
@@ -21,10 +22,10 @@ enum EPages {
 
 export default class Controller {
   static isLoggedIn = false;
-  
-  private currentPage = EPages.main;
 
-  keyStorage = 'currentPage';
+  static currentPage = EPages.main;
+
+  static keyStorage = 'currentPage';
 
   header = new Header();
 
@@ -45,6 +46,8 @@ export default class Controller {
     const statisticsBtn = document.getElementById('statistics') as HTMLElement;
     const iconMenu = document.getElementById('icon-menu') as HTMLElement;
 
+    showUserAuthentification();
+
     iconMenu.addEventListener('click', () => {
       if (iconMenu.classList.contains('icon-menu--active')) {
         Controller.toggleHeaderMenu('close');
@@ -63,7 +66,7 @@ export default class Controller {
     );
 
     ebookBtn.addEventListener('click', (): void => {
-      this.removePanels();
+      Controller.removePanels();
       this.addBtnListener(EPages.ebook, new Ebook(), ebookBtn);
       initEbook();
     });
@@ -80,34 +83,33 @@ export default class Controller {
       this.addBtnListener(EPages.statistics, new Statistics(), statisticsBtn)
     );
 
-    this.checkSessionStorage();
+    Controller.checkSessionStorage();
 
-    switch (this.currentPage) {
+    switch (Controller.currentPage) {
       case 'Auth':
-        this.setActiveMenuItem(authBtn);
+        Controller.setActiveMenuItem(authBtn);
         this.mainView = new Authorization();
         break;
       case 'Ebook':
-        this.setActiveMenuItem(ebookBtn);
+        Controller.setActiveMenuItem(ebookBtn);
         this.mainView = new Ebook();
         initEbook();
         break;
       case 'Audiocall':
-        this.setActiveMenuItem(audiocallBtn);
+        Controller.setActiveMenuItem(audiocallBtn);
         this.mainView = new Audiocall();
         break;
       case 'Sprint':
-        this.setActiveMenuItem(sprintBtn);
+        Controller.setActiveMenuItem(sprintBtn);
         this.mainView = new Sprint();
         break;
       case 'Statistics':
-        this.setActiveMenuItem(statisticsBtn);
+        Controller.setActiveMenuItem(statisticsBtn);
         this.mainView = new Statistics();
         break;
       default:
-        this.setActiveMenuItem(mainBtn);
+        Controller.setActiveMenuItem(mainBtn);
     }
-    showUserAuthentification();
   }
 
   addBtnListener(
@@ -115,32 +117,52 @@ export default class Controller {
     PageClass: Main | Ebook | Audiocall | Sprint | Statistics | Authorization,
     btn: HTMLElement
   ): void {
-    if (this.currentPage === page) return;
-    this.currentPage = page;
+    clearTimeout(SprintGame.sprintTimerId1);
+    clearTimeout(SprintGame.sprintTimerId2);
+    if (Controller.currentPage === page) return;
+    Controller.currentPage = page;
     this.mainView = PageClass;
     Controller.toggleHeaderMenu('close');
-    this.setActiveMenuItem(btn);
-    this.removePanels();
+    Controller.setActiveMenuItem(btn);
+    Controller.removePanels();
+    if (page !== 'Ebook') {
+      document.querySelector('main')?.classList.remove('learned-page');
+    }
     document.onkeyup = null;
   }
 
-  setActiveMenuItem(menuItem: HTMLElement): void {
+  static setActiveMenuItem(menuItem: HTMLElement): void {
     const bodyMenu = document.querySelector('.body-menu') as HTMLElement;
     const menuItems = [...bodyMenu.children] as HTMLElement[];
     menuItems.forEach((li) => li.classList.remove('active'));
     menuItem.classList.add('active');
-    this.setSessionStorage();
+    Controller.setSessionStorage();
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  removePanels(): void {
+  static removePanels(): void {
+    const gamePanel = document.querySelector('.game-panel');
     const levels = document.querySelector('.textbook-levels');
     const pagination = document.querySelector('.pagination');
+    if (gamePanel) {
+      gamePanel.remove();
+    }
     if (levels) {
       levels.remove();
     }
     if (pagination) {
       pagination.remove();
+    }
+  }
+
+  static toggleGameActivation(activate = true) {
+    const audiocall = document.querySelector('.btn-audiocall') as HTMLElement;
+    const sprint = document.querySelector('.btn-sprint') as HTMLElement;
+    if (activate) {
+      audiocall.classList.remove('disabled');
+      sprint.classList.remove('disabled');
+    } else {
+      audiocall.classList.add('disabled');
+      sprint.classList.add('disabled');
     }
   }
 
@@ -156,14 +178,14 @@ export default class Controller {
     }
   }
 
-  checkSessionStorage(): void {
-    const getKey = sessionStorage.getItem(this.keyStorage) as EPages;
+  static checkSessionStorage(): void {
+    const getKey = sessionStorage.getItem(Controller.keyStorage) as EPages;
     if (getKey) {
-      this.currentPage = getKey;
+      Controller.currentPage = getKey;
     }
   }
 
-  setSessionStorage(): void {
-    sessionStorage.setItem(this.keyStorage, this.currentPage);
+  static setSessionStorage(): void {
+    sessionStorage.setItem(Controller.keyStorage, Controller.currentPage);
   }
 }

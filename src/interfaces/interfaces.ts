@@ -14,6 +14,7 @@ export interface IWord {
   wordTranslate: string;
   textMeaningTranslate: string;
   textExampleTranslate: string;
+  difficulty?: Difficulty;
   userWord?: IUserWord;
 }
 
@@ -31,16 +32,28 @@ export interface IUserTokens {
   name: string;
 }
 
-export interface IUserWord {
+export interface IGetUserWord {
   difficulty: Difficulty;
-  optional: {
-    correctCount: number;
-    totalIncorrectCount: number;
-    totalCorrectCount: number;
-  };
+  id: string;
+  wordId: string;
 }
 
 export type Difficulty = 'easy' | 'normal' | 'hard';
+
+export interface IUserWord {
+  difficulty: Difficulty;
+  optional: {
+    correctCount?: number;
+    totalIncorrectCount?: number;
+    totalCorrectCount?: number;
+    wordId?: string;
+  };
+}
+
+export interface IAggregatedObj {
+  paginatedResults: IWord[];
+  totalCount: object;
+}
 
 export interface IUserStatistics {
   id?: string;
@@ -59,8 +72,13 @@ interface IStatisticsOptional {
 }
 
 export interface ISettings {
+  id?: string;
   wordsPerDay: number;
-  optional: object;
+  optional: {
+    learnedWords: number;
+    dayStats: { [key: string]: IUserStatistics };
+    dayLearnWords: { [key: string]: object | number };
+  };
 }
 
 export interface ISprintWord {
@@ -94,4 +112,25 @@ export interface ISprintResult {
   sprintTimer: number;
   sprintScore: string;
   sprintWordsArray: IWord[];
+}
+
+export interface IAudiocallStatObj {
+  correctWords: IWordData[] | IWord[];
+  incorrectWords: IWordData[] | IWord[];
+  learnedWords: number;
+  maxStreak: number;
+}
+
+export interface IAudiocallResult {
+  audiocallNewWords: number;
+  audiocallStatData: IAudiocallStatObj;
+}
+
+export interface IState {
+  curPage: number;
+  curGroup: number;
+  audioChunk: HTMLAudioElement | null;
+  isAuth: string | null;
+  userWordIds: string[];
+  easyCount: number;
 }

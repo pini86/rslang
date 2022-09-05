@@ -2,6 +2,37 @@
 @use 'mixins' as *;
 
 .audiocall {
+  .collection {
+    background-color: $font-color;
+    border-radius: 20px;
+
+    .collection-item {
+      border-right: 1px solid #e0e0e0;
+      border-bottom: none;
+      padding: 20px 23px;
+
+      @include resolution(big-mobile) {
+        padding: 10px 12px;
+      }
+    }
+
+    .btn {
+      padding: 0;
+      border-radius: 100%;
+
+      &:hover {
+        opacity: 0.8;
+        box-shadow: 0 0 6px $bg-color;
+      }
+
+      @include resolution(big-mobile) {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+        line-height: 25px;
+      }
+    }
+  }
 
   @include flex-column;
   justify-content: center;
@@ -10,20 +41,31 @@
     @include flex-column;
     align-items: center;
     justify-content: space-around;
-    gap: 5vh;
+    gap: 2vh;
     overflow-y: hidden;
+
+    @include resolution(desktop) {
+      gap: 1vh;
+    }
   }
 
   &__start-header {
     font-size: 2 rem;
+
+    @include resolution(big-mobile) {
+      font-size: 1.2rem;
+    }
+
+    @include resolution(mobile-horizontal) {
+      font-size: 1rem;
+    }
   }
 
   &__levels {
     display: flex;
     justify-content: center;
-    gap: 2vw;
 
-    @include resolution(mobile) {
+    @include resolution(mobile-horizontal) {
       flex-direction: column;
     }
   }
@@ -43,16 +85,25 @@
   }
 
   .audiocall__level.active {
-    border: 5px solid white;
+    border: 5px solid $font-color;
+
+    @include resolution(big-mobile) {
+      border: 3px solid $font-color;
+    }
   }
 
   &__start-btn {
     text-align: center;
+    padding: 0 20px;
   }
 
   &__continue-btn {
     text-align: center;
     display: none;
+
+    @include resolution(desktop) {
+      transform: scale(0.9);
+    }
   }
 
   &__play-btn {
@@ -78,7 +129,13 @@
 
   &__word {
     display: flex;
+    justify-content: center;
     gap: 10px;
+    min-width: 110px;
+
+    @include resolution(desktop) {
+      transform: scale(0.9);
+    }
   }
 
   &__word-list {
@@ -92,11 +149,33 @@
     align-items: center;
     height: 50vh;
     width: 70%;
+
+    @include resolution(desktop) {
+      width: 80%;
+    }
+
+    @include resolution(big-mobile) {
+      width: 100%;
+    }
+
+    @include resolution(mobile-horizontal) {
+      align-items: start;
+    }
   }
 
   &__word-image {
-    height: 100px;
+    height: 20vw;
+    max-height: 250px;
+
+    @include resolution(mobile) {
+      height: 30vw;
+    }
+
     display: none;
+
+    @include resolution(desktop) {
+      height: 200px;
+    }
   }
 }
 
@@ -119,6 +198,10 @@
   border: 5px solid $font-color;
   color: $font-color;
   font-size: 3rem;
+
+  @include resolution(desktop) {
+    font-size: 2.3rem;
+  }
 }
 
 .word-counter {
