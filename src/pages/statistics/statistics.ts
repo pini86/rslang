@@ -152,15 +152,6 @@ export default class Statistics {
           textStatisticProgress.innerText = `${Math.round(totalPercent)}%`;
           animateElementProgress.dataset.total = Math.round(totalPercent).toString();
         }
-        const wave = document.querySelector('.sprint__statistics__wave') as HTMLElement;
-
-        wave.animate(
-          [{ top: '100%' }, { top: `${100 - +((wave as HTMLElement).dataset.total as string)}%` }],
-          {
-            duration: 2000,
-            fill: 'forwards',
-          }
-        );
       })
       .then(async () => {
         await api.getSettings().then((data) => {
@@ -399,7 +390,7 @@ export default class Statistics {
 
       waves.forEach((wave) => {
         wave.animate(
-          [{ top: '100%' }, { top: `${+((wave as HTMLElement).dataset.total as string)}%` }],
+          [{ top: '100%' }, { top: `${100 - +((wave as HTMLElement).dataset.total as string)}%` }],
           {
             duration: 2000,
             fill: 'forwards',
