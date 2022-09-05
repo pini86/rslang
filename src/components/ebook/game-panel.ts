@@ -23,17 +23,12 @@ function activateGameBtns() {
     });
   });
   btnSprint.addEventListener('click', () => {
-    const page: number = +(sessionStorage.getItem('page') || '0');
-    const group: number = +(sessionStorage.getItem('group') || '0');
-    api.getWords(group, page).then((words) => {
-    const sprintBtn = document.getElementById('sprint') as HTMLElement;
+    const page = sessionStorage.getItem('page') || '0';
+    const group = sessionStorage.getItem('group') || '0';
+    api.getAllAggregatedUserWords(api.userId, group, page, '20').then((words) => {
+      const sprintBtn = document.getElementById('sprint') as HTMLElement;
       Controller.removePanels();
       Controller.setActiveMenuItem(sprintBtn);
-      words.map((word)=>{
-      // eslint-disable-next-line no-param-reassign, no-underscore-dangle
-        word._id = word.id; 
-        return word;
-      })
       const view = new SprintStart(words);
     });
   });
