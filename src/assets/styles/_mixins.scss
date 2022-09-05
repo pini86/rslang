@@ -42,6 +42,12 @@
     }
   }
 
+  @if $breakpoint==mobile-horizontal {
+    @media (max-width: 640px) {
+      @content;
+    }
+  }
+
   @if $breakpoint==mobile {
     @media (max-width: 420px) {
       @content;
