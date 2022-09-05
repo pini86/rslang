@@ -102,11 +102,13 @@ export default async function renderCards(group?: number, page?: number) {
       textMeaningTranslate,
     } = w;
 
-    const idIndex = state.userWordIds.indexOf(id);
-    if (idIndex !== -1) {
-      difficulty = userWords[idIndex].difficulty;
-      if (difficulty === 'easy') {
-        state.easyCount++;
+    if (state.isAuth) {
+      const idIndex = state.userWordIds.indexOf(id);
+      if (idIndex !== -1) {
+        difficulty = userWords[idIndex].difficulty;
+        if (difficulty === 'easy') {
+          state.easyCount++;
+        }
       }
     }
 
@@ -137,25 +139,28 @@ function getIdGetCard(el: HTMLElement) {
   return {
     id,
     card,
-  }
+  };
 }
 
 container.addEventListener('click', async (e) => {
   const el = e.target as HTMLElement;
   if (el.closest('.btn-listen')) {
     await soundHandler(el);
-
   } else if (el.classList.contains('btn-hard')) {
     el.classList.add('disabled');
     const { id, card } = getIdGetCard(el);
-    card.classList.add('hard');
-    card.classList.remove('easy');
-    await updateWordDifficulty(id, 'hard');
-
+    const response = await updateWordDifficulty(id, 'hard');
+    if (response) {
+      card.classList.add('hard');
+      card.classList.remove('easy');
+      const btnEasy = el.nextElementSibling as HTMLElement;
+      if (btnEasy.classList.contains('btn-to-learn')) {
+        btnEasy.classList.remove('btn-to-learn');
+        btnEasy.classList.add('btn-learned');
+        btnEasy.textContent = 'Изучено';
+      }
+    }
   } else if (el.classList.contains('btn-to-learn')) {
-    el.classList.add('btn-learned');
-    el.classList.remove('btn-to-learn');
-    el.textContent = 'Изучено';
     const { id, card } = getIdGetCard(el);
     card.classList.remove('easy');
     state.easyCount--;
@@ -164,9 +169,6 @@ container.addEventListener('click', async (e) => {
     await updateWordDifficulty(id, 'normal');
 
   } else if (el.classList.contains('btn-learned')) {
-    el.classList.add('btn-to-learn');
-    el.classList.remove('btn-learned');
-    el.textContent = 'Из изученных';
     const { id, card } = getIdGetCard(el);
     card.classList.add('easy');
     card.classList.remove('hard');
@@ -178,7 +180,14 @@ container.addEventListener('click', async (e) => {
 
   } else if (el.classList.contains('btn-hard-remove')) {
     const { id, card } = getIdGetCard(el);
-    card.remove();
-    await api.updateUserWord(id, provideDifficulty('normal', id));
+    const response = await api.updateUserWord(id, provideDifficulty('normal', id));
+    if (response) {
+      const parent = card.parentElement as HTMLElement;
+      parent.remove();
+      if (!container.children.length) {
+        container.innerHTML =
+          '<h5 class="center-align">Сложные слова отсутствуют в вашем словаре.</h5>';
+      }
+    }
   }
 });

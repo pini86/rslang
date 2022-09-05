@@ -66,7 +66,7 @@ export default class Controller {
     );
 
     ebookBtn.addEventListener('click', (): void => {
-      this.removePanels();
+      Controller.removePanels();
       this.addBtnListener(EPages.ebook, new Ebook(), ebookBtn);
       initEbook();
     });
@@ -124,7 +124,7 @@ export default class Controller {
     this.mainView = PageClass;
     Controller.toggleHeaderMenu('close');
     Controller.setActiveMenuItem(btn);
-    this.removePanels();
+    Controller.removePanels();
     if (page !== 'Ebook') {
       document.querySelector('main')?.classList.remove('learned-page');
     }
@@ -136,11 +136,10 @@ export default class Controller {
     const menuItems = [...bodyMenu.children] as HTMLElement[];
     menuItems.forEach((li) => li.classList.remove('active'));
     menuItem.classList.add('active');
-    this.setSessionStorage();
+    Controller.setSessionStorage();
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  removePanels(): void {
+  static removePanels(): void {
     const gamePanel = document.querySelector('.game-panel');
     const levels = document.querySelector('.textbook-levels');
     const pagination = document.querySelector('.pagination');
@@ -168,7 +167,7 @@ export default class Controller {
   }
 
   static checkSessionStorage(): void {
-    const getKey = sessionStorage.getItem(this.keyStorage) as EPages;
+    const getKey = sessionStorage.getItem(Controller.keyStorage) as EPages;
     if (getKey) {
       Controller.currentPage = getKey;
     }

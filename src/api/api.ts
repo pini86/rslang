@@ -261,10 +261,13 @@ class API {
 
   /** Gets all words with matched difficulty */
   getAggregatedDifficulties = async (
+    group = '0',
+    page = '0',
+    wordsPerPage = '3600',
     filter = 'hard',
     id = this.userId,
   ): Promise<IWord[]> | never => {
-    const url = `${this.users}/${id}/aggregatedWords?filter={"userWord.difficulty":"${filter}"}`;
+    const url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
     return axiosAuth
       .get<[IAggregatedObj]>(url)
       .then((response) => response?.data[0].paginatedResults)

@@ -4,6 +4,10 @@
   background-size: 1em 1em;
 }
 
+.container .row {
+  max-width: 1150px;
+}
+
 .col.card-wrapper {
   margin: 0 auto;
   padding: 0;
@@ -78,15 +82,12 @@
 }
 
 .easy {
-  transform: scale(0.95);
   opacity: 0.9;
   box-shadow: 0 0 20px $accent-green-color;
 }
 
 .hard {
-  transform: scale(1.03);
   box-shadow: 0 0 25px $accent-red-color;
-  border: 2px solid $accent-red-color;
 }
 
 @media (min-width: 1090px) {

@@ -114,6 +114,18 @@ export interface ISprintResult {
   sprintWordsArray: IWord[];
 }
 
+export interface IAudiocallStatObj {
+  correctWords: IWordData[] | IWord[];
+  incorrectWords: IWordData[] | IWord[];
+  learnedWords: number;
+  maxStreak: number;
+}
+
+export interface IAudiocallResult {
+  audiocallNewWords: number;
+  audiocallStatData: IAudiocallStatObj;
+}
+
 export interface IState {
   curPage: number;
   curGroup: number;

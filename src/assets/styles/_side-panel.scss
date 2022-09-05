@@ -14,11 +14,6 @@
   right: calc(12vw + 10px);
 }
 
-.game-panel {
-  width: 73px;
-  left: calc(12vw + 10px);
-}
-
 .game-panel,
 .textbook-levels {
   .collection-item {
@@ -38,27 +33,24 @@
   }
 }
 
+.game-panel {
+  width: 70px;
+  left: calc(12vw + 10px);
+  background-color: $font-color;
+
+  .btn {
+    height: 45px;
+    width: 45px;
+    margin: 11px;
+
+    .material-icons {
+      font-size: 1.7rem;
+    }
+  }
+}
+
 .level-active {
   transform:scale(1.2);
-}
-
-.collection {
-  .collection-header {
-    background-color: $font-color;
-    color: $bg-color;
-  }
-
-  .collection-item.avatar {
-    min-height: 70px;
-  }
-
-  img {
-    margin-top: 14px;
-  }
-}
-
-.avatar.btn {
-  border-radius: 0%;
 }
 
 @media (max-width: 1023px) {
@@ -95,8 +87,8 @@
     }
   }
 
-  .collection img {
-    margin-top: 8px;
-    left: 17px;
-  }
+  // .collection img {
+  //   margin-top: 8px;
+  //   left: 17px;
+  // }
 }
