@@ -121,7 +121,7 @@ export default class AudioCall {
 
     const mainWord = this.gameWords[this.round];
     const image = document.querySelector('.audiocall__word-image') as HTMLImageElement;
-    image.src = `https:rs-lang-rsschool-task.herokuapp.com/${mainWord.image}`;
+    image.src = `${api.baseUrl}/${mainWord.image}`;
 
     this.mainWordId = mainWord.id || (mainWord._id as string);
     this.mainWordTranslate = mainWord.wordTranslate;
@@ -140,7 +140,7 @@ export default class AudioCall {
     shuffleArray(this.wordsInRound);
     displayWords(this.wordsInRound);
 
-    const audioUrl = `https:rs-lang-rsschool-task.herokuapp.com/${mainWord.audio}`;
+    const audioUrl = `${api.baseUrl}/${mainWord.audio}`;
     AudioCall.audio = new Audio(audioUrl);
     playAudio();
     const playBtn = document.querySelector('.audiocall__play-btn') as HTMLElement;

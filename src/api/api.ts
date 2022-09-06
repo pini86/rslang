@@ -42,7 +42,7 @@ export enum StatusMessages {
 }
 
 class API {
-  baseUrl = 'https:rs-lang-rsschool-task.herokuapp.com';
+  baseUrl = 'https://rs-lang-rsschool-task.herokuapp.com';
 
   token: string = API.initializeToken();
 
@@ -169,13 +169,17 @@ class API {
   };
 
   /** Get new user tokens */
-  getNewIUserTokens = async (refreshToken: string, id = this.userId): Promise<IUserTokens> | never => {
+  getNewIUserTokens = async (
+    refreshToken: string,
+    id = this.userId
+  ): Promise<IUserTokens> | never => {
     const url = `${this.users}/${id}/tokens`;
     return axios
       .get<IUserTokens>(url, {
         headers: {
-          'Authorization': `Bearer ${refreshToken}`
-        }})
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      })
       .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.FORBIDDEN) {
@@ -186,14 +190,14 @@ class API {
   };
 
   /** Get all user words */
-  getAllUserWords = async (id = this.userId): Promise<IGetUserWord[]| never> => {
+  getAllUserWords = async (id = this.userId): Promise<IGetUserWord[] | never> => {
     const url = `${this.users}/${id}/words`;
     return axiosAuth
       .get<IGetUserWord[]>(url)
       .then((response) => response?.data)
       .catch((err: AxiosError) => {
         if (err.response?.status === StatusCodes.PAYMENT_REQUIRED) {
-         throw new Error(StatusMessages.INVALID_TOKEN); 
+          throw new Error(StatusMessages.INVALID_TOKEN);
         }
         throw err;
       });
@@ -224,7 +228,7 @@ class API {
       .get<IUserWord>(url)
       .then((response) => response?.data)
       .catch((err: AxiosError) => {
-      if (err.response?.status === StatusCodes.NOT_FOUND) {
+        if (err.response?.status === StatusCodes.NOT_FOUND) {
           throw new Error(StatusMessages.WORD_NOT_FOUND);
         }
         throw err;
@@ -269,7 +273,7 @@ class API {
     page = '0',
     wordsPerPage = '20',
     filter = 'hard',
-    id = this.userId,
+    id = this.userId
   ): Promise<IWord[]> | never => {
     let url = `${this.users}/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}&filter={"userWord.difficulty":"${filter}"}`;
     if (group === 'all') {
