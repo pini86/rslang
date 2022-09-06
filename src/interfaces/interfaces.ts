@@ -32,7 +32,7 @@ export interface IUserTokens {
   name: string;
 }
 
-export interface IGetUserWord {
+export interface IGetUserWord extends IUserWord{
   difficulty: Difficulty;
   id: string;
   wordId: string;
