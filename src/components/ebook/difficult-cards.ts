@@ -45,6 +45,7 @@ function generateHardCard(
             <p class="content-phrase">${meaning}</p>
             <p class="content-translation grey-text darken-3">${meaningTranslate}</p>
           </div>
+          <div class="counters"></div>
           <div class="card-action">
             <button id="${id}" class="btn ${cardLevels[group].color} btn-listen">
               <i id="${id}" class="material-icons">volume_up</i>

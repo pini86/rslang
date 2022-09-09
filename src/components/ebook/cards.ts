@@ -1,4 +1,4 @@
-import { Difficulty } from '../../interfaces/interfaces';
+import { Difficulty, IUserWord, IWord } from '../../interfaces/interfaces';
 import api from '../../api/api';
 import cardLevels from '../../pages/ebook/card-levels';
 import state from '../../pages/ebook/state';
@@ -27,7 +27,9 @@ function generateCard(
   textTranslate: string,
   meaning: string,
   meaningTranslate: string,
-  difficulty: Difficulty
+  difficulty: Difficulty,
+  totalCorrectCount: number | undefined,
+  totalIncorrectCount: number | undefined
 ) {
   const btnHard =
     difficulty === 'hard'
@@ -66,6 +68,7 @@ function generateCard(
             <p class="content-phrase">${meaning}</p>
             <p class="content-translation grey-text darken-3">${meaningTranslate}</p>
           </div>
+          <div class="counters">${totalCorrectCount!== undefined ?`Правильно: ${totalCorrectCount} `:''} ${totalIncorrectCount!== undefined ?`Ошибок: ${totalIncorrectCount} `:''}</div>
           <div class="card-action">
             <button id="${id}" class="btn ${cardLevels[group].color} btn-listen">
               <i id="${id}" class="material-icons">volume_up</i>
@@ -79,6 +82,8 @@ function generateCard(
 }
 
 export default async function renderCards(group?: number, page?: number) {
+  let totalCorrectCount: number | undefined;
+  let totalIncorrectCount: number | undefined;
   container.innerHTML = preloader;
   if (page !== undefined) {
     curPage = page;
@@ -93,7 +98,7 @@ export default async function renderCards(group?: number, page?: number) {
   const userWords = state.isAuth ? await getUserWordIds(words) : [];
 
   let cardsToRender = '';
-  words.forEach((w) => {
+  words.forEach(async (w) => {
     let difficulty: Difficulty = 'normal';
     const {
       id,
@@ -114,8 +119,11 @@ export default async function renderCards(group?: number, page?: number) {
         if (difficulty === 'easy') {
           state.easyCount++;
         }
+        totalCorrectCount = userWords[idIndex].optional.totalCorrectCount || 0;
+        totalIncorrectCount = userWords[idIndex].optional.totalIncorrectCount || 0;
       }
     }
+
 
     cardsToRender += generateCard(
       group ?? curGroup,
@@ -128,7 +136,9 @@ export default async function renderCards(group?: number, page?: number) {
       textExampleTranslate,
       textMeaning,
       textMeaningTranslate,
-      difficulty
+      difficulty,
+      totalCorrectCount,
+      totalIncorrectCount
     );
   });
 
