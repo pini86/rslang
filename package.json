@@ -1,0 +1,65 @@
+{
+  "name": "rslang",
+  "version": "1.0.0",
+  "description": "RS Lang task",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack serve --env development",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pini86/rslang.git"
+  },
+  "author": "Mikhail Druzhinin & Co",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pini86/rslang/issues"
+  },
+  "homepage": "https://github.com/pini86/rslang#readme",
+  "dependencies": {
+    "@materializecss/materialize": "^1.1.0",
+    "axios": "^0.27.2",
+    "axios-cache-interceptor": "^0.10.7",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "jsonwebtoken": "^8.5.1",
+    "normalize.css": "^8.0.1",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.4"
+  },
+  "devDependencies": {
+    "@types/chart.js": "^2.9.37",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/materializecss__materialize": "^1.1.0",
+    "@types/node": "^18.7.1",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "autoprefixer": "^10.4.8",
+    "axios": "^0.27.2",
+    "chart.js": "^3.9.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "eslint": "^8.21.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "postcss-loader": "^7.0.1",
+    "prettier": "^2.7.1",
+    "sass": "^1.54.4",
+    "sass-loader": "^13.0.2",
+    "sass-resources-loader": "^2.2.5",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.0"
+  }
+}

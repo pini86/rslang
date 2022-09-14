@@ -1,0 +1,389 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@import './authorization.scss';
+@import './sprint.scss';
+@import './statistics.scss';
+
+/* ---------- HEADER, NAV ---------- */
+
+.nav__link {
+  padding: 0 15px;
+}
+
+.nav-wrapper ul.row {
+  margin-bottom: 0;
+}
+
+.header {
+  margin: 0 0 30px 0;
+  background-color: $bg-color;
+  color: $font-color;
+
+  .container {
+    @include resolution(desktop) {
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 1168px) {
+      font-size: 0.75rem;
+    }
+  }
+
+  .nav {
+    background-color: $bg-color;
+    color: $font-color;
+
+    &-wrapper {
+      display: flex;
+    }
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    li {
+      cursor: pointer;
+      white-space: nowrap;
+
+      &.active {
+        background-color: rgba($color: $accent-blue-color, $alpha: 0.5);
+      }
+
+      &.menu-item-active {
+        color: var($accent-dark-color);
+      }
+
+      &+li {
+        margin: 0 0 0 20px;
+      }
+    }
+  }
+
+  .authorization {
+    margin: auto 0 auto auto;
+    padding: 0 0 0 15px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+
+    .authorization__icon {
+      width: 40px;
+      display: inline;
+    }
+  }
+}
+
+@include resolution(big-mobile) {
+  .header {
+    .body-menu {
+      display: block;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      transform: translate(-100%, 0);
+      transition: all 0.5s;
+      background: $bg-color;
+      z-index: 4000;
+
+      li {
+        text-align: center;
+        margin: 80px 0 30px;
+        font-size: 20px;
+        float: none;
+
+        &.active {
+          background-color: rgba(0, 172, 193, 0.5);
+        }
+
+        &+li {
+          margin: 30px 0;
+        }
+      }
+
+      &--active {
+        transform: translate(0, 0);
+      }
+    }
+  }
+}
+
+.icon-menu {
+  display: none;
+  position: absolute;
+  top: 25px;
+  left: 10px;
+  width: 30px;
+  height: 18px;
+  cursor: pointer;
+  z-index: 5000;
+
+  @include resolution(mobile) {
+    top: 20px;
+  }
+
+  span {
+    transition: all 0.5s;
+    top: 8px;
+    left: 0px;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+
+    @include resolution(mobile) {
+      height: 1px;
+    }
+
+    background-color: #fff;
+
+    &:first-child {
+      top: 0px;
+    }
+
+    &:last-child {
+      top: auto;
+      bottom: 0px;
+    }
+  }
+
+  &--active {
+    span {
+      transform: scale(0);
+
+      &:first-child {
+        transform: rotate(-45deg);
+        top: 8px;
+      }
+
+      &:last-child {
+        transform: rotate(45deg);
+        bottom: 8px;
+      }
+    }
+  }
+
+  @include resolution(big-mobile) {
+    display: block;
+  }
+}
+
+/* ---------- MAIN-INFO ---------- */
+
+.info__main-image {
+  width: 90%;
+  height: auto;
+}
+
+.main__info {
+  display: flex;
+  padding: 50px 0;
+
+  .info {
+
+    &__left,
+    &__right {
+      width: 50%;
+    }
+  }
+
+  .info__left {
+    padding-top: 10%;
+
+    .info__text {
+      width: auto;
+      max-width: 16rem;
+    }
+
+    .info__logo {
+      width: 70%;
+      height: auto;
+    }
+  }
+}
+
+.main {
+
+  &__about,
+  &__team {
+    @include flex-column;
+    gap: 5%;
+    text-align: center;
+  }
+
+  .main__subtitle {
+    @include resolution(big-mobile) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+/* ---------- TEAM ---------- */
+
+.about__cards {
+  display: flex;
+  padding: 1.5rem 0;
+  gap: 5%;
+
+  @include resolution(big-mobile) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card__wrapper {
+    width: 50%;
+    text-align: center;
+
+    .card__icon {
+      font-size: 60px;
+      color: black;
+
+      @include resolution(mobile-horizontal) {
+        font-size: 34px;
+      }
+    }
+  }
+}
+
+.team__cards {
+  @include flex-column;
+  gap: 5rem;
+  align-items: center;
+  padding: 5rem 0;
+
+  @include resolution(mobile) {
+    padding: 2rem 0;
+  }
+}
+
+.team__card {
+  @include flex-column;
+  padding: 5%;
+  text-align: center;
+  gap: 1.5rem;
+  width: 60%;
+
+  @include resolution(mobile) {
+    gap: 0;
+  }
+
+  .team__img {
+    width: 20%;
+    text-align: center;
+    border-radius: 50%;
+
+    @include resolution(mobile) {
+      width: 40%;
+    }
+  }
+}
+
+.card {
+  &-yellow {
+    @include card($accent-yellow-color);
+  }
+
+  &-blue {
+    @include card($accent-blue-color);
+  }
+
+  &-pink {
+    @include card($accent-pink-color);
+  }
+}
+
+.team__tasks {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+
+  @include resolution(desktop) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .team__task {
+    display: block;
+    padding: 2%;
+    width: 160px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 68px;
+
+    @include resolution(big-desktop) {
+      width: 115px;
+      font-size: 0.875rem;
+    }
+
+    @include resolution(tablet) {
+      height: 50px;
+    }
+
+    @include resolution(big-mobile) {
+      width: 100px;
+      height: 35px;
+      font-size: 0.8rem;
+    }
+  }
+
+  .team__task.yellow {
+    text-shadow: 1px 1px 5px #000;
+  }
+}
+
+.team__name {
+  color: $font-color;
+
+  @include resolution(mobile-horizontal) {
+    font-size: 0.875rem;
+  }
+}
+
+a.team__name:first-child {
+  @include resolution(mobile) {
+    order: 1;
+  }
+}
+
+.team__name:hover {
+  color: $accent-blue-color;
+}
+
+/* ---------- FOOTER ---------- */
+
+.footer {
+  margin-bottom: 1.5rem;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+
+    @include resolution(mobile) {
+      width: 50%;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+  }
+
+  &__rs {
+    height: 25px;
+    width: 60px;
+    @include bg-svg-white('../icons/rs_school_js.svg');
+    transition: 0.3s;
+  }
+
+  &__rs:hover {
+    filter: invert(65%) sepia(38%) saturate(350%) hue-rotate(126deg) brightness(90%) contrast(90%);
+  }
+
+  &__year:hover {
+    color: $accent-pink-color;
+  }
+}

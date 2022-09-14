@@ -1,0 +1,106 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.auth-headers {
+  display: flex;
+  justify-content: space-around;
+}
+
+.auth-header {
+  color: $font-color;
+  cursor: pointer;
+
+  &-accent {
+    color: $accent-blue-color;
+  }
+}
+
+.close-sign {
+  color: $font-color;
+}
+
+.register-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+#register:checked~#views .register-view {
+  @include flex-column;
+  align-items: center;
+}
+
+#register:checked~#views .signin-view {
+  display: none;
+}
+
+#signin:checked~#views .register-view {
+  display: none;
+}
+
+#signin:checked~#views .signin-view {
+  @include flex-column;
+  align-items: center;
+}
+
+.input-view {
+  display: none;
+}
+
+#authorization {
+  background-color: $bg-color;
+  color: $font-color;
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+  max-width: 200px;
+}
+
+.authorization {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &__greet {
+    overflow: hidden;
+  }
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#modalAuth {
+  color: $font-color;
+
+  & .modal {
+    position: relative;
+  }
+}
+
+.modal {
+  max-height: 80%;
+  overflow: auto;
+}
+
+.input-group p {
+  color: $font-color;
+}
+
+.modal .modal-footer {
+  background-color: transparent;
+  text-align: center;
+}
+
+#views input {
+  color: $font-color;
+}
+
+.authorization__logout {
+  display: none;
+}
+
+.modal-content label {
+  font-size: 1rem;
+}
